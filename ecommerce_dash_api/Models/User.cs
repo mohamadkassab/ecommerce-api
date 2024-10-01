@@ -25,6 +25,10 @@ public partial class User
 
     public DateTime? UpdatedAt { get; set; }
 
+    public string? CreatedBy { get; set; }
+
+    public string? UpdatedBy { get; set; }
+
     public DateTime? LastLogin { get; set; }
 
     public int? FailedLoginAttempts { get; set; }

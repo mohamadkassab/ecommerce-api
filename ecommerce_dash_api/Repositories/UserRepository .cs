@@ -1,8 +1,9 @@
-﻿using ecommerce_dash_api.Data;
+﻿using ecommerce_dash_api.DTOS;
 using ecommerce_dash_api.Interfaces;
 using ecommerce_dash_api.Models;
 using ecommerce_dash_api.QRYS;
 using Microsoft.EntityFrameworkCore;
+using System.Data;
 
 public class UserRepository : IUserRepository
 {
@@ -59,26 +60,33 @@ public class UserRepository : IUserRepository
         return (userWithRolesAndPermissions?.User, userWithRolesAndPermissions?.Roles, userWithRolesAndPermissions?.Permissions);
     }
 
-    public async Task<bool> CreateRoleAsync(Role role, List<int> permissionIds)
+    public async Task CreateRoleAsync(Role role, List<int> permissionIds)
     {
-
         await _context.Roles.AddAsync(role);
-        await _context.SaveChangesAsync();
 
-        foreach (var permissionId in permissionIds)
+        try
         {
-            var rolePermission = new RolePermission
+            await _context.SaveChangesAsync();
+
+            foreach (var permissionId in permissionIds)
             {
-                RoleId = role.Id,
-                PermissionId = permissionId,
-                CreatedAt = DateTime.UtcNow
-            };
+                var rolePermission = new RolePermission
+                {
+                    RoleId = role.Id,
+                    PermissionId = permissionId
+                };
 
-            await _context.RolePermissions.AddAsync(rolePermission);
+                await _context.RolePermissions.AddAsync(rolePermission);
+            }
+
+            await _context.SaveChangesAsync();
         }
-
-        return true;
-
+        catch (Exception ex)
+        {
+            _context.Roles.Remove(role);
+            await _context.SaveChangesAsync();
+            throw;
+        }
     }
 
     public async Task DeleteRolePermissionsAsync(int roleId)
@@ -90,7 +98,7 @@ public class UserRepository : IUserRepository
         _context.RolePermissions.RemoveRange(rolePermissions);
     }
 
-    public async Task<bool> CreateRolePermissionsAsync(int roleId, List<int> permissionIds)
+    public async Task CreateRolePermissionsAsync(int roleId, List<int> permissionIds)
     {
         foreach (var permissionId in permissionIds)
         {
@@ -103,8 +111,6 @@ public class UserRepository : IUserRepository
 
             await _context.RolePermissions.AddAsync(rolePermission);
         }
-
-        return true;
     }
 
     public async Task DeleteRoleAsync(int roleId)
@@ -152,13 +158,20 @@ public class UserRepository : IUserRepository
     {
         var result = await _context.Users.Select(u => new UserWithRolesAndPermissionsQRY
         {
+
+            Id = u.Id,
+            Username = u.Username,
             FirstName = u.FirstName,
             LastName = u.LastName,
             Age = u.Age,
             Phone = u.Phone,
             Address = u.Address,
-            Username = u.Username,
-            Roles = u.UserRoles.Select(ur => new RoleQRY
+            CreatedAt = u.CreatedAt,
+            UpdatedAt = u.UpdatedAt,
+            CreatedBy = u.CreatedBy,
+            UpdatedBy = u.UpdatedBy,
+
+            Roles = u.UserRoles.Select(ur => new RoleWithoutPermissionsQRY
             {
                 Id = ur.Id,
                 RoleName = ur.Role.RoleName
@@ -172,30 +185,12 @@ public class UserRepository : IUserRepository
         }).ToListAsync();
 
 
-        var result2 = await _context.Users.Select(u => new UserWithRolesAndPermissionsQRY
-        {
-            FirstName = u.FirstName,
-            LastName = u.LastName,
-            Age = u.Age,
-            Phone = u.Phone,
-            Address = u.Address,
-            Username = u.Username,
-            Roles = u.UserRoles.Select(ur => new RoleQRY
-            {
-                Id = ur.Id,
-                RoleName = ur.Role.RoleName
-            }).ToList(),
-
-            Permissions = u.UserRoles.SelectMany(ur => ur.Role.RolePermissions.Select(rp => new PermissionQRY
-            {
-                Id = rp.Permission.Id,
-                PermissionName = rp.Permission.PermissionName
-            })).ToList(),
-
-        }).ToListAsync();
+   
 
         return result;
     }
+
+
 }
 
 

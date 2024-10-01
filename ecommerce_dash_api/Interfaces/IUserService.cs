@@ -8,11 +8,11 @@ namespace ecommerce_dash_api.Interfaces
 {
     public interface IUserService
     {
-        Task<bool> SignupAsync(UserDTO user);
-        Task<string> SigninAsync(LoginDTO request);
-        Task<bool> UpdateUserRolesAsync(int userId, List<int> roleIds);
-        Task<bool> CreateRoleAsync(string roleName, List<int> permissionIds);
-        Task<bool> UpdateRoleAsync(int roleId, List<int> permissionIds);
+        Task<bool> SignupAsync(UserDTO userDto);
+        Task<string> SigninAsync(SigninDTO loginDto);
+        Task<bool> UpdateUserRolesAsync(UpdateUserRolesDTO updateUserRolesDto);
+        Task<bool> CreateRoleAsync(CreateRoleDTO createRoleDto);
+        Task<bool> UpdateRoleAsync(UpdateRoleDTO updateRoleDto);
         Task<bool> DeleteRoleAsync(int roleId);
         Task<List<RoleQRY>> GetAllRolesWithPermissionsAsync();
         Task<List<PermissionQRY>> GetAllPermissionsAsync();

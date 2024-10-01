@@ -1,5 +1,4 @@
-﻿using ecommerce_dash_api.Data;
-using ecommerce_dash_api.DTOS;
+﻿using ecommerce_dash_api.DTOS;
 using ecommerce_dash_api.Interfaces;
 using ecommerce_dash_api.Models;
 using ecommerce_dash_api.QRYS;
@@ -26,24 +25,24 @@ namespace ecommerce_dash_api.Services
             _context = context;
         }
 
-        public async Task<bool> UpdateUserRolesAsync(int userId, List<int> roleIds)
+        public async Task<bool> UpdateUserRolesAsync(UpdateUserRolesDTO updateUserRolesDto)
         {
-            await _userRepository.DeleteUserRolesAsync(userId);
-            await _userRepository.CreateUserRolesAsync(userId, roleIds);
+            await _userRepository.DeleteUserRolesAsync(updateUserRolesDto.UserId);
+            await _userRepository.CreateUserRolesAsync(updateUserRolesDto.UserId, updateUserRolesDto.RoleIds);
             await _context.SaveChangesAsync();
 
             return true;
         }
 
-        public async Task<string> SigninAsync(LoginDTO request)
+        public async Task<string> SigninAsync(SigninDTO signinDTO)
         {
-            var result = await _userRepository.GetUserByUsernameAsync(request.Username);
-            if (result.user == null || !BCrypt.Net.BCrypt.Verify(request.Password, result.user.PasswordHash))
+            var result = await _userRepository.GetUserByUsernameAsync(signinDTO.Username);
+            if (result.user == null || !BCrypt.Net.BCrypt.Verify(signinDTO.Password, result.user.PasswordHash))
             {
                 return null;
             }
    
-            var token = _jwtToken.GenerateJwtToken(result.user.Username, result.roles, result.permissions);
+            var token = await _jwtToken.GenerateJwtTokenAsync(result.user.Username, result.roles, result.permissions);
 
             return token;
 
@@ -63,7 +62,7 @@ namespace ecommerce_dash_api.Services
             user.Phone = userDto.Phone;
             user.Username = userDto.Username;
             user.Age = userDto.Age;
-            user.PasswordHash = _passwordHasher.HashPassword(user.PasswordHash);
+            user.PasswordHash = _passwordHasher.HashPassword(userDto.Password);
 
             await _userRepository.CreateUserAsync(user);
             await _context.SaveChangesAsync();
@@ -71,19 +70,19 @@ namespace ecommerce_dash_api.Services
             return true;
         }
 
-        public async Task<bool> CreateRoleAsync(string roleName, List<int> permissionIds)
+        public async Task<bool> CreateRoleAsync(CreateRoleDTO createRoleDto)
         {
             Role role = new Role();
-            role.RoleName = roleName;
-            await _userRepository.CreateRoleAsync(role, permissionIds);
+            role.RoleName = createRoleDto.RoleName;
+            await _userRepository.CreateRoleAsync(role, createRoleDto.PermissionIds);
             await _context.SaveChangesAsync();
             return true;
         }
 
-        public async Task<bool> UpdateRoleAsync(int roleId, List<int> permissionIds)
+        public async Task<bool> UpdateRoleAsync(UpdateRoleDTO updateRoleDto)
         {
-            await _userRepository.DeleteRolePermissionsAsync(roleId);
-            await _userRepository.CreateRolePermissionsAsync(roleId, permissionIds);
+            await _userRepository.DeleteRolePermissionsAsync(updateRoleDto.RoleId);
+            await _userRepository.CreateRolePermissionsAsync(updateRoleDto.RoleId, updateRoleDto.PermissionIds);
             await _context.SaveChangesAsync();
             return true;
         }
@@ -112,6 +111,7 @@ namespace ecommerce_dash_api.Services
             var result = await _userRepository.GetAllUsersWithRolesAndPermissions();
             return result;
         }
+
     }
 }
 

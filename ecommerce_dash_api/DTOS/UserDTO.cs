@@ -11,7 +11,6 @@ namespace ecommerce_dash_api.DTOS
         [Required, StringLength(50, MinimumLength = 2, ErrorMessage = "Last name must be between 2 and 50 characters.")]
         public string LastName { get; set; } = null!;
 
-        [Required]
         public int Age { get; set; }
 
         [Required, Phone(ErrorMessage ="phone number is invalid"), MaxLength(50, ErrorMessage = "Maximum Phone length is 50")]

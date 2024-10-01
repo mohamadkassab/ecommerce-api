@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\User\\Desktop\\MK\\Projects\\Ecommerce\\ecommerce_dash_api\\ecommerce_dash_api\\ecommerce_dash_api.csproj": {}
+    "C:\\Users\\User\\Desktop\\MK\\Projects\\Ecommerce\\ecommerce_api\\ecommerce_dash_api\\ecommerce_dash_api.csproj": {}
   },
   "projects": {
-    "C:\\Users\\User\\Desktop\\MK\\Projects\\Ecommerce\\ecommerce_dash_api\\ecommerce_dash_api\\ecommerce_dash_api.csproj": {
+    "C:\\Users\\User\\Desktop\\MK\\Projects\\Ecommerce\\ecommerce_api\\ecommerce_dash_api\\ecommerce_dash_api.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\User\\Desktop\\MK\\Projects\\Ecommerce\\ecommerce_dash_api\\ecommerce_dash_api\\ecommerce_dash_api.csproj",
+        "projectUniqueName": "C:\\Users\\User\\Desktop\\MK\\Projects\\Ecommerce\\ecommerce_api\\ecommerce_dash_api\\ecommerce_dash_api.csproj",
         "projectName": "ecommerce_dash_api",
-        "projectPath": "C:\\Users\\User\\Desktop\\MK\\Projects\\Ecommerce\\ecommerce_dash_api\\ecommerce_dash_api\\ecommerce_dash_api.csproj",
+        "projectPath": "C:\\Users\\User\\Desktop\\MK\\Projects\\Ecommerce\\ecommerce_api\\ecommerce_dash_api\\ecommerce_dash_api.csproj",
         "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\User\\Desktop\\MK\\Projects\\Ecommerce\\ecommerce_dash_api\\ecommerce_dash_api\\obj\\",
+        "outputPath": "C:\\Users\\User\\Desktop\\MK\\Projects\\Ecommerce\\ecommerce_api\\ecommerce_dash_api\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\User\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -66,7 +66,11 @@
             },
             "MySql.Data": {
               "target": "Package",
-              "version": "[8.4.0, )"
+              "version": "[9.0.0, )"
+            },
+            "Newtonsoft.Json": {
+              "target": "Package",
+              "version": "[13.0.3, )"
             },
             "Pomelo.EntityFrameworkCore.MySql": {
               "target": "Package",

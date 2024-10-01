@@ -1,5 +1,5 @@
-using ecommerce_dash_api.Data;
 using ecommerce_dash_api.Interfaces;
+using ecommerce_dash_api.Models;
 using ecommerce_dash_api.Services;
 using ecommerce_dash_api.Utils;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -15,9 +15,9 @@ var jwtSettings = builder.Configuration.GetSection("JwtSettings");
 var secretKey = Encoding.UTF8.GetBytes(jwtSettings["SecretKey"]);
 
 builder.Services.AddDependencyGroup();
-builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer(); 
 builder.Services.AddSwaggerGen();
+builder.Services.AddControllers();
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -50,13 +50,16 @@ var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
 {
-    app.UseDeveloperExceptionPage(); // Shows detailed error pages in development
-    app.UseSwagger(); // Enables Swagger
+    app.UseDeveloperExceptionPage(); 
+    app.UseSwagger(); 
     app.UseSwaggerUI();
 }
 
+app.UseCors(builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 
-app.UseHttpsRedirection(); 
+app.UseHttpsRedirection();
+
+app.UseRouting();
 
 app.UseAuthorization();
 

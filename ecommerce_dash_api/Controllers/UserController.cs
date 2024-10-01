@@ -1,5 +1,4 @@
-﻿using ecommerce_dash_api.Data;
-using ecommerce_dash_api.DTOS;
+﻿using ecommerce_dash_api.DTOS;
 using ecommerce_dash_api.Interfaces;
 using ecommerce_dash_api.Models;
 using ecommerce_dash_api.Utils;
@@ -7,7 +6,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Org.BouncyCastle.Asn1.Ocsp;
+using System.Configuration;
 
 namespace ecommerce_dash_api.Controllers
 {
@@ -17,15 +18,18 @@ namespace ecommerce_dash_api.Controllers
     {
         private readonly IUserService _userService;
         private readonly JwtToken _jwtToken;
+        private readonly IConfiguration _configuration;
 
-        public UserController(IUserService userService, JwtToken jwtToken)
+        public UserController(IUserService userService, JwtToken jwtToken, IConfiguration configuration)
         {
             _userService = userService;
             _jwtToken = jwtToken;
+            _configuration = configuration;
         }
 
+
         [HttpPost("signup")]
-        public async Task<IActionResult> Signup([FromBody] UserDTO request)
+        public async Task<IActionResult> Signup([FromBody] UserDTO userDto)
         {
             try
             {
@@ -34,7 +38,7 @@ namespace ecommerce_dash_api.Controllers
                     return BadRequest(ModelState);
                 }
 
-                var result = await _userService.SignupAsync(request);
+                var result = await _userService.SignupAsync(userDto);
                 if (result)
                 {
                     return Ok(new { message = "Signup successful" });
@@ -49,7 +53,7 @@ namespace ecommerce_dash_api.Controllers
         }
 
         [HttpPost("signin")]
-        public async Task<IActionResult> Signin([FromBody] LoginDTO request)
+        public async Task<IActionResult> Signin([FromBody] SigninDTO loginDto)
         {
             try
             {
@@ -58,10 +62,19 @@ namespace ecommerce_dash_api.Controllers
                     return BadRequest(ModelState);
                 }
 
-                var token = await _userService.SigninAsync(request);
+                var token = await _userService.SigninAsync(loginDto);
                 if (token != null)
                 {
-                    return Ok(new { Token = token });
+                    //var jwtSettings = _configuration.GetSection("JwtSettings");
+                    //var cookieOptions = new CookieOptions
+                    //{
+                    //    HttpOnly = true,
+                    //    Secure = true, 
+                    //    SameSite = SameSiteMode.Lax,
+                    //    Expires = DateTime.UtcNow.AddMinutes(Convert.ToInt32(jwtSettings["ExpirationInMinutes"])),
+                    //};
+                    //Response.Cookies.Append(jwtSettings["TokenName"], token, cookieOptions);
+                    return Ok(new { token });
                 }
 
                 return BadRequest(new { message = "Signin failed" });
@@ -73,8 +86,8 @@ namespace ecommerce_dash_api.Controllers
             }
         }
 
-        [HttpPost("updateUserRoles")]
-        public async Task<IActionResult> UpdateUserRoles([FromBody] UpdateUserRolesDTO request)
+        [HttpPut("updateUserRoles")]
+        public async Task<IActionResult> UpdateUserRoles([FromBody] UpdateUserRolesDTO updateUserRolesDto)
         {
             try
             {
@@ -83,14 +96,13 @@ namespace ecommerce_dash_api.Controllers
                     return BadRequest(ModelState);
                 }
 
-        
-                    var response = await _userService.UpdateUserRolesAsync(request.UserId, request.RoleIds);
-                    if (response)
-                    {
-                        return Ok();
-                    }
+                var response = await _userService.UpdateUserRolesAsync(updateUserRolesDto);
+                if (response)
+                {
+                    return Ok();
+                }
 
-                    return BadRequest(new { message = "Update user roles failed" });
+                return BadRequest(new { message = "Update user roles failed" });
             
             }
             catch (Exception ex)
@@ -100,7 +112,7 @@ namespace ecommerce_dash_api.Controllers
         }
 
         [HttpPost("createRole")]
-        public async Task<IActionResult> CreateRole([FromBody] CreateRoleDTO request)
+        public async Task<IActionResult> CreateRole([FromBody] CreateRoleDTO createRoleDto)
         {
             try
             {
@@ -109,7 +121,7 @@ namespace ecommerce_dash_api.Controllers
                     return BadRequest(ModelState);
                 }
 
-                var response = await _userService.CreateRoleAsync(request.RoleName, request.PermissionIds);
+                var response = await _userService.CreateRoleAsync(createRoleDto);
                 if (response)
                 {
                     return Ok();
@@ -123,8 +135,8 @@ namespace ecommerce_dash_api.Controllers
             }
         }
 
-        [HttpPost("updateRole")]
-        public async Task<IActionResult> UpdateRole([FromBody] UpdateRoleDTO request)
+        [HttpPut("updateRole")]
+        public async Task<IActionResult> UpdateRole([FromBody] UpdateRoleDTO updateRoleDto)
         {
             try
             {
@@ -133,7 +145,7 @@ namespace ecommerce_dash_api.Controllers
                     return BadRequest(ModelState);
                 }
 
-                var response = await _userService.UpdateRoleAsync(request.RoleId, request.PermissionIds);
+                var response = await _userService.UpdateRoleAsync(updateRoleDto);
                 if (response)
                 {
                     return Ok();
@@ -147,7 +159,7 @@ namespace ecommerce_dash_api.Controllers
             }
         }
 
-        [HttpPost("deleteRole")]
+        [HttpDelete("deleteRole")]
         public async Task<IActionResult> DeleteRole([FromBody] int roleId)
         {
             try

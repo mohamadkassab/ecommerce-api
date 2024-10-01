@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using MySqlX.XDevAPI.Common;
 using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -16,7 +17,8 @@ namespace ecommerce_dash_api.Utils
             _configuration = configuration;
         }
 
-        public string GenerateJwtToken(string email, List<string> roles, List<string> permissions)
+        public async Task<string> GenerateJwtTokenAsync(string email, List<string> roles, List<string> permissions)
+
         {
             var jwtSettings = _configuration.GetSection("JwtSettings");
             var secretKey = Encoding.UTF8.GetBytes(jwtSettings["SecretKey"]);
@@ -35,10 +37,8 @@ namespace ecommerce_dash_api.Utils
 
             foreach (var permission in permissions)
             {
-                claims.Add(new Claim("permission", permission)); 
+                claims.Add(new Claim(Constants.PermissionClaimType, permission)); 
             }
-
-
 
             var tokenDescriptor = new SecurityTokenDescriptor
             {
@@ -51,8 +51,9 @@ namespace ecommerce_dash_api.Utils
 
             var tokenHandler = new JwtSecurityTokenHandler();
             var token = tokenHandler.CreateToken(tokenDescriptor);
+            var generateToken = tokenHandler.WriteToken(token);
 
-            return tokenHandler.WriteToken(token);
+            return await Task.FromResult(generateToken);
         }
     }
 }

@@ -8,8 +8,7 @@ namespace ecommerce_dash_api.DTOS
 
         public int RoleId { get; set; }
 
-        [Required]
-        [AtLeastOneRequired]
-        public required List<int>? PermissionIds { get; set; }
+        [AtLeastOneRequired<int>]
+        public List<int> PermissionIds { get; set; } = null!;
     }
 }
