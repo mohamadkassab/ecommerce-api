@@ -11,7 +11,7 @@ public partial class User
 
     public string LastName { get; set; } = null!;
 
-    public int Age { get; set; }
+    public DateOnly? Dob { get; set; }
 
     public string Phone { get; set; } = null!;
 

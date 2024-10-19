@@ -18,7 +18,7 @@ namespace ecommerce_dash_api.Controllers
         }
 
         [HttpPost("createChart")]
-        public async Task<IActionResult> CreateChart([FromBody] CreateChartDTO chartDto)
+        public async Task<IActionResult> CreateChart([FromBody] ChartCreateDTO chartDto)
         {
             try
             {
@@ -56,7 +56,7 @@ namespace ecommerce_dash_api.Controllers
         }
 
         [HttpPut("updateChart")]
-        public async Task<IActionResult> UpdateChart([FromBody] UpdateChartDTO chartDto)
+        public async Task<IActionResult> UpdateChart([FromBody] ChartUpdateDTO chartDto)
         {
             try
             {

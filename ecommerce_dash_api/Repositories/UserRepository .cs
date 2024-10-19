@@ -163,7 +163,7 @@ public class UserRepository : IUserRepository
             Username = u.Username,
             FirstName = u.FirstName,
             LastName = u.LastName,
-            Age = u.Age,
+            Dob = u.Dob,
             Phone = u.Phone,
             Address = u.Address,
             CreatedAt = u.CreatedAt,
@@ -190,7 +190,13 @@ public class UserRepository : IUserRepository
         return result;
     }
 
-
+    public async Task DeleteUserAsync(int userId)
+    {
+        var user = await _context.Users
+          .Where(c => c.Id == userId)
+          .FirstOrDefaultAsync();
+        _context.Users.Remove(user);
+    }
 }
 
 

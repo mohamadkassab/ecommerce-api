@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace ecommerce_dash_api.DTOS
 {
-    public class CreateRoleDTO
+    public class RoleCreateDTO
     {
         [Required, StringLength(50, MinimumLength = 1, ErrorMessage = "RoleName must be between 1 and 50 characters.")]
         public string? RoleName { get; set; }

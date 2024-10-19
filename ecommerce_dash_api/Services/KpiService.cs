@@ -16,7 +16,7 @@ namespace ecommerce_dash_api.Services
             _context = context;
             _kpiRepository = kpiRepository;
         }
-        public async Task<bool> CreateChartAsync(CreateChartDTO createChartDto)
+        public async Task<bool> CreateChartAsync(ChartCreateDTO createChartDto)
         {
             await _kpiRepository.CreateChartAsync(createChartDto.Label, createChartDto?.Query, createChartDto.ChartType, createChartDto?.ChartProperties);
             await _context.SaveChangesAsync();
@@ -42,7 +42,7 @@ namespace ecommerce_dash_api.Services
             return result;
         }
 
-        public async Task<bool> UpdateChartAsync(UpdateChartDTO updateChartDto)
+        public async Task<bool> UpdateChartAsync(ChartUpdateDTO updateChartDto)
         {
             await _kpiRepository.UpdateChartAsync(updateChartDto.Id, updateChartDto.Label, updateChartDto?.Query, updateChartDto?.ChartProperties);
             await _context.SaveChangesAsync();

@@ -3,9 +3,8 @@ using System.ComponentModel.DataAnnotations;
 
 namespace ecommerce_dash_api.DTOS
 {
-    public class UpdateRoleDTO
+    public class RoleUpdateDTO
     {
-
         public int RoleId { get; set; }
 
         [AtLeastOneRequired<int>]

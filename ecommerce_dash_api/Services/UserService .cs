@@ -2,6 +2,7 @@
 using ecommerce_dash_api.Interfaces;
 using ecommerce_dash_api.Models;
 using ecommerce_dash_api.QRYS;
+using ecommerce_dash_api.Repositories;
 using ecommerce_dash_api.Utils;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.Data;
@@ -25,7 +26,7 @@ namespace ecommerce_dash_api.Services
             _context = context;
         }
 
-        public async Task<bool> UpdateUserRolesAsync(UpdateUserRolesDTO updateUserRolesDto)
+        public async Task<bool> UpdateUserRolesAsync(UserRolesUpdateDTO updateUserRolesDto)
         {
             await _userRepository.DeleteUserRolesAsync(updateUserRolesDto.UserId);
             await _userRepository.CreateUserRolesAsync(updateUserRolesDto.UserId, updateUserRolesDto.RoleIds);
@@ -48,7 +49,7 @@ namespace ecommerce_dash_api.Services
 
         }
         
-        public async Task<bool> SignupAsync(UserDTO userDto)
+        public async Task<bool> SignupAsync(UserCreateDTO userDto)
         {
 
             if (await _userRepository.UsernameExistsAsync(userDto.Username))
@@ -61,16 +62,19 @@ namespace ecommerce_dash_api.Services
             user.LastName = userDto.LastName;
             user.Phone = userDto.Phone;
             user.Username = userDto.Username;
-            user.Age = userDto.Age;
+            user.Dob = userDto.Dob;
             user.PasswordHash = _passwordHasher.HashPassword(userDto.Password);
-
             await _userRepository.CreateUserAsync(user);
+            await _context.SaveChangesAsync();
+            await _userRepository.DeleteUserRolesAsync(user.Id);
+            await _userRepository.CreateUserRolesAsync(user.Id, userDto.Roles);
             await _context.SaveChangesAsync();
 
             return true;
         }
 
-        public async Task<bool> CreateRoleAsync(CreateRoleDTO createRoleDto)
+ 
+        public async Task<bool> CreateRoleAsync(RoleCreateDTO createRoleDto)
         {
             Role role = new Role();
             role.RoleName = createRoleDto.RoleName;
@@ -79,7 +83,7 @@ namespace ecommerce_dash_api.Services
             return true;
         }
 
-        public async Task<bool> UpdateRoleAsync(UpdateRoleDTO updateRoleDto)
+        public async Task<bool> UpdateRoleAsync(RoleUpdateDTO updateRoleDto)
         {
             await _userRepository.DeleteRolePermissionsAsync(updateRoleDto.RoleId);
             await _userRepository.CreateRolePermissionsAsync(updateRoleDto.RoleId, updateRoleDto.PermissionIds);
@@ -112,6 +116,12 @@ namespace ecommerce_dash_api.Services
             return result;
         }
 
+        public async Task<bool> DeleteUserAsync(int userId)
+        {
+            await _userRepository.DeleteUserAsync(userId);
+            await _context.SaveChangesAsync();
+            return true;
+        }
     }
 }
 

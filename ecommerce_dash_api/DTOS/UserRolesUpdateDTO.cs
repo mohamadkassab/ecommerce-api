@@ -2,7 +2,7 @@
 
 namespace ecommerce_dash_api.DTOS
 {
-    public class UpdateUserRolesDTO
+    public class UserRolesUpdateDTO
     {
         public int UserId { get; set; }
 

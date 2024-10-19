@@ -29,7 +29,7 @@ namespace ecommerce_dash_api.Controllers
 
 
         [HttpPost("signup")]
-        public async Task<IActionResult> Signup([FromBody] UserDTO userDto)
+        public async Task<IActionResult> Signup([FromBody] UserCreateDTO user)
         {
             try
             {
@@ -38,7 +38,7 @@ namespace ecommerce_dash_api.Controllers
                     return BadRequest(ModelState);
                 }
 
-                var result = await _userService.SignupAsync(userDto);
+                var result = await _userService.SignupAsync(user);
                 if (result)
                 {
                     return Ok(new { message = "Signup successful" });
@@ -86,8 +86,54 @@ namespace ecommerce_dash_api.Controllers
             }
         }
 
+        [HttpPut("updateUser")]
+        public async Task<IActionResult> UpdateUser([FromBody] UserUpdateDTO user)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+
+                return Ok(new { message = "Signup successful" });
+
+                return BadRequest(new { message = "Signup failed" });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+        }
+
+
+        [HttpDelete("deleteUser")]
+        public async Task<IActionResult> DeleteUser([FromBody] int userId)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+
+                var response = await _userService.DeleteUserAsync(userId);
+                if (response)
+                {
+                    return Ok();
+                }
+
+                return BadRequest(new { message = "Delete user failed" });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+        }
+
+
         [HttpPut("updateUserRoles")]
-        public async Task<IActionResult> UpdateUserRoles([FromBody] UpdateUserRolesDTO updateUserRolesDto)
+        public async Task<IActionResult> UpdateUserRoles([FromBody] UserRolesUpdateDTO updateUserRolesDto)
         {
             try
             {
@@ -112,7 +158,7 @@ namespace ecommerce_dash_api.Controllers
         }
 
         [HttpPost("createRole")]
-        public async Task<IActionResult> CreateRole([FromBody] CreateRoleDTO createRoleDto)
+        public async Task<IActionResult> CreateRole([FromBody] RoleCreateDTO createRoleDto)
         {
             try
             {
@@ -136,7 +182,7 @@ namespace ecommerce_dash_api.Controllers
         }
 
         [HttpPut("updateRole")]
-        public async Task<IActionResult> UpdateRole([FromBody] UpdateRoleDTO updateRoleDto)
+        public async Task<IActionResult> UpdateRole([FromBody] RoleUpdateDTO updateRoleDto)
         {
             try
             {

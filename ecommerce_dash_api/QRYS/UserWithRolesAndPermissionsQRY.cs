@@ -9,7 +9,7 @@ namespace ecommerce_dash_api.QRYS
 
         public string? LastName { get; set; } 
 
-        public int Age { get; set; }
+        public DateOnly? Dob { get; set; }
 
         public string? Phone { get; set; } 
 

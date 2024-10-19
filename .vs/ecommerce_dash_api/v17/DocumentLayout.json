@@ -3,44 +3,16 @@
   "WorkspaceRootPath": "C:\\Users\\User\\Desktop\\MK\\Projects\\Ecommerce\\ecommerce_api\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{F4D8F940-4D4C-4580-BCFA-60CD7A3F0379}|ecommerce_dash_api\\ecommerce_dash_api.csproj|c:\\users\\user\\desktop\\mk\\projects\\ecommerce\\ecommerce_api\\ecommerce_dash_api\\repositories\\userrepository .cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F4D8F940-4D4C-4580-BCFA-60CD7A3F0379}|ecommerce_dash_api\\ecommerce_dash_api.csproj|solutionrelative:ecommerce_dash_api\\repositories\\userrepository .cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{F4D8F940-4D4C-4580-BCFA-60CD7A3F0379}|ecommerce_dash_api\\ecommerce_dash_api.csproj|c:\\users\\user\\desktop\\mk\\projects\\ecommerce\\ecommerce_api\\ecommerce_dash_api\\controllers\\usercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{F4D8F940-4D4C-4580-BCFA-60CD7A3F0379}|ecommerce_dash_api\\ecommerce_dash_api.csproj|solutionrelative:ecommerce_dash_api\\controllers\\usercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{F4D8F940-4D4C-4580-BCFA-60CD7A3F0379}|ecommerce_dash_api\\ecommerce_dash_api.csproj|c:\\users\\user\\desktop\\mk\\projects\\ecommerce\\ecommerce_api\\ecommerce_dash_api\\services\\userservice .cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F4D8F940-4D4C-4580-BCFA-60CD7A3F0379}|ecommerce_dash_api\\ecommerce_dash_api.csproj|solutionrelative:ecommerce_dash_api\\services\\userservice .cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{F4D8F940-4D4C-4580-BCFA-60CD7A3F0379}|ecommerce_dash_api\\ecommerce_dash_api.csproj|c:\\users\\user\\desktop\\mk\\projects\\ecommerce\\ecommerce_api\\ecommerce_dash_api\\dtos\\userupdatedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F4D8F940-4D4C-4580-BCFA-60CD7A3F0379}|ecommerce_dash_api\\ecommerce_dash_api.csproj|solutionrelative:ecommerce_dash_api\\dtos\\userupdatedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{F4D8F940-4D4C-4580-BCFA-60CD7A3F0379}|ecommerce_dash_api\\ecommerce_dash_api.csproj|c:\\users\\user\\desktop\\mk\\projects\\ecommerce\\ecommerce_api\\ecommerce_dash_api\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
-      "RelativeMoniker": "D:0:0:{F4D8F940-4D4C-4580-BCFA-60CD7A3F0379}|ecommerce_dash_api\\ecommerce_dash_api.csproj|solutionrelative:ecommerce_dash_api\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F4D8F940-4D4C-4580-BCFA-60CD7A3F0379}|ecommerce_dash_api\\ecommerce_dash_api.csproj|c:\\users\\user\\desktop\\mk\\projects\\ecommerce\\ecommerce_api\\ecommerce_dash_api\\utils\\jwttoken.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F4D8F940-4D4C-4580-BCFA-60CD7A3F0379}|ecommerce_dash_api\\ecommerce_dash_api.csproj|solutionrelative:ecommerce_dash_api\\utils\\jwttoken.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F4D8F940-4D4C-4580-BCFA-60CD7A3F0379}|ecommerce_dash_api\\ecommerce_dash_api.csproj|c:\\users\\user\\desktop\\mk\\projects\\ecommerce\\ecommerce_api\\ecommerce_dash_api\\dtos\\createchartdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F4D8F940-4D4C-4580-BCFA-60CD7A3F0379}|ecommerce_dash_api\\ecommerce_dash_api.csproj|solutionrelative:ecommerce_dash_api\\dtos\\createchartdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F4D8F940-4D4C-4580-BCFA-60CD7A3F0379}|ecommerce_dash_api\\ecommerce_dash_api.csproj|c:\\users\\user\\desktop\\mk\\projects\\ecommerce\\ecommerce_api\\ecommerce_dash_api\\controllers\\kpicontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F4D8F940-4D4C-4580-BCFA-60CD7A3F0379}|ecommerce_dash_api\\ecommerce_dash_api.csproj|solutionrelative:ecommerce_dash_api\\controllers\\kpicontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F4D8F940-4D4C-4580-BCFA-60CD7A3F0379}|ecommerce_dash_api\\ecommerce_dash_api.csproj|c:\\users\\user\\desktop\\mk\\projects\\ecommerce\\ecommerce_api\\ecommerce_dash_api\\qrys\\chartqry.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F4D8F940-4D4C-4580-BCFA-60CD7A3F0379}|ecommerce_dash_api\\ecommerce_dash_api.csproj|solutionrelative:ecommerce_dash_api\\qrys\\chartqry.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F4D8F940-4D4C-4580-BCFA-60CD7A3F0379}|ecommerce_dash_api\\ecommerce_dash_api.csproj|c:\\users\\user\\desktop\\mk\\projects\\ecommerce\\ecommerce_api\\ecommerce_dash_api\\repositories\\kpirepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F4D8F940-4D4C-4580-BCFA-60CD7A3F0379}|ecommerce_dash_api\\ecommerce_dash_api.csproj|solutionrelative:ecommerce_dash_api\\repositories\\kpirepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F4D8F940-4D4C-4580-BCFA-60CD7A3F0379}|ecommerce_dash_api\\ecommerce_dash_api.csproj|c:\\users\\user\\desktop\\mk\\projects\\ecommerce\\ecommerce_api\\ecommerce_dash_api\\services\\kpiservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F4D8F940-4D4C-4580-BCFA-60CD7A3F0379}|ecommerce_dash_api\\ecommerce_dash_api.csproj|solutionrelative:ecommerce_dash_api\\services\\kpiservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{F4D8F940-4D4C-4580-BCFA-60CD7A3F0379}|ecommerce_dash_api\\ecommerce_dash_api.csproj|c:\\users\\user\\desktop\\mk\\projects\\ecommerce\\ecommerce_api\\ecommerce_dash_api\\dtos\\usercreatedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F4D8F940-4D4C-4580-BCFA-60CD7A3F0379}|ecommerce_dash_api\\ecommerce_dash_api.csproj|solutionrelative:ecommerce_dash_api\\dtos\\usercreatedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -50,130 +22,46 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 2,
+          "SelectedChildIndex": 0,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "UserService .cs",
-              "DocumentMoniker": "C:\\Users\\User\\Desktop\\MK\\Projects\\Ecommerce\\ecommerce_api\\ecommerce_dash_api\\Services\\UserService .cs",
-              "RelativeDocumentMoniker": "ecommerce_dash_api\\Services\\UserService .cs",
-              "ToolTip": "C:\\Users\\User\\Desktop\\MK\\Projects\\Ecommerce\\ecommerce_api\\ecommerce_dash_api\\Services\\UserService .cs",
-              "RelativeToolTip": "ecommerce_dash_api\\Services\\UserService .cs",
-              "ViewState": "AQIAACkAAAAAAAAAAAAAwDoAAAAjAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-09-21T17:58:26.254Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 0,
               "Title": "UserController.cs",
               "DocumentMoniker": "C:\\Users\\User\\Desktop\\MK\\Projects\\Ecommerce\\ecommerce_api\\ecommerce_dash_api\\Controllers\\UserController.cs",
               "RelativeDocumentMoniker": "ecommerce_dash_api\\Controllers\\UserController.cs",
               "ToolTip": "C:\\Users\\User\\Desktop\\MK\\Projects\\Ecommerce\\ecommerce_api\\ecommerce_dash_api\\Controllers\\UserController.cs",
               "RelativeToolTip": "ecommerce_dash_api\\Controllers\\UserController.cs",
-              "ViewState": "AQIAABUAAAAAAAAAAAAIwCEAAAAPAAAA",
+              "ViewState": "AQIAABsAAAAAAAAAAAAkwF8AAAAyAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-09-21T17:56:36.582Z",
+              "WhenOpened": "2024-10-19T18:53:09.695Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "UserRepository .cs",
-              "DocumentMoniker": "C:\\Users\\User\\Desktop\\MK\\Projects\\Ecommerce\\ecommerce_api\\ecommerce_dash_api\\Repositories\\UserRepository .cs",
-              "RelativeDocumentMoniker": "ecommerce_dash_api\\Repositories\\UserRepository .cs",
-              "ToolTip": "C:\\Users\\User\\Desktop\\MK\\Projects\\Ecommerce\\ecommerce_api\\ecommerce_dash_api\\Repositories\\UserRepository .cs",
-              "RelativeToolTip": "ecommerce_dash_api\\Repositories\\UserRepository .cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAA4AAAAFAAAA",
+              "DocumentIndex": 1,
+              "Title": "UserUpdateDTO.cs",
+              "DocumentMoniker": "C:\\Users\\User\\Desktop\\MK\\Projects\\Ecommerce\\ecommerce_api\\ecommerce_dash_api\\DTOS\\UserUpdateDTO.cs",
+              "RelativeDocumentMoniker": "ecommerce_dash_api\\DTOS\\UserUpdateDTO.cs",
+              "ToolTip": "C:\\Users\\User\\Desktop\\MK\\Projects\\Ecommerce\\ecommerce_api\\ecommerce_dash_api\\DTOS\\UserUpdateDTO.cs",
+              "RelativeToolTip": "ecommerce_dash_api\\DTOS\\UserUpdateDTO.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABcAAAAJAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-09-14T17:03:36.628Z",
+              "WhenOpened": "2024-10-19T18:55:04.37Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "appsettings.json",
-              "DocumentMoniker": "C:\\Users\\User\\Desktop\\MK\\Projects\\Ecommerce\\ecommerce_api\\ecommerce_dash_api\\appsettings.json",
-              "RelativeDocumentMoniker": "ecommerce_dash_api\\appsettings.json",
-              "ToolTip": "C:\\Users\\User\\Desktop\\MK\\Projects\\Ecommerce\\ecommerce_api\\ecommerce_dash_api\\appsettings.json",
-              "RelativeToolTip": "ecommerce_dash_api\\appsettings.json",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAgAAAAeAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2024-09-11T16:18:18.705Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "CreateChartDTO.cs",
-              "DocumentMoniker": "C:\\Users\\User\\Desktop\\MK\\Projects\\Ecommerce\\ecommerce_api\\ecommerce_dash_api\\DTOS\\CreateChartDTO.cs",
-              "RelativeDocumentMoniker": "ecommerce_dash_api\\DTOS\\CreateChartDTO.cs",
-              "ToolTip": "C:\\Users\\User\\Desktop\\MK\\Projects\\Ecommerce\\ecommerce_api\\ecommerce_dash_api\\DTOS\\CreateChartDTO.cs",
-              "RelativeToolTip": "ecommerce_dash_api\\DTOS\\CreateChartDTO.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAA8AAAABAAAA",
+              "DocumentIndex": 2,
+              "Title": "UserCreateDTO.cs",
+              "DocumentMoniker": "C:\\Users\\User\\Desktop\\MK\\Projects\\Ecommerce\\ecommerce_api\\ecommerce_dash_api\\DTOS\\UserCreateDTO.cs",
+              "RelativeDocumentMoniker": "ecommerce_dash_api\\DTOS\\UserCreateDTO.cs",
+              "ToolTip": "C:\\Users\\User\\Desktop\\MK\\Projects\\Ecommerce\\ecommerce_api\\ecommerce_dash_api\\DTOS\\UserCreateDTO.cs",
+              "RelativeToolTip": "ecommerce_dash_api\\DTOS\\UserCreateDTO.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABwAAAA/AAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-09-08T13:22:02.068Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "ChartQRY.cs",
-              "DocumentMoniker": "C:\\Users\\User\\Desktop\\MK\\Projects\\Ecommerce\\ecommerce_api\\ecommerce_dash_api\\QRYS\\ChartQRY.cs",
-              "RelativeDocumentMoniker": "ecommerce_dash_api\\QRYS\\ChartQRY.cs",
-              "ToolTip": "C:\\Users\\User\\Desktop\\MK\\Projects\\Ecommerce\\ecommerce_api\\ecommerce_dash_api\\QRYS\\ChartQRY.cs",
-              "RelativeToolTip": "ecommerce_dash_api\\QRYS\\ChartQRY.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAsAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-09-07T19:20:32.829Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 8,
-              "Title": "KpiRepository.cs",
-              "DocumentMoniker": "C:\\Users\\User\\Desktop\\MK\\Projects\\Ecommerce\\ecommerce_api\\ecommerce_dash_api\\Repositories\\KpiRepository.cs",
-              "RelativeDocumentMoniker": "ecommerce_dash_api\\Repositories\\KpiRepository.cs",
-              "ToolTip": "C:\\Users\\User\\Desktop\\MK\\Projects\\Ecommerce\\ecommerce_api\\ecommerce_dash_api\\Repositories\\KpiRepository.cs",
-              "RelativeToolTip": "ecommerce_dash_api\\Repositories\\KpiRepository.cs",
-              "ViewState": "AQIAAAsAAAAAAAAAAAAQwDsAAABBAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-09-07T19:19:58.068Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "KpiController.cs",
-              "DocumentMoniker": "C:\\Users\\User\\Desktop\\MK\\Projects\\Ecommerce\\ecommerce_api\\ecommerce_dash_api\\Controllers\\KpiController.cs",
-              "RelativeDocumentMoniker": "ecommerce_dash_api\\Controllers\\KpiController.cs",
-              "ToolTip": "C:\\Users\\User\\Desktop\\MK\\Projects\\Ecommerce\\ecommerce_api\\ecommerce_dash_api\\Controllers\\KpiController.cs",
-              "RelativeToolTip": "ecommerce_dash_api\\Controllers\\KpiController.cs",
-              "ViewState": "AQIAAA4AAAAAAAAAAAAQwAAAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-09-07T19:19:38.567Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 9,
-              "Title": "KpiService.cs",
-              "DocumentMoniker": "C:\\Users\\User\\Desktop\\MK\\Projects\\Ecommerce\\ecommerce_api\\ecommerce_dash_api\\Services\\KpiService.cs",
-              "RelativeDocumentMoniker": "ecommerce_dash_api\\Services\\KpiService.cs",
-              "ToolTip": "C:\\Users\\User\\Desktop\\MK\\Projects\\Ecommerce\\ecommerce_api\\ecommerce_dash_api\\Services\\KpiService.cs",
-              "RelativeToolTip": "ecommerce_dash_api\\Services\\KpiService.cs",
-              "ViewState": "AQIAAAoAAAAAAAAAAAAmwCgAAABOAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-09-04T17:36:31.473Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "JwtToken.cs",
-              "DocumentMoniker": "C:\\Users\\User\\Desktop\\MK\\Projects\\Ecommerce\\ecommerce_api\\ecommerce_dash_api\\Utils\\JwtToken.cs",
-              "RelativeDocumentMoniker": "ecommerce_dash_api\\Utils\\JwtToken.cs",
-              "ToolTip": "C:\\Users\\User\\Desktop\\MK\\Projects\\Ecommerce\\ecommerce_api\\ecommerce_dash_api\\Utils\\JwtToken.cs",
-              "RelativeToolTip": "ecommerce_dash_api\\Utils\\JwtToken.cs",
-              "ViewState": "AQIAAAYAAAAAAAAAAAAwwBgAAAAjAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-09-04T17:34:38.584Z"
+              "WhenOpened": "2024-10-19T18:50:38.401Z",
+              "EditorCaption": ""
             }
           ]
         }

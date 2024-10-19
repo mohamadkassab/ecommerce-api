@@ -6,9 +6,9 @@ namespace ecommerce_dash_api.Interfaces
 {
     public interface IKpiService
     {
-        Task<bool> CreateChartAsync(CreateChartDTO createChartDto);
+        Task<bool> CreateChartAsync(ChartCreateDTO createChartDto);
         Task<List<ChartQRY>> GetAllChartsAsync();
-        Task<bool> UpdateChartAsync(UpdateChartDTO updateChartDto);
+        Task<bool> UpdateChartAsync(ChartUpdateDTO updateChartDto);
         Task<bool> DeleteChartAsync(int chartId);
         Task<DataTable> GetChartDataByQueryAsync(string query);
     }

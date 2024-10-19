@@ -18,7 +18,7 @@ namespace ecommerce_dash_api.Interfaces
         Task<List<RoleQRY>> GetAllRolesWithPermissionsAsync();
         Task<List<PermissionQRY>> GetAllPermissionsAsync();
         Task<List<UserWithRolesAndPermissionsQRY>> GetAllUsersWithRolesAndPermissions();
-
+        Task DeleteUserAsync(int userId);
 
     }
 }

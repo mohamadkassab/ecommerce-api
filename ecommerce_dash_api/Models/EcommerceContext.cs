@@ -231,7 +231,6 @@ public partial class EcommerceContext : DbContext
             entity.Property(e => e.Address)
                 .HasMaxLength(255)
                 .HasColumnName("address");
-            entity.Property(e => e.Age).HasColumnName("age");
             entity.Property(e => e.CreatedAt)
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")
                 .HasColumnType("datetime")
@@ -239,6 +238,7 @@ public partial class EcommerceContext : DbContext
             entity.Property(e => e.CreatedBy)
                 .HasMaxLength(50)
                 .HasColumnName("created_by");
+            entity.Property(e => e.Dob).HasColumnName("DOB");
             entity.Property(e => e.FailedLoginAttempts)
                 .HasDefaultValueSql("'0'")
                 .HasColumnName("failed_login_attempts");

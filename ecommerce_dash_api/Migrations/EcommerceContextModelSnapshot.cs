@@ -6,7 +6,6 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-
 #nullable disable
 
 namespace ecommerce_dash_api.Migrations
@@ -24,6 +23,136 @@ namespace ecommerce_dash_api.Migrations
 
             MySqlModelBuilderExtensions.HasCharSet(modelBuilder, "utf8mb4");
             MySqlModelBuilderExtensions.AutoIncrementColumns(modelBuilder);
+
+            modelBuilder.Entity("ecommerce_dash_api.Models.BiaxialDataTest", b =>
+                {
+                    b.Property<int?>("Beirut")
+                        .HasColumnType("int")
+                        .HasColumnName("beirut");
+
+                    b.Property<DateTime?>("DateKey")
+                        .HasColumnType("datetime")
+                        .HasColumnName("date_key");
+
+                    b.Property<int?>("Tripoli")
+                        .HasColumnType("int")
+                        .HasColumnName("tripoli");
+
+                    b.Property<int?>("Tyre")
+                        .HasColumnType("int")
+                        .HasColumnName("tyre");
+
+                    b.ToTable("biaxial_data_test", (string)null);
+                });
+
+            modelBuilder.Entity("ecommerce_dash_api.Models.Chart", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("id");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ChartType")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("varchar(255)")
+                        .HasColumnName("chart_type");
+
+                    b.Property<DateTime?>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasColumnName("created_at")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                    b.Property<string>("Label")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("varchar(255)")
+                        .HasColumnName("label");
+
+                    b.Property<string>("Query")
+                        .HasColumnType("text")
+                        .HasColumnName("query");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("datetime")
+                        .HasColumnName("updated_at")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlComputedColumn(b.Property<DateTime?>("UpdatedAt"));
+
+                    b.HasKey("Id")
+                        .HasName("PRIMARY");
+
+                    b.ToTable("chart", (string)null);
+                });
+
+            modelBuilder.Entity("ecommerce_dash_api.Models.ChartProperty", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("id");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("ChartId")
+                        .HasColumnType("int")
+                        .HasColumnName("chart_id");
+
+                    b.Property<DateTime?>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasColumnName("created_at")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                    b.Property<string>("PropertyName")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("varchar(255)")
+                        .HasColumnName("property_name");
+
+                    b.Property<string>("PropertyValue")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("varchar(255)")
+                        .HasColumnName("property_value");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("datetime")
+                        .HasColumnName("updated_at")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlComputedColumn(b.Property<DateTime?>("UpdatedAt"));
+
+                    b.HasKey("Id")
+                        .HasName("PRIMARY");
+
+                    b.HasIndex(new[] { "ChartId" }, "chart_id");
+
+                    b.ToTable("chart_property", (string)null);
+                });
+
+            modelBuilder.Entity("ecommerce_dash_api.Models.Efmigrationshistory", b =>
+                {
+                    b.Property<string>("MigrationId")
+                        .HasMaxLength(150)
+                        .HasColumnType("varchar(150)");
+
+                    b.Property<string>("ProductVersion")
+                        .IsRequired()
+                        .HasMaxLength(32)
+                        .HasColumnType("varchar(32)");
+
+                    b.HasKey("MigrationId")
+                        .HasName("PRIMARY");
+
+                    b.ToTable("__efmigrationshistory", (string)null);
+                });
 
             modelBuilder.Entity("ecommerce_dash_api.Models.Permission", b =>
                 {
@@ -60,7 +189,7 @@ namespace ecommerce_dash_api.Migrations
                     b.HasIndex(new[] { "PermissionName" }, "permission_name")
                         .IsUnique();
 
-                    b.ToTable("permissions", (string)null);
+                    b.ToTable("permission", (string)null);
                 });
 
             modelBuilder.Entity("ecommerce_dash_api.Models.Role", b =>
@@ -98,7 +227,7 @@ namespace ecommerce_dash_api.Migrations
                     b.HasIndex(new[] { "RoleName" }, "role_name")
                         .IsUnique();
 
-                    b.ToTable("roles", (string)null);
+                    b.ToTable("role", (string)null);
                 });
 
             modelBuilder.Entity("ecommerce_dash_api.Models.RolePermission", b =>
@@ -131,7 +260,26 @@ namespace ecommerce_dash_api.Migrations
 
                     b.HasIndex(new[] { "PermissionId" }, "role_permissions_ibfk_2");
 
-                    b.ToTable("role_permissions", (string)null);
+                    b.ToTable("role_permission", (string)null);
+                });
+
+            modelBuilder.Entity("ecommerce_dash_api.Models.Test", b =>
+                {
+                    b.Property<string>("GroupName")
+                        .HasMaxLength(255)
+                        .HasColumnType("varchar(255)")
+                        .HasColumnName("group_name");
+
+                    b.Property<int?>("Value")
+                        .HasColumnType("int")
+                        .HasColumnName("value");
+
+                    b.Property<string>("Value2")
+                        .HasMaxLength(255)
+                        .HasColumnType("varchar(255)")
+                        .HasColumnName("value2");
+
+                    b.ToTable("test", (string)null);
                 });
 
             modelBuilder.Entity("ecommerce_dash_api.Models.User", b =>
@@ -143,11 +291,27 @@ namespace ecommerce_dash_api.Migrations
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("Address")
+                        .HasMaxLength(255)
+                        .HasColumnType("varchar(255)")
+                        .HasColumnName("address");
+
                     b.Property<DateTime?>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime")
                         .HasColumnName("created_at")
                         .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)")
+                        .HasColumnName("created_by");
+
+                    b.Property<DateOnly?>("Dob")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("date")
+                        .HasColumnName("DOB")
+                        .HasDefaultValueSql("'2000-01-01'");
 
                     b.Property<int?>("FailedLoginAttempts")
                         .ValueGeneratedOnAdd()
@@ -155,15 +319,33 @@ namespace ecommerce_dash_api.Migrations
                         .HasColumnName("failed_login_attempts")
                         .HasDefaultValueSql("'0'");
 
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)")
+                        .HasColumnName("first_name");
+
                     b.Property<DateTime?>("LastLogin")
                         .HasColumnType("datetime")
                         .HasColumnName("last_login");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)")
+                        .HasColumnName("last_name");
 
                     b.Property<string>("PasswordHash")
                         .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("varchar(255)")
                         .HasColumnName("password_hash");
+
+                    b.Property<string>("Phone")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)")
+                        .HasColumnName("phone");
 
                     b.Property<DateTime?>("UpdatedAt")
                         .ValueGeneratedOnAddOrUpdate()
@@ -172,6 +354,11 @@ namespace ecommerce_dash_api.Migrations
                         .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
                     MySqlPropertyBuilderExtensions.UseMySqlComputedColumn(b.Property<DateTime?>("UpdatedAt"));
+
+                    b.Property<string>("UpdatedBy")
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)")
+                        .HasColumnName("updated_by");
 
                     b.Property<string>("Username")
                         .IsRequired()
@@ -185,7 +372,7 @@ namespace ecommerce_dash_api.Migrations
                     b.HasIndex(new[] { "Username" }, "username")
                         .IsUnique();
 
-                    b.ToTable("users", (string)null);
+                    b.ToTable("user", (string)null);
                 });
 
             modelBuilder.Entity("ecommerce_dash_api.Models.UserRole", b =>
@@ -218,7 +405,40 @@ namespace ecommerce_dash_api.Migrations
 
                     b.HasIndex(new[] { "RoleId" }, "user_roles_ibfk_2");
 
-                    b.ToTable("user_roles", (string)null);
+                    b.ToTable("user_role", (string)null);
+                });
+
+            modelBuilder.Entity("ecommerce_dash_api.Models.WeatherDataTest", b =>
+                {
+                    b.Property<int?>("Beirut")
+                        .HasColumnType("int")
+                        .HasColumnName("beirut");
+
+                    b.Property<string>("Month")
+                        .HasMaxLength(10)
+                        .HasColumnType("varchar(10)")
+                        .HasColumnName("month");
+
+                    b.Property<int?>("Tripoli")
+                        .HasColumnType("int")
+                        .HasColumnName("tripoli");
+
+                    b.Property<int?>("Tyre")
+                        .HasColumnType("int")
+                        .HasColumnName("tyre");
+
+                    b.ToTable("weather_data_test", (string)null);
+                });
+
+            modelBuilder.Entity("ecommerce_dash_api.Models.ChartProperty", b =>
+                {
+                    b.HasOne("ecommerce_dash_api.Models.Chart", "Chart")
+                        .WithMany("ChartProperties")
+                        .HasForeignKey("ChartId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .HasConstraintName("chart_property_ibfk_1");
+
+                    b.Navigation("Chart");
                 });
 
             modelBuilder.Entity("ecommerce_dash_api.Models.RolePermission", b =>
@@ -228,14 +448,14 @@ namespace ecommerce_dash_api.Migrations
                         .HasForeignKey("PermissionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
-                        .HasConstraintName("role_permissions_ibfk_2");
+                        .HasConstraintName("role_permission_ibfk_2");
 
                     b.HasOne("ecommerce_dash_api.Models.Role", "Role")
                         .WithMany("RolePermissions")
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
-                        .HasConstraintName("role_permissions_ibfk_1");
+                        .HasConstraintName("role_permission_ibfk_1");
 
                     b.Navigation("Permission");
 
@@ -249,18 +469,23 @@ namespace ecommerce_dash_api.Migrations
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
-                        .HasConstraintName("user_roles_ibfk_2");
+                        .HasConstraintName("user_role_ibfk_2");
 
                     b.HasOne("ecommerce_dash_api.Models.User", "User")
                         .WithMany("UserRoles")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
-                        .HasConstraintName("user_roles_ibfk_1");
+                        .HasConstraintName("user_role_ibfk_1");
 
                     b.Navigation("Role");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("ecommerce_dash_api.Models.Chart", b =>
+                {
+                    b.Navigation("ChartProperties");
                 });
 
             modelBuilder.Entity("ecommerce_dash_api.Models.Permission", b =>
