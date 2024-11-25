@@ -1,315 +1,480 @@
 ﻿using ecommerce_dash_api.DTOS;
+using ecommerce_dash_api.Enum;
 using ecommerce_dash_api.Interfaces;
-using ecommerce_dash_api.Models;
 using ecommerce_dash_api.Utils;
+using Microsoft.AspNetCore.Antiforgery;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Org.BouncyCastle.Asn1.Ocsp;
-using System.Configuration;
+using System.Security.Claims;
+
 
 namespace ecommerce_dash_api.Controllers
 {
     [Route("[controller]")]
     [ApiController]
+    [Authorize]
+
     public class UserController : Controller
     {
         private readonly IUserService _userService;
-        private readonly JwtToken _jwtToken;
         private readonly IConfiguration _configuration;
+        public readonly IApiService _apiService;
+        private readonly JwtToken _jwtToken;
 
-        public UserController(IUserService userService, JwtToken jwtToken, IConfiguration configuration)
+        public UserController(IUserService userService, IConfiguration configuration, IApiService apiService, JwtToken jwtToken)
         {
             _userService = userService;
-            _jwtToken = jwtToken;
             _configuration = configuration;
+            _apiService = apiService;
+            _jwtToken = jwtToken;
         }
 
 
-        [HttpPost("signup")]
-        public async Task<IActionResult> Signup([FromBody] UserCreateDTO user)
+        //+------------------------------------------------------------------+
+        //| User                                            
+        //+------------------------------------------------------------------+
+        [HttpPost("Signin")]
+        [AllowAnonymous]
+        public async Task<IActionResult> Signin([FromBody] SigninDTO credentials)
         {
+            var ipAddress = HttpContext?.Connection?.RemoteIpAddress?.ToString() ?? null;
+            var actionName = this.ControllerContext?.RouteData?.Values["action"]?.ToString() ?? null;
             try
             {
                 if (!ModelState.IsValid)
                 {
+                    await _apiService.CreateLogAsync(LogLevelEnum.WARNING.ToString(), LogMessageTemplates.invalid_model_state.ToString(), null, null, ipAddress, actionName, credentials);
                     return BadRequest(ModelState);
                 }
 
-                var result = await _userService.SignupAsync(user);
-                if (result)
-                {
-                    return Ok(new { message = "Signup successful" });
-                }
-
-                return BadRequest(new { message = "Signup failed" });
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new { message = ex.Message });
-            }
-        }
-
-        [HttpPost("signin")]
-        public async Task<IActionResult> Signin([FromBody] SigninDTO loginDto)
-        {
-            try
-            {
-                if (!ModelState.IsValid)
-                {
-                    return BadRequest(ModelState);
-                }
-
-                var token = await _userService.SigninAsync(loginDto);
+                var token = await _userService.SigninAsync(credentials);
                 if (token != null)
                 {
-                    //var jwtSettings = _configuration.GetSection("JwtSettings");
-                    //var cookieOptions = new CookieOptions
-                    //{
-                    //    HttpOnly = true,
-                    //    Secure = true, 
-                    //    SameSite = SameSiteMode.Lax,
-                    //    Expires = DateTime.UtcNow.AddMinutes(Convert.ToInt32(jwtSettings["ExpirationInMinutes"])),
-                    //};
-                    //Response.Cookies.Append(jwtSettings["TokenName"], token, cookieOptions);
+                    var jwtSettings = _configuration.GetSection("JwtSettings");
+                    var cookieOptions = new CookieOptions
+                    {
+                        HttpOnly = true,
+                        Secure = true,
+                        SameSite = SameSiteMode.Lax,
+                        Expires = DateTime.UtcNow.AddMinutes(Convert.ToInt32(jwtSettings["ExpirationInMinutes"])),
+                    };
+                    Response.Cookies.Append(jwtSettings["TokenName"]!, token, cookieOptions);
+
+                    await _apiService.CreateLogAsync(LogLevelEnum.INFO.ToString(), LogMessageTemplates.successful.ToString(), null, null, ipAddress, actionName, credentials.Username);
                     return Ok(new { token });
                 }
-
-                return BadRequest(new { message = "Signin failed" });
+                await _apiService.CreateLogAsync(LogLevelEnum.WARNING.ToString(), LogMessageTemplates.failed.ToString(), null, null, ipAddress, actionName, credentials.Username);
+                return BadRequest(new { message = LogMessageTemplates.failed.ToString() });
 
             }
             catch (Exception ex)
             {
-                return BadRequest(new { message = ex.Message });
+                string errorMessage = $"Error: {ex.Message}";
+                string innerMessage = ex.InnerException != null ? $"Inner Exception: {ex?.InnerException?.Message}" : string.Empty;
+                await _apiService.CreateLogAsync(LogLevelEnum.ERROR.ToString(), $"{errorMessage}\n{innerMessage}", ex?.StackTrace, null, ipAddress, actionName, credentials);
+                return BadRequest(new { message = innerMessage != string.Empty ? ex?.InnerException?.Message : ex?.Message });
             }
         }
 
-        [HttpPut("updateUser")]
+        [HttpPost("Signout")]
+        public async Task<IActionResult> Signout()
+        {
+            var ipAddress = HttpContext?.Connection?.RemoteIpAddress?.ToString() ?? null;
+            var actionName = this.ControllerContext?.RouteData?.Values["action"]?.ToString() ?? null;
+            try
+            {
+                var jwtSettings = _configuration.GetSection("JwtSettings");
+                Response.Cookies.Delete(jwtSettings["TokenName"]!);
+                await _apiService.CreateLogAsync(LogLevelEnum.INFO.ToString(), LogMessageTemplates.successful.ToString(), null, null, ipAddress, actionName, User?.Identity?.Name);
+
+                return Ok(new { message = LogMessageTemplates.successful.ToString() });
+            }
+            catch (Exception ex)
+            {
+                string errorMessage = $"Error: {ex.Message}";
+                string innerMessage = ex.InnerException != null ? $"Inner Exception: {ex?.InnerException?.Message}" : string.Empty;
+                await _apiService.CreateLogAsync(LogLevelEnum.ERROR.ToString(), $"{errorMessage}\n{innerMessage}", ex?.StackTrace, null, ipAddress, actionName, User?.Identity?.Name);
+                return BadRequest(new { message = innerMessage != string.Empty ? ex?.InnerException?.Message : ex?.Message });
+            }
+        }
+
+        [HttpGet("GetAllUsersWithRolesAndPermissions")]
+        public async Task<IActionResult> GetAllUsersWithRolesAndPermissions()
+        {
+            var userClaims = User.Claims;
+            var username = User.FindFirstValue("username") ?? null;
+            var ipAddress = HttpContext?.Connection?.RemoteIpAddress?.ToString() ?? null;
+            var actionName = this.ControllerContext?.RouteData?.Values["action"]?.ToString() ?? null;
+            if (userClaims.Any(c => c.Type == "permission" && c.Value == "user_crud") || (username == "root@e.com"))
+            {
+                try
+                {
+                    var result = await _userService.GetAllUsersWithRolesAndPermissionsAsync();
+                    await _apiService.CreateLogAsync(LogLevelEnum.INFO.ToString(), LogMessageTemplates.successful.ToString(), null, username, ipAddress, actionName, null);
+                    return Ok(result);
+
+                }
+                catch (Exception ex)
+                {
+                    string errorMessage = $"Error: {ex.Message}";
+                    string innerMessage = ex.InnerException != null ? $"Inner Exception: {ex?.InnerException?.Message}" : string.Empty;
+                    await _apiService.CreateLogAsync(LogLevelEnum.ERROR.ToString(), $"{errorMessage}\n{innerMessage}", ex?.StackTrace, username, ipAddress, actionName, null);
+                    return BadRequest(new { message = innerMessage != string.Empty ? ex?.InnerException?.Message : ex?.Message });
+                }
+            }
+            else
+            {
+                return Forbid();
+            }
+        }
+
+        [HttpPost("CreateUser")]
+        public async Task<IActionResult> CreateUser([FromBody] UserCreateDTO user)
+        {
+            var userClaims = User.Claims;
+            var username = User.FindFirstValue("username") ?? null;
+            var ipAddress = HttpContext?.Connection?.RemoteIpAddress?.ToString() ?? null;
+            var actionName = this.ControllerContext?.RouteData?.Values["action"]?.ToString() ?? null;
+
+            if ((userClaims.Any(c => c.Type == "permission" && c.Value == "user_crud") || (username == "root@e.com")) && user.Username != "root@e.com")
+
+            {
+                try
+                {
+                    if (!ModelState.IsValid)
+                    {
+                        await _apiService.CreateLogAsync(LogLevelEnum.WARNING.ToString(), LogMessageTemplates.invalid_model_state.ToString(), null, username, ipAddress, actionName, user);
+                        return BadRequest(ModelState);
+                    }
+
+                    var result = await _userService.CreateUserAsync(user, username);
+                    user.Password = null;
+                    if (result)
+                    {
+                        await _apiService.CreateLogAsync(LogLevelEnum.INFO.ToString(), LogMessageTemplates.successful.ToString(), null, username, ipAddress, actionName, user);
+                        return Ok(new { message = LogMessageTemplates.successful.ToString() });
+                    }
+                    await _apiService.CreateLogAsync(LogLevelEnum.WARNING.ToString(), LogMessageTemplates.failed.ToString(), null, username, ipAddress, actionName, user);
+                    return BadRequest(new { message = LogMessageTemplates.failed.ToString() });
+                }
+                catch (Exception ex)
+                {
+                    string errorMessage = $"Error: {ex.Message}";
+                    string innerMessage = ex.InnerException != null ? $"Inner Exception: {ex?.InnerException?.Message}" : string.Empty;
+                    await _apiService.CreateLogAsync(LogLevelEnum.ERROR.ToString(), $"{errorMessage}\n{innerMessage}", ex?.StackTrace, username, ipAddress, actionName, user);
+                    return BadRequest(new { message = innerMessage != string.Empty ? ex?.InnerException?.Message : ex?.Message });
+                }
+            }
+            else
+            {
+                return Forbid();
+            }
+        }
+
+        [HttpPut("UpdateUser")]
         public async Task<IActionResult> UpdateUser([FromBody] UserUpdateDTO user)
         {
-            try
+            var userClaims = User.Claims;
+            var username = User.FindFirstValue("username") ?? null;
+            var ipAddress = HttpContext?.Connection?.RemoteIpAddress?.ToString() ?? null;
+            var actionName = this.ControllerContext?.RouteData?.Values["action"]?.ToString() ?? null;
+            if ((userClaims.Any(c => c.Type == "permission" && c.Value == "user_crud") || (username == "root@e.com")) && user.Id != 1)
             {
-                if (!ModelState.IsValid)
+                try
                 {
-                    return BadRequest(ModelState);
+
+                    if (!ModelState.IsValid || (user?.Password?.Length < 6 && !string.IsNullOrEmpty(user.Password)))
+                    {
+                        await _apiService.CreateLogAsync(LogLevelEnum.WARNING.ToString(), LogMessageTemplates.invalid_model_state.ToString(), null, username, ipAddress, actionName, user);
+                        return BadRequest(ModelState);
+                    }
+
+                    var result = await _userService.UpdateUserAsync(user, username);
+                    user.Password = null;
+                    if (result)
+                    {
+                        await _apiService.CreateLogAsync(LogLevelEnum.INFO.ToString(), LogMessageTemplates.successful.ToString(), null, username, ipAddress, actionName, user);
+                        return Ok(new { message = LogMessageTemplates.successful.ToString() });
+                    }
+                    await _apiService.CreateLogAsync(LogLevelEnum.WARNING.ToString(), LogMessageTemplates.failed.ToString(), null, username, ipAddress, actionName, user);
+                    return BadRequest(new { message = LogMessageTemplates.failed.ToString() });
                 }
-
-                return Ok(new { message = "Signup successful" });
-
-                return BadRequest(new { message = "Signup failed" });
+                catch (Exception ex)
+                {
+                    string errorMessage = $"Error: {ex.Message}";
+                    string innerMessage = ex.InnerException != null ? $"Inner Exception: {ex?.InnerException?.Message}" : string.Empty;
+                    await _apiService.CreateLogAsync(LogLevelEnum.ERROR.ToString(), $"{errorMessage}\n{innerMessage}", ex?.StackTrace, username, ipAddress, actionName, user);
+                    return BadRequest(new { message = innerMessage != string.Empty ? ex?.InnerException?.Message : ex?.Message });
+                }
             }
-            catch (Exception ex)
+            else
             {
-                return BadRequest(new { message = ex.Message });
+                return Forbid();
             }
         }
 
-
-        [HttpDelete("deleteUser")]
+        [HttpDelete("DeleteUser")]
         public async Task<IActionResult> DeleteUser([FromBody] int userId)
         {
+            var userClaims = User.Claims;
+            var username = User.FindFirstValue("username") ?? null;
+            var ipAddress = HttpContext?.Connection?.RemoteIpAddress?.ToString() ?? null;
+            var actionName = this.ControllerContext?.RouteData?.Values["action"]?.ToString() ?? null;
+            if ((userClaims.Any(c => c.Type == "permission" && c.Value == "user_crud") || (username == "root@e.com")) && userId != 1)
+            {
+                try
+                {
+                    if (!ModelState.IsValid)
+                    {
+                        await _apiService.CreateLogAsync(LogLevelEnum.WARNING.ToString(), LogMessageTemplates.invalid_model_state.ToString(), null, username, ipAddress, actionName, userId);
+                        return BadRequest(ModelState);
+                    }
+
+                    var response = await _userService.DeleteUserAsync(userId);
+                    if (response)
+                    {
+                        await _apiService.CreateLogAsync(LogLevelEnum.INFO.ToString(), LogMessageTemplates.successful.ToString(), null, username, ipAddress, actionName, userId);
+                        return Ok();
+                    }
+                    await _apiService.CreateLogAsync(LogLevelEnum.WARNING.ToString(), LogMessageTemplates.failed.ToString(), null, username, ipAddress, actionName, userId);
+                    return BadRequest(new { message = "Delete user failed" });
+                }
+                catch (Exception ex)
+                {
+                    string errorMessage = $"Error: {ex.Message}";
+                    string innerMessage = ex.InnerException != null ? $"Inner Exception: {ex?.InnerException?.Message}" : string.Empty;
+                    await _apiService.CreateLogAsync(LogLevelEnum.ERROR.ToString(), $"{errorMessage}\n{innerMessage}", ex?.StackTrace, username, ipAddress, actionName, userId);
+                    return BadRequest(new { message = innerMessage != string.Empty ? ex?.InnerException?.Message : ex?.Message });
+                }
+            }
+            else
+            {
+                return Forbid();
+            }
+        }
+
+        [HttpPost("ChangePassword")]
+        public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordDTO changePassword)
+        {
+            var userClaims = User.Claims;
+            var username = User.FindFirstValue("username") ?? null;
+            var ipAddress = HttpContext?.Connection?.RemoteIpAddress?.ToString() ?? null;
+            var actionName = this.ControllerContext?.RouteData?.Values["action"]?.ToString() ?? null;
             try
             {
                 if (!ModelState.IsValid)
                 {
+                    await _apiService.CreateLogAsync(LogLevelEnum.WARNING.ToString(), LogMessageTemplates.invalid_model_state.ToString(), null, username, ipAddress, actionName, changePassword);
                     return BadRequest(ModelState);
                 }
 
-                var response = await _userService.DeleteUserAsync(userId);
+                var response = await _userService.ChangePasswordAsync(changePassword, username);
                 if (response)
                 {
+                    await _apiService.CreateLogAsync(LogLevelEnum.INFO.ToString(), LogMessageTemplates.successful.ToString(), null, username, ipAddress, actionName, null);
                     return Ok();
                 }
-
-                return BadRequest(new { message = "Delete user failed" });
+                await _apiService.CreateLogAsync(LogLevelEnum.WARNING.ToString(), LogMessageTemplates.failed.ToString(), null, username, ipAddress, actionName, changePassword);
+                return BadRequest(new { message = "Change password failed" });
             }
             catch (Exception ex)
             {
-                return BadRequest(new { message = ex.Message });
+                string errorMessage = $"Error: {ex.Message}";
+                string innerMessage = ex.InnerException != null ? $"Inner Exception: {ex?.InnerException?.Message}" : string.Empty;
+                await _apiService.CreateLogAsync(LogLevelEnum.ERROR.ToString(), $"{errorMessage}\n{innerMessage}", ex?.StackTrace, username, ipAddress, actionName, changePassword);
+                return BadRequest(new { message = innerMessage != string.Empty ? ex?.InnerException?.Message : ex?.Message });
             }
         }
 
 
-        [HttpPut("updateUserRoles")]
-        public async Task<IActionResult> UpdateUserRoles([FromBody] UserRolesUpdateDTO updateUserRolesDto)
+        //+------------------------------------------------------------------+
+        //| Role                                            
+        //+------------------------------------------------------------------+
+        [HttpGet("GetAllRolesAndPermissions")]
+        public async Task<IActionResult> GetAllRolesAndPermissions()
         {
-            try
+            var userClaims = User.Claims;
+            var username = User.FindFirstValue("username") ?? null;
+            var ipAddress = HttpContext?.Connection?.RemoteIpAddress?.ToString() ?? null;
+            var actionName = this.ControllerContext?.RouteData?.Values["action"]?.ToString() ?? null;
+            if (userClaims.Any(c => c.Type == "permission" && (c.Value == "user_crud" || c.Value == "role_crud")) || (username == "root@e.com"))
+
             {
-                if (!ModelState.IsValid)
+                try
                 {
-                    return BadRequest(ModelState);
-                }
+                    var result = await _userService.GetAllRolesWithPermissionsAsync();
+                    await _apiService.CreateLogAsync(LogLevelEnum.INFO.ToString(), LogMessageTemplates.successful.ToString(), null, username, ipAddress, actionName, null);
+                    return Ok(result);
 
-                var response = await _userService.UpdateUserRolesAsync(updateUserRolesDto);
-                if (response)
+                }
+                catch (Exception ex)
                 {
-                    return Ok();
+                    string errorMessage = $"Error: {ex.Message}";
+                    string innerMessage = ex.InnerException != null ? $"Inner Exception: {ex?.InnerException?.Message}" : string.Empty;
+                    await _apiService.CreateLogAsync(LogLevelEnum.ERROR.ToString(), $"{errorMessage}\n{innerMessage}", ex?.StackTrace, username, ipAddress, actionName, null);
+                    return BadRequest(new { message = innerMessage != string.Empty ? ex?.InnerException?.Message : ex.Message });
                 }
-
-                return BadRequest(new { message = "Update user roles failed" });
-            
             }
-            catch (Exception ex)
+            else
             {
-                return BadRequest(new { message = ex.Message });
+                return Forbid();
             }
         }
-
-        [HttpPost("createRole")]
-        public async Task<IActionResult> CreateRole([FromBody] RoleCreateDTO createRoleDto)
+        [HttpPost("CreateRole")]
+        public async Task<IActionResult> CreateRole([FromBody] RoleCreateDTO role)
         {
-            try
+            var userClaims = User.Claims;
+            var username = User.FindFirstValue("username") ?? null;
+            var ipAddress = HttpContext?.Connection?.RemoteIpAddress?.ToString() ?? null;
+            var actionName = this.ControllerContext?.RouteData?.Values["action"]?.ToString() ?? null;
+            if (userClaims.Any(c => c.Type == "permission" && c.Value == "role_crud") || (username == "root@e.com"))
+
+            {
+                try
             {
                 if (!ModelState.IsValid)
                 {
+                    await _apiService.CreateLogAsync(LogLevelEnum.WARNING.ToString(), LogMessageTemplates.invalid_model_state.ToString(), null, username, ipAddress, actionName, role);
                     return BadRequest(ModelState);
                 }
 
-                var response = await _userService.CreateRoleAsync(createRoleDto);
+                var response = await _userService.CreateRoleAsync(role, username);
                 if (response)
                 {
+                    await _apiService.CreateLogAsync(LogLevelEnum.INFO.ToString(), LogMessageTemplates.successful.ToString(), null, username, ipAddress, actionName, role);
                     return Ok();
                 }
-
+                await _apiService.CreateLogAsync(LogLevelEnum.WARNING.ToString(), LogMessageTemplates.failed.ToString(), null, username, ipAddress, actionName, role);
                 return BadRequest(new { message = "Create role failed" });
             }
             catch (Exception ex)
             {
-                return BadRequest(new { message = ex.Message });
+                string errorMessage = $"Error: {ex.Message}";
+                string innerMessage = ex.InnerException != null ? $"Inner Exception: {ex?.InnerException?.Message}" : string.Empty;
+                await _apiService.CreateLogAsync(LogLevelEnum.ERROR.ToString(), $"{errorMessage}\n{innerMessage}", ex?.StackTrace, username, ipAddress, actionName, role);
+                return BadRequest(new { message = innerMessage != string.Empty ? ex?.InnerException?.Message : ex?.Message });
+            }
+            }
+            else
+            {
+                return Forbid();
             }
         }
 
-        [HttpPut("updateRole")]
-        public async Task<IActionResult> UpdateRole([FromBody] RoleUpdateDTO updateRoleDto)
+        [HttpPut("UpdateRole")]
+        public async Task<IActionResult> UpdateRole([FromBody] RoleUpdateDTO role)
         {
-            try
+            var userClaims = User.Claims;
+            var username = User.FindFirstValue("username") ?? null;
+            var ipAddress = HttpContext?.Connection?.RemoteIpAddress?.ToString() ?? null;
+            var actionName = this.ControllerContext?.RouteData?.Values["action"]?.ToString() ?? null;
+            if (userClaims.Any(c => c.Type == "permission" && c.Value == "role_crud") || (username == "root@e.com"))
             {
-                if (!ModelState.IsValid)
+                try
                 {
-                    return BadRequest(ModelState);
-                }
+                    if (!ModelState.IsValid)
+                    {
+                        await _apiService.CreateLogAsync(LogLevelEnum.WARNING.ToString(), LogMessageTemplates.invalid_model_state.ToString(), null, username, ipAddress, actionName, role);
+                        return BadRequest(ModelState);
+                    }
 
-                var response = await _userService.UpdateRoleAsync(updateRoleDto);
-                if (response)
+                    var response = await _userService.UpdateRoleAsync(role, username);
+                    if (response)
+                    {
+                        await _apiService.CreateLogAsync(LogLevelEnum.INFO.ToString(), LogMessageTemplates.successful.ToString(), null, username, ipAddress, actionName, role);
+                        return Ok();
+                    }
+                    await _apiService.CreateLogAsync(LogLevelEnum.WARNING.ToString(), LogMessageTemplates.failed.ToString(), null, username, ipAddress, actionName, role);
+                    return BadRequest(new { message = "Update role failed" });
+                }
+                catch (Exception ex)
                 {
-                    return Ok();
+                    string errorMessage = $"Error: {ex.Message}";
+                    string innerMessage = ex.InnerException != null ? $"Inner Exception: {ex?.InnerException?.Message}" : string.Empty;
+                    await _apiService.CreateLogAsync(LogLevelEnum.ERROR.ToString(), $"{errorMessage}\n{innerMessage}", ex.StackTrace, username, ipAddress, actionName, role);
+                    return BadRequest(new { message = innerMessage != string.Empty ? ex?.InnerException?.Message : ex.Message });
                 }
-
-                return BadRequest(new { message = "Update role failed" });
             }
-            catch (Exception ex)
+            else
             {
-                return BadRequest(new { message = ex.Message });
+                return Forbid();
             }
         }
 
-        [HttpDelete("deleteRole")]
+        [HttpDelete("DeleteRole")]
         public async Task<IActionResult> DeleteRole([FromBody] int roleId)
         {
-            try
+            var userClaims = User.Claims;
+            var username = User.FindFirstValue("username") ?? null;
+            var ipAddress = HttpContext?.Connection?.RemoteIpAddress?.ToString() ?? null;
+            var actionName = this.ControllerContext?.RouteData?.Values["action"]?.ToString() ?? null;
+
+            if (userClaims.Any(c => c.Type == "permission" && c.Value == "role_crud") || (username == "root@e.com"))
+
+            {
+                try
             {
                 if (!ModelState.IsValid)
                 {
+                    await _apiService.CreateLogAsync(LogLevelEnum.WARNING.ToString(), LogMessageTemplates.invalid_model_state.ToString(), null, username, ipAddress, actionName, roleId);
                     return BadRequest(ModelState);
                 }
 
                 var response = await _userService.DeleteRoleAsync(roleId);
                 if (response)
                 {
+                    await _apiService.CreateLogAsync(LogLevelEnum.INFO.ToString(), LogMessageTemplates.successful.ToString(), null, username, ipAddress, actionName, roleId);
                     return Ok();
                 }
-
+                await _apiService.CreateLogAsync(LogLevelEnum.WARNING.ToString(), LogMessageTemplates.failed.ToString(), null, username, ipAddress, actionName, roleId);
                 return BadRequest(new { message = "Delete role failed" });
             }
             catch (Exception ex)
             {
-                return BadRequest(new { message = ex.Message });
+                string errorMessage = $"Error: {ex.Message}";
+                string innerMessage = ex.InnerException != null ? $"Inner Exception: {ex?.InnerException?.Message}" : string.Empty;
+                await _apiService.CreateLogAsync(LogLevelEnum.ERROR.ToString(), $"{errorMessage}\n{innerMessage}", ex.StackTrace, username, ipAddress, actionName, roleId);
+                return BadRequest(new { message = innerMessage != string.Empty ? ex.InnerException.Message : ex.Message });
+            }
+            }
+            else
+            {
+                return Forbid();
             }
         }
 
-        [HttpGet("test")]
-        [Authorize]
-        public async Task<IActionResult> test()
-        {
-            try
-            {
 
-                return Ok("hello world");
-                var userClaims = User.Claims;
-                if (userClaims.Any(c => c.Type == "permission" && c.Value == "x"))
-                {
-                    // User has the permission, proceed with the action
-                    return Ok("Access granted.");
-                }
-                else
-                {
-                    // User does not have the permission, return forbidden
-                    return Forbid();
-                }
-
-                if (User.IsInRole("Admin"))
-                {
-                    // User is an Admin, proceed with the action
-                    return Ok("Action performed successfully!");
-                }
-
-
-
-
-
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new { message = ex.Message });
-            }
-        }
-
-        [HttpGet("getAllRolesAndPermissions")]
-        public async Task<IActionResult> GetAllRolesAndPermissions()
-        {
-            try
-            {
-                var result = await _userService.GetAllRolesWithPermissionsAsync();
-                return Ok(result);
-
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new { message = ex.Message });
-            }
-        }
-
-        [HttpGet("getAllUsersWithRolesAndPermissions")]
-        public async Task<IActionResult> GetAllUsersWithRolesAndPermissions()
-        {
-            try
-            {
-                var result = await _userService.GetAllUsersWithRolesAndPermissions();
-                return Ok(result);
-
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new { message = ex.Message });
-            }
-        }
-
-        [HttpGet("getAllPermissions")]
+        //+------------------------------------------------------------------+
+        //| Permission                                            
+        //+------------------------------------------------------------------+
+        [HttpGet("GetAllPermissions")]
         public async Task<IActionResult> GetAllPermissions()
         {
-            try
+            var userClaims = User.Claims;
+            var username = User.FindFirstValue("username") ?? null;
+            var ipAddress = HttpContext?.Connection?.RemoteIpAddress?.ToString() ?? null;
+            var actionName = this.ControllerContext?.RouteData?.Values["action"]?.ToString() ?? null;
+            if (userClaims.Any(c => c.Type == "permission" && c.Value == "role_crud") || (username == "root@e.com"))
+
+            {
+                try
             {
                 var result = await _userService.GetAllPermissionsAsync();
+                await _apiService.CreateLogAsync(LogLevelEnum.INFO.ToString(), LogMessageTemplates.successful.ToString(), null, username, ipAddress, actionName, null);
                 return Ok(result);
-
             }
             catch (Exception ex)
             {
-                return BadRequest(new { message = ex.Message });
+                string errorMessage = $"Error: {ex.Message}";
+                string innerMessage = ex.InnerException != null ? $"Inner Exception: {ex?.InnerException?.Message}" : string.Empty;
+                await _apiService.CreateLogAsync(LogLevelEnum.ERROR.ToString(), $"{errorMessage}\n{innerMessage}", ex?.StackTrace, username, ipAddress, actionName, null);
+                return BadRequest(new { message = innerMessage != string.Empty ? ex?.InnerException?.Message : ex?.Message });
+                }
+            }
+            else
+            {
+                return Forbid();
             }
         }
-
     }
 }

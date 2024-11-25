@@ -11,9 +11,13 @@ public partial class RolePermission
 
     public int PermissionId { get; set; }
 
-    public DateTime? CreatedAt { get; set; }
+    public DateTime? UpdatedAt { get; set; }
+
+    public string? UpdatedBy { get; set; }
 
     public virtual Permission Permission { get; set; } = null!;
 
     public virtual Role Role { get; set; } = null!;
+
+    public virtual User? UpdatedByNavigation { get; set; }
 }

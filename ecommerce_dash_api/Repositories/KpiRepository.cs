@@ -18,60 +18,27 @@ namespace ecommerce_dash_api.Repositories
             _configuration = configuration;
         }
 
-        public async Task CreateChartAsync(string label, string query, string chartType, List<ChartPropertyDTO> chartPropertiesDto)
-        {
-            var chart = new Chart { Label = label, Query = query, ChartType = chartType };
-            await _context.Charts.AddAsync(chart);
-
-            try
-            {
-                await _context.SaveChangesAsync();
-
-                foreach (var chartpropertydto in chartPropertiesDto)
-                {
-                    var charproperty = new ChartProperty
-                    {
-                        ChartId = chart.Id,
-                        PropertyName = chartpropertydto.PropertyName,
-                        PropertyValue = chartpropertydto.PropertyValue
-                    };
-
-                    await _context.ChartProperties.AddAsync(charproperty);
-                }
-            }
-            catch (Exception ex)
-            {
-                _context.Charts.Remove(chart);
-                await _context.SaveChangesAsync();
-                throw;
-            }
-        }
-
-        public async Task DeleteChartAsync(int chartId)
-        {
-            var chart = await _context.Charts
-            .Where(c => c.Id == chartId)
-            .FirstOrDefaultAsync();
-            _context.Charts.Remove(chart);
-        }
-
+        //+------------------------------------------------------------------+
+        //| Kpi                                            
+        //+------------------------------------------------------------------+
         public Task<List<ChartQRY>> GetAllChartsAsync()
         {
-            var result = _context.Charts.Select(c => new ChartQRY{
-                Id = c.Id,
-                Label = c.Label,
-                Query = c.Query,
-                ChartType = c.ChartType,
-                ChartProperties = c.ChartProperties.Select(cp => new ChartPropertyQRY { 
+            var result = _context.Charts.Select(i => new ChartQRY
+            {
+                Id = i.Id,
+                Label = i.Label,
+                Query = i.Query,
+                ChartType = i.Type,
+                ChartProperties = i.ChartProperties.Select(cp => new ChartPropertyQRY
+                {
                     Id = cp.Id,
-                    PropertyName = cp.PropertyName, 
-                    PropertyValue = cp.PropertyValue
+                    PropertyName = cp.Name,
+                    PropertyValue = cp.Value
                 }).ToList()
             }).ToListAsync();
 
             return result;
         }
-
         public async Task<DataTable> GetChartDataByQueryAsync(string query)
         {
             string connectionString = _configuration.GetSection("ConnectionStrings:DefaultConnection").Value;
@@ -97,13 +64,16 @@ namespace ecommerce_dash_api.Repositories
             }
 
         }
-
-        public async Task UpdateChartAsync(int id, string label, string query, List<ChartPropertyDTO> chartPropertiesDto)
+        public async Task CreateChartAsync(ChartProperty charproperty)
+        {
+            await _context.ChartProperties.AddAsync(charproperty);
+        }
+        public async Task UpdateChartAsync(int id, string label, string query, List<ChartPropertyDTO> chartPropertiesDto, string username)
         {
             var chart = await _context.Charts.FindAsync(id);
             chart.Label = label;
             chart.Query = query;
-        
+
             var existingProperties = await _context.ChartProperties
                 .Where(cp => cp.ChartId == id)
                 .ToListAsync();
@@ -115,13 +85,17 @@ namespace ecommerce_dash_api.Repositories
                 var chartProperty = new ChartProperty
                 {
                     ChartId = chart.Id,
-                    PropertyName = chartpropertydto.PropertyName,
-                    PropertyValue = chartpropertydto.PropertyValue
+                    Name = chartpropertydto.PropertyName,
+                    Value = chartpropertydto.PropertyValue,
+                    UpdatedBy = username
                 };
 
                 await _context.ChartProperties.AddAsync(chartProperty);
             }
-
+        }
+        public async Task DeleteChartAsync(Chart? chart)
+        {
+            _context.Charts.Remove(chart);
         }
     }
 }

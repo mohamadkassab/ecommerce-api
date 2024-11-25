@@ -3,7 +3,7 @@
     public class RoleQRY
     {
         public int Id { get; set; }
-        public string RoleName { get; set; }
-        public List<PermissionQRY> Permissions { get; set; }
+        public string? RoleName { get; set; }
+        public List<PermissionQRY>? Permissions { get; set; }
     }
 }

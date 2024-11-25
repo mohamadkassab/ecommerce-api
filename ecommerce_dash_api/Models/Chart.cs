@@ -11,11 +11,13 @@ public partial class Chart
 
     public string? Query { get; set; }
 
-    public string ChartType { get; set; } = null!;
-
-    public DateTime? CreatedAt { get; set; }
+    public string Type { get; set; } = null!;
 
     public DateTime? UpdatedAt { get; set; }
 
+    public string? UpdatedBy { get; set; }
+
     public virtual ICollection<ChartProperty> ChartProperties { get; set; } = new List<ChartProperty>();
+
+    public virtual User? UpdatedByNavigation { get; set; }
 }

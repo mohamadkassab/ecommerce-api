@@ -14,188 +14,142 @@ public class UserRepository : IUserRepository
         _context = context;
     }
 
-    public async Task CreateUserAsync(User user)
+    //+------------------------------------------------------------------+
+    //| User                                            
+    //+------------------------------------------------------------------+
+    public async Task<User?> GetUserAsync(int id)
     {
-        _context.Users.Add(user);
+        return await _context.Users.FirstOrDefaultAsync(i => i.Id == id);
     }
-
-    public async Task DeleteUserRolesAsync(int userId)
+    public async Task<(User? user, List<string>? roles, List<string>? permissions)> GetUserByUsernameAsync(string username)
     {
-        var userRoles = await _context.UserRoles
-           .Where(ur => ur.UserId == userId)
-           .ToListAsync();
+        var userWithRolesAndPermissions = await _context.Users
+            .Where(i => i.Username == username)
+            .Select(i => new
+            {
+                User = i,
+                Roles = i.UserRoleUsers.Select(ur => ur.Role.Name).ToList(),
+                Permissions = i.UserRoleUsers.SelectMany(ur => ur.Role.RolePermissions.Select(rp => rp.Permission.Name)).ToList()
+            })
+            .FirstOrDefaultAsync();
 
-        _context.UserRoles.RemoveRange(userRoles);
+        return (userWithRolesAndPermissions?.User, userWithRolesAndPermissions?.Roles, userWithRolesAndPermissions?.Permissions);
     }
-
-    public async Task CreateUserRolesAsync(int userId, List<int> roleIds)
+    public async Task<List<UserWithRolesAndPermissionsQRY>> GetAllUsersWithRolesAndPermissions()
     {
-        var userRoles = roleIds.Select(roleId => new UserRole
-        {
-            UserId = userId,
-            RoleId = roleId
-        }).ToList();
+        var result = await _context.Users
+             .Where(u => u.Id != 1)
+            .Select(u => new UserWithRolesAndPermissionsQRY
+            {
+                Id = u.Id,
+                Username = u.Username,
+                FirstName = u.FirstName,
+                LastName = u.LastName,
+                Dob = u.Dob,
+                Phone = u.Phone,
+                Address = u.Address,
+                UpdatedAt = u.UpdatedAt,
+                UpdatedBy = u.UpdatedBy,
+                FailedLoginAttempts = u.FailedLoginAttempts,
+                IsActive = u.IsActive,
 
-        await _context.UserRoles.AddRangeAsync(userRoles);
+
+                Roles = u.UserRoleUsers.Select(ur => new RoleWithoutPermissionsQRY
+                {
+                    Id = ur.Role.Id,
+                    RoleName = ur.Role.Name
+                }).ToList(),
+
+                Permissions = u.UserRoleUsers.SelectMany(ur => ur.Role.RolePermissions.Select(rp => new PermissionQRY
+                {
+                    Id = rp.Permission.Id,
+                    PermissionName = rp.Permission.Name
+                })).ToList(),
+
+            }).ToListAsync();
+
+        return result;
     }
-
     public async Task<bool> UsernameExistsAsync(string username)
     {
         return await _context.Users.AnyAsync(u => u.Username == username);
     }
-
-    public async Task<(User user, List<string> roles, List<string> permissions)> GetUserByUsernameAsync(string username)
+    public async Task CreateUserAsync(User user)
     {
-        var userWithRolesAndPermissions = await _context.Users
-            .Where(u => u.Username == username)
-            .Select(u => new
-            {
-                User = u,
-                Roles = u.UserRoles.Select(ur => ur.Role.RoleName).ToList(),
-                Permissions = u.UserRoles.SelectMany(ur => ur.Role.RolePermissions.Select(rp => rp.Permission.PermissionName)).ToList()
-            })
-            .FirstOrDefaultAsync();
-
-
-        return (userWithRolesAndPermissions?.User, userWithRolesAndPermissions?.Roles, userWithRolesAndPermissions?.Permissions);
+       await _context.Users.AddAsync(user);
+    }
+    public Task UpdateUserAsync(User user)
+    {
+        _context.Users.Update(user);
+        return Task.CompletedTask;
+    }
+    public Task DeleteUserAsync(User user)
+    {
+        _context.Users.Remove(user);
+        return Task.CompletedTask;
+    }
+    public Task DeleteUserRolesAsync(List<UserRole> userRoles)
+    {
+        _context.UserRoles.RemoveRange(userRoles);
+        return Task.CompletedTask;
     }
 
-    public async Task CreateRoleAsync(Role role, List<int> permissionIds)
+
+    //+------------------------------------------------------------------+
+    //| Role                                            
+    //+------------------------------------------------------------------+
+    public async Task<Role?> GetRoleByIdAsync(int id)
     {
-        await _context.Roles.AddAsync(role);
-
-        try
-        {
-            await _context.SaveChangesAsync();
-
-            foreach (var permissionId in permissionIds)
-            {
-                var rolePermission = new RolePermission
-                {
-                    RoleId = role.Id,
-                    PermissionId = permissionId
-                };
-
-                await _context.RolePermissions.AddAsync(rolePermission);
-            }
-
-            await _context.SaveChangesAsync();
-        }
-        catch (Exception ex)
-        {
-            _context.Roles.Remove(role);
-            await _context.SaveChangesAsync();
-            throw;
-        }
+        return await _context.Roles.FirstOrDefaultAsync(i => i.Id == id);
     }
-
-    public async Task DeleteRolePermissionsAsync(int roleId)
-    {
-        var rolePermissions = await _context.RolePermissions
-           .Where(rp => rp.RoleId == roleId)
-           .ToListAsync();
-
-        _context.RolePermissions.RemoveRange(rolePermissions);
-    }
-
-    public async Task CreateRolePermissionsAsync(int roleId, List<int> permissionIds)
-    {
-        foreach (var permissionId in permissionIds)
-        {
-            var rolePermission = new RolePermission
-            {
-                RoleId = roleId,
-                PermissionId = permissionId,
-                CreatedAt = DateTime.UtcNow
-            };
-
-            await _context.RolePermissions.AddAsync(rolePermission);
-        }
-    }
-
-    public async Task DeleteRoleAsync(int roleId)
-    {
-        var role = await _context.Roles
-       .Where(r => r.Id == roleId)
-       .FirstOrDefaultAsync();
-
-        _context.Roles.Remove(role);
-    }
-
     public async Task<List<RoleQRY>> GetAllRolesWithPermissionsAsync()
     {
         var result = await _context.Roles
-        .Select(r => new RoleQRY
+        .Select(i => new RoleQRY
         {
-            Id = r.Id,
-            RoleName = r.RoleName,
-            Permissions = r.RolePermissions.Select(rp => new PermissionQRY
+            Id = i.Id,
+            RoleName = i.Name,
+            Permissions = i.RolePermissions.Select(rp => new PermissionQRY
             {
                 Id = rp.Permission.Id,
-                PermissionName = rp.Permission.PermissionName
+                PermissionName = rp.Permission.Name
             }).ToList()
         })
         .ToListAsync();
 
         return result;
-
+    }
+    public Task UpdateRoleAsync(Role role)
+    {
+        _context.Roles.Update(role);
+        return Task.CompletedTask;
+    }
+    public Task DeleteRolePermissionsAsync(List<RolePermission> rolePermissions)
+    {
+        _context.RolePermissions.RemoveRange(rolePermissions);
+        return Task.CompletedTask;
+    }
+    public Task DeleteRoleAsync(Role role)
+    {
+        _context.Roles.Remove(role);
+        return Task.CompletedTask;
     }
 
+
+    //+------------------------------------------------------------------+
+    //| Permission                                            
+    //+------------------------------------------------------------------+
     public async Task<List<PermissionQRY>> GetAllPermissionsAsync()
     {
         var result = await _context.Permissions
-       .Select(p => new PermissionQRY
+       .Select(i => new PermissionQRY
        {
-           Id = p.Id,
-           PermissionName = p.PermissionName,
+           Id = i.Id,
+           PermissionName = i.Name,
        })
        .ToListAsync();
 
         return result;
-    }
-
-    public async Task<List<UserWithRolesAndPermissionsQRY>> GetAllUsersWithRolesAndPermissions()
-    {
-        var result = await _context.Users.Select(u => new UserWithRolesAndPermissionsQRY
-        {
-
-            Id = u.Id,
-            Username = u.Username,
-            FirstName = u.FirstName,
-            LastName = u.LastName,
-            Dob = u.Dob,
-            Phone = u.Phone,
-            Address = u.Address,
-            CreatedAt = u.CreatedAt,
-            UpdatedAt = u.UpdatedAt,
-            CreatedBy = u.CreatedBy,
-            UpdatedBy = u.UpdatedBy,
-
-            Roles = u.UserRoles.Select(ur => new RoleWithoutPermissionsQRY
-            {
-                Id = ur.Id,
-                RoleName = ur.Role.RoleName
-            }).ToList(),
-
-            Permissions = u.UserRoles.SelectMany(ur => ur.Role.RolePermissions.Select(rp => new PermissionQRY{
-                Id = rp.Permission.Id,
-                PermissionName = rp.Permission.PermissionName
-            })).ToList(),
-
-        }).ToListAsync();
-
-
-   
-
-        return result;
-    }
-
-    public async Task DeleteUserAsync(int userId)
-    {
-        var user = await _context.Users
-          .Where(c => c.Id == userId)
-          .FirstOrDefaultAsync();
-        _context.Users.Remove(user);
     }
 }
 

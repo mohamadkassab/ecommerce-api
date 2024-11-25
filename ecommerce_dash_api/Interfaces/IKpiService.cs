@@ -6,10 +6,13 @@ namespace ecommerce_dash_api.Interfaces
 {
     public interface IKpiService
     {
-        Task<bool> CreateChartAsync(ChartCreateDTO createChartDto);
+        //+------------------------------------------------------------------+
+        //| Kpi                                            
+        //+------------------------------------------------------------------+
         Task<List<ChartQRY>> GetAllChartsAsync();
-        Task<bool> UpdateChartAsync(ChartUpdateDTO updateChartDto);
-        Task<bool> DeleteChartAsync(int chartId);
         Task<DataTable> GetChartDataByQueryAsync(string query);
+        Task<bool> CreateChartAsync(ChartCreateDTO createChartDto, string? username);
+        Task<bool> UpdateChartAsync(ChartUpdateDTO updateChartDto, string? username);
+        Task<bool> DeleteChartAsync(int chartId);
     }
 }

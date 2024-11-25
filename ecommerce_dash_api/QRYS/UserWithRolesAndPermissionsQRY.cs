@@ -21,10 +21,12 @@ namespace ecommerce_dash_api.QRYS
 
         public List<PermissionQRY>? Permissions { get; set; }
 
-        public DateTime? CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
-        public string? CreatedBy { get; set; }
+
         public string? UpdatedBy { get; set; }
+        public int? FailedLoginAttempts { get; set; }
+
+        public bool? IsActive { get; set; }
 
     }
 }

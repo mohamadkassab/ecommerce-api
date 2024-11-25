@@ -9,13 +9,15 @@ public partial class ChartProperty
 
     public int? ChartId { get; set; }
 
-    public string PropertyName { get; set; } = null!;
+    public string Name { get; set; } = null!;
 
-    public string PropertyValue { get; set; } = null!;
-
-    public DateTime? CreatedAt { get; set; }
+    public string Value { get; set; } = null!;
 
     public DateTime? UpdatedAt { get; set; }
 
+    public string? UpdatedBy { get; set; }
+
     public virtual Chart? Chart { get; set; }
+
+    public virtual User? UpdatedByNavigation { get; set; }
 }

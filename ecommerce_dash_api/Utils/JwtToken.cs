@@ -21,12 +21,12 @@ namespace ecommerce_dash_api.Utils
 
         {
             var jwtSettings = _configuration.GetSection("JwtSettings");
-            var secretKey = Encoding.UTF8.GetBytes(jwtSettings["SecretKey"]);
+            var secretKey = Encoding.UTF8.GetBytes(jwtSettings["SecretKey"]!);
             var expirationInMinutes = Convert.ToInt32(jwtSettings["ExpirationInMinutes"]);
 
             var claims = new List<Claim>
             {
-                new Claim(JwtRegisteredClaimNames.Sub, email),
+                new Claim("username", email),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
             };
 

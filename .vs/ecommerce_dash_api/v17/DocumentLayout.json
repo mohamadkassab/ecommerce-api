@@ -3,16 +3,16 @@
   "WorkspaceRootPath": "C:\\Users\\User\\Desktop\\MK\\Projects\\Ecommerce\\ecommerce_api\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{F4D8F940-4D4C-4580-BCFA-60CD7A3F0379}|ecommerce_dash_api\\ecommerce_dash_api.csproj|c:\\users\\user\\desktop\\mk\\projects\\ecommerce\\ecommerce_api\\ecommerce_dash_api\\controllers\\usercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F4D8F940-4D4C-4580-BCFA-60CD7A3F0379}|ecommerce_dash_api\\ecommerce_dash_api.csproj|solutionrelative:ecommerce_dash_api\\controllers\\usercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{F4D8F940-4D4C-4580-BCFA-60CD7A3F0379}|ecommerce_dash_api\\ecommerce_dash_api.csproj|c:\\users\\user\\desktop\\mk\\projects\\ecommerce\\ecommerce_api\\ecommerce_dash_api\\controllers\\kpicontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F4D8F940-4D4C-4580-BCFA-60CD7A3F0379}|ecommerce_dash_api\\ecommerce_dash_api.csproj|solutionrelative:ecommerce_dash_api\\controllers\\kpicontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{F4D8F940-4D4C-4580-BCFA-60CD7A3F0379}|ecommerce_dash_api\\ecommerce_dash_api.csproj|c:\\users\\user\\desktop\\mk\\projects\\ecommerce\\ecommerce_api\\ecommerce_dash_api\\dtos\\userupdatedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F4D8F940-4D4C-4580-BCFA-60CD7A3F0379}|ecommerce_dash_api\\ecommerce_dash_api.csproj|solutionrelative:ecommerce_dash_api\\dtos\\userupdatedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{F4D8F940-4D4C-4580-BCFA-60CD7A3F0379}|ecommerce_dash_api\\ecommerce_dash_api.csproj|c:\\users\\user\\desktop\\mk\\projects\\ecommerce\\ecommerce_api\\ecommerce_dash_api\\repositories\\setuprepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F4D8F940-4D4C-4580-BCFA-60CD7A3F0379}|ecommerce_dash_api\\ecommerce_dash_api.csproj|solutionrelative:ecommerce_dash_api\\repositories\\setuprepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{F4D8F940-4D4C-4580-BCFA-60CD7A3F0379}|ecommerce_dash_api\\ecommerce_dash_api.csproj|c:\\users\\user\\desktop\\mk\\projects\\ecommerce\\ecommerce_api\\ecommerce_dash_api\\dtos\\usercreatedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F4D8F940-4D4C-4580-BCFA-60CD7A3F0379}|ecommerce_dash_api\\ecommerce_dash_api.csproj|solutionrelative:ecommerce_dash_api\\dtos\\usercreatedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{F4D8F940-4D4C-4580-BCFA-60CD7A3F0379}|ecommerce_dash_api\\ecommerce_dash_api.csproj|c:\\users\\user\\desktop\\mk\\projects\\ecommerce\\ecommerce_api\\ecommerce_dash_api\\interfaces\\isetuprepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F4D8F940-4D4C-4580-BCFA-60CD7A3F0379}|ecommerce_dash_api\\ecommerce_dash_api.csproj|solutionrelative:ecommerce_dash_api\\interfaces\\isetuprepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -27,40 +27,40 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "UserController.cs",
-              "DocumentMoniker": "C:\\Users\\User\\Desktop\\MK\\Projects\\Ecommerce\\ecommerce_api\\ecommerce_dash_api\\Controllers\\UserController.cs",
-              "RelativeDocumentMoniker": "ecommerce_dash_api\\Controllers\\UserController.cs",
-              "ToolTip": "C:\\Users\\User\\Desktop\\MK\\Projects\\Ecommerce\\ecommerce_api\\ecommerce_dash_api\\Controllers\\UserController.cs",
-              "RelativeToolTip": "ecommerce_dash_api\\Controllers\\UserController.cs",
-              "ViewState": "AQIAABsAAAAAAAAAAAAkwF8AAAAyAAAA",
+              "Title": "KpiController.cs",
+              "DocumentMoniker": "C:\\Users\\User\\Desktop\\MK\\Projects\\Ecommerce\\ecommerce_api\\ecommerce_dash_api\\Controllers\\KpiController.cs",
+              "RelativeDocumentMoniker": "ecommerce_dash_api\\Controllers\\KpiController.cs",
+              "ToolTip": "C:\\Users\\User\\Desktop\\MK\\Projects\\Ecommerce\\ecommerce_api\\ecommerce_dash_api\\Controllers\\KpiController.cs",
+              "RelativeToolTip": "ecommerce_dash_api\\Controllers\\KpiController.cs",
+              "ViewState": "AQIAABEAAAAAAAAAAAAQwB4AAAAfAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-19T18:53:09.695Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "UserUpdateDTO.cs",
-              "DocumentMoniker": "C:\\Users\\User\\Desktop\\MK\\Projects\\Ecommerce\\ecommerce_api\\ecommerce_dash_api\\DTOS\\UserUpdateDTO.cs",
-              "RelativeDocumentMoniker": "ecommerce_dash_api\\DTOS\\UserUpdateDTO.cs",
-              "ToolTip": "C:\\Users\\User\\Desktop\\MK\\Projects\\Ecommerce\\ecommerce_api\\ecommerce_dash_api\\DTOS\\UserUpdateDTO.cs",
-              "RelativeToolTip": "ecommerce_dash_api\\DTOS\\UserUpdateDTO.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAABcAAAAJAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-19T18:55:04.37Z",
+              "WhenOpened": "2024-11-25T19:13:30.668Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 2,
-              "Title": "UserCreateDTO.cs",
-              "DocumentMoniker": "C:\\Users\\User\\Desktop\\MK\\Projects\\Ecommerce\\ecommerce_api\\ecommerce_dash_api\\DTOS\\UserCreateDTO.cs",
-              "RelativeDocumentMoniker": "ecommerce_dash_api\\DTOS\\UserCreateDTO.cs",
-              "ToolTip": "C:\\Users\\User\\Desktop\\MK\\Projects\\Ecommerce\\ecommerce_api\\ecommerce_dash_api\\DTOS\\UserCreateDTO.cs",
-              "RelativeToolTip": "ecommerce_dash_api\\DTOS\\UserCreateDTO.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAABwAAAA/AAAA",
+              "Title": "ISetupRepository.cs",
+              "DocumentMoniker": "C:\\Users\\User\\Desktop\\MK\\Projects\\Ecommerce\\ecommerce_api\\ecommerce_dash_api\\Interfaces\\ISetupRepository.cs",
+              "RelativeDocumentMoniker": "ecommerce_dash_api\\Interfaces\\ISetupRepository.cs",
+              "ToolTip": "C:\\Users\\User\\Desktop\\MK\\Projects\\Ecommerce\\ecommerce_api\\ecommerce_dash_api\\Interfaces\\ISetupRepository.cs",
+              "RelativeToolTip": "ecommerce_dash_api\\Interfaces\\ISetupRepository.cs",
+              "ViewState": "AQIAAFoAAAAAAAAAAAAuwGcAAABBAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-19T18:50:38.401Z",
+              "WhenOpened": "2024-11-25T17:23:10.774Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "SetupRepository.cs",
+              "DocumentMoniker": "C:\\Users\\User\\Desktop\\MK\\Projects\\Ecommerce\\ecommerce_api\\ecommerce_dash_api\\Repositories\\SetupRepository.cs",
+              "RelativeDocumentMoniker": "ecommerce_dash_api\\Repositories\\SetupRepository.cs",
+              "ToolTip": "C:\\Users\\User\\Desktop\\MK\\Projects\\Ecommerce\\ecommerce_api\\ecommerce_dash_api\\Repositories\\SetupRepository.cs",
+              "RelativeToolTip": "ecommerce_dash_api\\Repositories\\SetupRepository.cs",
+              "ViewState": "AQIAAAkAAAAAAAAAAAAqwBcAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-25T17:21:52.925Z",
               "EditorCaption": ""
             }
           ]

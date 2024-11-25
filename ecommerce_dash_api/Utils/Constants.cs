@@ -3,6 +3,5 @@
     public class Constants
     {
         public static string PermissionClaimType = "permission";
-
     }
 }

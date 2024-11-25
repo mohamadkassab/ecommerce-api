@@ -5,9 +5,15 @@ namespace ecommerce_dash_api.DTOS
 {
     public class RoleUpdateDTO
     {
-        public int RoleId { get; set; }
+        public int Id { get; set; }
 
-        [AtLeastOneRequired<int>]
-        public List<int> PermissionIds { get; set; } = null!;
+        private string _rolename = null!;
+        [Required(AllowEmptyStrings = false), StringLength(255, MinimumLength = 1, ErrorMessage = "RoleName must be between 1 and 255 characters.")]
+        public string? RoleName
+        {
+            get => _rolename;
+            set => _rolename = value?.ToLower()!;
+        }
+        public List<int> Permissions { get; set; } = null!;
     }
 }

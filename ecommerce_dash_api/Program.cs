@@ -12,7 +12,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // START JWT Configuration
 var jwtSettings = builder.Configuration.GetSection("JwtSettings");
-var secretKey = Encoding.UTF8.GetBytes(jwtSettings["SecretKey"]);
+var secretKey = Encoding.UTF8.GetBytes(jwtSettings["SecretKey"]!);
 
 builder.Services.AddDependencyGroup();
 builder.Services.AddEndpointsApiExplorer(); 
@@ -64,6 +64,5 @@ app.UseRouting();
 app.UseAuthorization();
 
 app.MapControllers();
-
 
 app.Run();
