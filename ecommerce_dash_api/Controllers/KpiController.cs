@@ -1,12 +1,9 @@
 ﻿using ecommerce_dash_api.DTOS;
 using ecommerce_dash_api.Enum;
 using ecommerce_dash_api.Interfaces;
-using ecommerce_dash_api.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using System.Data;
-using System.Net;
 using System.Security.Claims;
 
 namespace ecommerce_dash_api.Controllers
@@ -27,7 +24,6 @@ namespace ecommerce_dash_api.Controllers
         //+------------------------------------------------------------------+
         //| Kpi                                            
         //+------------------------------------------------------------------+
-
         [HttpGet("GetAllACharts")]
         public async Task<IActionResult> GetAllACharts()
         {
@@ -167,8 +163,8 @@ namespace ecommerce_dash_api.Controllers
             }
         }
 
-        [HttpDelete("DeleteChart")]
-        public async Task<IActionResult> DeleteChart([FromBody] int chartId)
+        [HttpDelete("DeleteChart/{id}")]
+        public async Task<IActionResult> DeleteChart(int id)
         {
             var userClaims = User.Claims;
             var username = User.FindFirstValue("username") ?? null;
@@ -180,24 +176,24 @@ namespace ecommerce_dash_api.Controllers
                 {
                     if (!ModelState.IsValid)
                     {
-                        await _apiService.CreateLogAsync(LogLevelEnum.WARNING.ToString(), LogMessageTemplates.invalid_model_state.ToString(), null, username, ipAddress, actionName, chartId);
+                        await _apiService.CreateLogAsync(LogLevelEnum.WARNING.ToString(), LogMessageTemplates.invalid_model_state.ToString(), null, username, ipAddress, actionName, id);
                         return BadRequest(ModelState);
                     }
 
-                    var response = await _kpiService.DeleteChartAsync(chartId);
+                    var response = await _kpiService.DeleteChartAsync(id);
                     if (response)
                     {
-                        await _apiService.CreateLogAsync(LogLevelEnum.INFO.ToString(), LogMessageTemplates.successful.ToString(), null, username, ipAddress, actionName, chartId);
+                        await _apiService.CreateLogAsync(LogLevelEnum.INFO.ToString(), LogMessageTemplates.successful.ToString(), null, username, ipAddress, actionName, id);
                         return Ok();
                     }
-                    await _apiService.CreateLogAsync(LogLevelEnum.WARNING.ToString(), LogMessageTemplates.failed.ToString(), null, username, ipAddress, actionName, chartId);
+                    await _apiService.CreateLogAsync(LogLevelEnum.WARNING.ToString(), LogMessageTemplates.failed.ToString(), null, username, ipAddress, actionName, id);
                     return BadRequest(new { message = "Delete chart failed" });
                 }
                 catch (Exception ex)
                 {
                     string errorMessage = $"Error: {ex.Message}";
                     string innerMessage = ex.InnerException != null ? $"Inner Exception: {ex?.InnerException?.Message}" : string.Empty;
-                    await _apiService.CreateLogAsync(LogLevelEnum.ERROR.ToString(), $"{errorMessage}\n{innerMessage}", ex?.StackTrace, username, ipAddress, actionName, chartId);
+                    await _apiService.CreateLogAsync(LogLevelEnum.ERROR.ToString(), $"{errorMessage}\n{innerMessage}", ex?.StackTrace, username, ipAddress, actionName, id);
                     return BadRequest(new { message = innerMessage != string.Empty ? ex?.InnerException?.Message : ex?.Message });
                 }
             }

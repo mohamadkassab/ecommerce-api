@@ -141,8 +141,8 @@ namespace ecommerce_dash_api.Controllers
             }
         }
 
-        [HttpDelete("DeleteCountry")]
-        public async Task<IActionResult> DeleteCountry([FromBody] int id)
+        [HttpDelete("DeleteCountry/{id}")]
+        public async Task<IActionResult> DeleteCountry(int id)
         {
             var userClaims = User.Claims;
             var username = User.FindFirstValue("username") ?? null;
@@ -295,8 +295,8 @@ namespace ecommerce_dash_api.Controllers
             }
         }
 
-        [HttpDelete("DeleteBrand")]
-        public async Task<IActionResult> DeleteBrand([FromBody] int id)
+        [HttpDelete("DeleteBrand/{id}")]
+        public async Task<IActionResult> DeleteBrand(int id)
         {
             var userClaims = User.Claims;
             var username = User.FindFirstValue("username") ?? null;
@@ -449,8 +449,8 @@ namespace ecommerce_dash_api.Controllers
             }
         }
 
-        [HttpDelete("DeleteCategory")]
-        public async Task<IActionResult> DeleteCategory([FromBody] int id)
+        [HttpDelete("DeleteCategory/{id}")]
+        public async Task<IActionResult> DeleteCategory(int id)
         {
             var userClaims = User.Claims;
             var username = User.FindFirstValue("username") ?? null;
@@ -603,8 +603,8 @@ namespace ecommerce_dash_api.Controllers
             }
         }
 
-        [HttpDelete("DeleteCurrency")]
-        public async Task<IActionResult> DeleteCurrency([FromBody] int id)
+        [HttpDelete("DeleteCurrency/{id}")]
+        public async Task<IActionResult> DeleteCurrency(int id)
         {
             var userClaims = User.Claims;
             var username = User.FindFirstValue("username") ?? null;
@@ -757,8 +757,8 @@ namespace ecommerce_dash_api.Controllers
             }
         }
 
-        [HttpDelete("DeleteYear")]
-        public async Task<IActionResult> DeleteYear([FromBody] int id)
+        [HttpDelete("DeleteYear/{id}")]
+        public async Task<IActionResult> DeleteYear(int id)
         {
             var userClaims = User.Claims;
             var username = User.FindFirstValue("username") ?? null;
@@ -911,8 +911,8 @@ namespace ecommerce_dash_api.Controllers
             }
         }
 
-        [HttpDelete("DeleteSeason")]
-        public async Task<IActionResult> DeleteSeason([FromBody] int id)
+        [HttpDelete("DeleteSeason/{id}")]
+        public async Task<IActionResult> DeleteSeason(int id)
         {
             var userClaims = User.Claims;
             var username = User.FindFirstValue("username") ?? null;
@@ -1065,8 +1065,8 @@ namespace ecommerce_dash_api.Controllers
             }
         }
 
-        [HttpDelete("DeleteSection")]
-        public async Task<IActionResult> DeleteSection([FromBody] int id)
+        [HttpDelete("DeleteSection/{id}")]
+        public async Task<IActionResult> DeleteSection( int id)
         {
             var userClaims = User.Claims;
             var username = User.FindFirstValue("username") ?? null;
@@ -1219,8 +1219,8 @@ namespace ecommerce_dash_api.Controllers
             }
         }
 
-        [HttpDelete("DeleteSupplier")]
-        public async Task<IActionResult> DeleteSupplier([FromBody] int id)
+        [HttpDelete("DeleteSupplier/{id}")]
+        public async Task<IActionResult> DeleteSupplier(int id)
         {
             var userClaims = User.Claims;
             var username = User.FindFirstValue("username") ?? null;
@@ -1373,8 +1373,8 @@ namespace ecommerce_dash_api.Controllers
             }
         }
 
-        [HttpDelete("DeleteTag")]
-        public async Task<IActionResult> DeleteTag([FromBody] int id)
+        [HttpDelete("DeleteTag/{id}")]
+        public async Task<IActionResult> DeleteTag(int id)
         {
             var userClaims = User.Claims;
             var username = User.FindFirstValue("username") ?? null;
@@ -1527,8 +1527,8 @@ namespace ecommerce_dash_api.Controllers
             }
         }
 
-        [HttpDelete("DeleteAttribute")]
-        public async Task<IActionResult> DeleteAttribute([FromBody] int id)
+        [HttpDelete("DeleteAttribute/{id}")]
+        public async Task<IActionResult> DeleteAttribute(int id)
         {
             var userClaims = User.Claims;
             var username = User.FindFirstValue("username") ?? null;

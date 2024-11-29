@@ -198,7 +198,7 @@ namespace ecommerce_dash_api.Services
         public async Task<bool> UpdateYearAsync(YearUpdateDTO yearDTO, string? username)
         {
             Year year = await _setupRepository.GetYearByIdAsync(yearDTO.Id);
-            year.Name = year.Name;
+            year.Name = yearDTO.Name;
             year.UpdatedBy = username;
             await _setupRepository.UpdateYearAsync(year);
             await _context.SaveChangesAsync();
@@ -370,7 +370,7 @@ namespace ecommerce_dash_api.Services
         public async Task<bool> UpdateTagAsync(TagUpdateDTO tagDTO, string? username)
         {
             Tag tag = await _setupRepository.GetTagByIdAsync(tagDTO.Id);
-            tag.Name = tag.Name;
+            tag.Name = tagDTO.Name;
             tag.UpdatedBy = username;
             await _setupRepository.UpdateTagAsync(tag);
             await _context.SaveChangesAsync();
