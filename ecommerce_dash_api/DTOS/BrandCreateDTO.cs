@@ -4,14 +4,19 @@ namespace ecommerce_dash_api.DTOS
 {
     public class BrandCreateDTO
     {
+        private string _name = null!;
         [Required(AllowEmptyStrings = false), StringLength(255, MinimumLength = 1, ErrorMessage = "Name must be between 1 and 255 characters.")]
-        public string Name { get; set; }
+        public string Name
+        {
+            get => _name;
+            set => _name = value.Trim().ToUpper();
+        }
 
-        [Required(AllowEmptyStrings = false), StringLength(255, MinimumLength = 1, ErrorMessage = "Website must be between 1 and 255 characters.")]
-        public string Website { get; set; }
+        public string? Website { get; set; }
 
-        [Required(AllowEmptyStrings = false), StringLength(255, MinimumLength = 1, ErrorMessage = "LogoUrl must be between 1 and 255 characters.")]
-        public string LogoUrl { get; set; }
+        [Required]
+        [MaxFileSize(10 * 1024 * 1024)]
+        public IFormFile LogoFile { get; set; } = null!;
 
         [Required]
         public int CountryId { get; set; }

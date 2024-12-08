@@ -1,0 +1,41 @@
+{
+  "Files": [
+    {
+      "Id": "C:\\Users\\User\\Desktop\\MK\\Projects\\Ecommerce\\ecommerce_api\\ecommerce_dash_api\\wwwroot\\images\\brands\\4d02e4e0-fd0a-451d-a4ae-0fea0bb770d5.jpg",
+      "PackagePath": "staticwebassets\\images\\brands\\4d02e4e0-fd0a-451d-a4ae-0fea0bb770d5.jpg"
+    },
+    {
+      "Id": "C:\\Users\\User\\Desktop\\MK\\Projects\\Ecommerce\\ecommerce_api\\ecommerce_dash_api\\wwwroot\\images\\brands\\b4ed26be-bc07-49aa-91f5-b04b9e4acefe.jpg",
+      "PackagePath": "staticwebassets\\images\\brands\\b4ed26be-bc07-49aa-91f5-b04b9e4acefe.jpg"
+    },
+    {
+      "Id": "C:\\Users\\User\\Desktop\\MK\\Projects\\Ecommerce\\ecommerce_api\\ecommerce_dash_api\\wwwroot\\images\\brands\\c8207563-dac3-49ba-9f42-cabc02373987.jpg",
+      "PackagePath": "staticwebassets\\images\\brands\\c8207563-dac3-49ba-9f42-cabc02373987.jpg"
+    },
+    {
+      "Id": "C:\\Users\\User\\Desktop\\MK\\Projects\\Ecommerce\\ecommerce_api\\ecommerce_dash_api\\wwwroot\\images\\brands\\cb2e2801-9e89-4fba-ae7c-1f0ae5a49a58.png",
+      "PackagePath": "staticwebassets\\images\\brands\\cb2e2801-9e89-4fba-ae7c-1f0ae5a49a58.png"
+    },
+    {
+      "Id": "C:\\Users\\User\\Desktop\\MK\\Projects\\Ecommerce\\ecommerce_api\\ecommerce_dash_api\\wwwroot\\images\\brands\\e13a5276-42d7-4c66-99bf-52414fee9a45.jpg",
+      "PackagePath": "staticwebassets\\images\\brands\\e13a5276-42d7-4c66-99bf-52414fee9a45.jpg"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.build.ecommerce_dash_api.props",
+      "PackagePath": "build\\ecommerce_dash_api.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildMultiTargeting.ecommerce_dash_api.props",
+      "PackagePath": "buildMultiTargeting\\ecommerce_dash_api.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildTransitive.ecommerce_dash_api.props",
+      "PackagePath": "buildTransitive\\ecommerce_dash_api.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.ecommerce_dash_api.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    }
+  ],
+  "ElementsToRemove": []
+}

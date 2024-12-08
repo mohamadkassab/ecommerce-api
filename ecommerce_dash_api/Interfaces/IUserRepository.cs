@@ -11,11 +11,12 @@ namespace ecommerce_dash_api.Interfaces
         //+------------------------------------------------------------------+
         Task<User?> GetUserAsync(int id);
         Task<(User? user, List<string>? roles, List<string>? permissions)> GetUserByUsernameAsync(string username);
-        Task<List<UserWithRolesAndPermissionsQRY>> GetAllUsersWithRolesAndPermissions();
+        Task<List<UserWithRolesQRY>> GetAllUsersWithRoles();
         Task<bool> UsernameExistsAsync(string username);
         Task CreateUserAsync(User user);
         Task UpdateUserAsync(User user);  
         Task DeleteUserAsync(User user);
+        Task DeleteUserRolesByUserIdAsync(int userId);
 
 
         //+------------------------------------------------------------------+
@@ -25,8 +26,7 @@ namespace ecommerce_dash_api.Interfaces
         Task<Role?> GetRoleByIdAsync(int id);
         Task<List<RoleQRY>> GetAllRolesWithPermissionsAsync();
         Task DeleteRoleAsync(Role role);
-        Task DeleteUserRolesAsync(List<UserRole> userRoles);
-        Task DeleteRolePermissionsAsync(List<RolePermission> rolePermissions);
+        Task DeleteRolePermissionsAsync(int permissionId);
 
 
         //+------------------------------------------------------------------+

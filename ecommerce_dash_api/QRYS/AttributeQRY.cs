@@ -3,9 +3,9 @@
     public class AttributeQRY
     {
         public int Id { get; set; }
-        public string? Name { get; set; }
+        public string Name { get; set; } = null!;
         public DateTime? UpdatedAt { get; set; }
         public string? UpdatedBy { get; set; }
-        public List<OptionQRY>? Options { get; set; }
+        public List<string> Options { get; set; } = null!;
     }
 }

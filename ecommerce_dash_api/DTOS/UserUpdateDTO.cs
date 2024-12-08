@@ -11,7 +11,7 @@ namespace ecommerce_dash_api.DTOS
         public string Username
         {
             get => _username;
-            set => _username = value.ToLower();
+            set => _username = value.Trim().ToLower();
         }
 
         private string _firstname = null!;
@@ -19,7 +19,7 @@ namespace ecommerce_dash_api.DTOS
         public string FirstName
         {
             get => _firstname;
-            set => _firstname = value.ToLower();
+            set => _firstname = value.Trim().ToLower();
         }
 
         private string _lastname = null!;
@@ -27,7 +27,7 @@ namespace ecommerce_dash_api.DTOS
         public string LastName
         {
             get => _lastname;
-            set => _lastname = value.ToLower();
+            set => _lastname = value.Trim().ToLower();
         }
 
         public DateOnly Dob { get; set; }
@@ -36,11 +36,11 @@ namespace ecommerce_dash_api.DTOS
         public string Phone { get; set; } = null!;
 
         [MaxLength(255, ErrorMessage = "Address maximum address length is 255")]
-        public string Address { get; set; }
+        public string? Address { get; set; }
 
         [StringLength(255)]
         [DataType(DataType.Password)]
-        public string Password { get; set; } = null!;
+        public string? Password { get; set; } = null!;
 
         public List<int> Roles { get; set; } = new List<int>();
     }

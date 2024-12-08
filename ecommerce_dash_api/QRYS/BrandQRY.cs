@@ -1,12 +1,14 @@
-﻿namespace ecommerce_dash_api.QRYS
+﻿using ecommerce_dash_api.Models;
+
+namespace ecommerce_dash_api.QRYS
 {
     public class BrandQRY
     {
         public int Id { get; set; }
-        public string? Name { get; set; }
+        public string Name { get; set; } = null!;
         public string? Website { get; set; }
-        public string? LogoUrl { get; set; }
-        public int? CountryId { get; set; }
+        public byte[]? LogoFile { get; set; }
+        public Country Country { get; set; } = null!;
         public DateTime? UpdatedAt { get; set; }
         public string? UpdatedBy { get; set; }
     }

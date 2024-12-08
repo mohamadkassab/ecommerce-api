@@ -98,8 +98,8 @@ namespace ecommerce_dash_api.Controllers
             }
         }
 
-        [HttpGet("GetAllUsersWithRolesAndPermissions")]
-        public async Task<IActionResult> GetAllUsersWithRolesAndPermissions()
+        [HttpGet("GetAllUsersWithRoles")]
+        public async Task<IActionResult> GetAllUsersWithRoles()
         {
             var userClaims = User.Claims;
             var username = User.FindFirstValue("username") ?? null;
@@ -109,7 +109,7 @@ namespace ecommerce_dash_api.Controllers
             {
                 try
                 {
-                    var result = await _userService.GetAllUsersWithRolesAndPermissionsAsync();
+                    var result = await _userService.GetAllUsersWithRoles();
                     await _apiService.CreateLogAsync(LogLevelEnum.INFO.ToString(), LogMessageTemplates.successful.ToString(), null, username, ipAddress, actionName, null);
                     return Ok(result);
 

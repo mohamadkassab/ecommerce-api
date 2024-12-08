@@ -181,7 +181,6 @@ namespace ecommerce_dash_api.Controllers
             }
         }
 
-
         //+------------------------------------------------------------------+
         //| Brand                                            
         //+------------------------------------------------------------------+
@@ -216,7 +215,7 @@ namespace ecommerce_dash_api.Controllers
         }
 
         [HttpPost("CreateBrand")]
-        public async Task<IActionResult> CreateBrand([FromBody] BrandCreateDTO brand)
+        public async Task<IActionResult> CreateBrand([FromForm] BrandCreateDTO brand)
         {
             var userClaims = User.Claims;
             var username = User.FindFirstValue("username") ?? null;
@@ -256,7 +255,7 @@ namespace ecommerce_dash_api.Controllers
         }
 
         [HttpPut("UpdateBrand")]
-        public async Task<IActionResult> UpdateBrand([FromBody] BrandUpdateDTO brand)
+        public async Task<IActionResult> UpdateBrand([FromForm] BrandUpdateDTO brand)
         {
             var userClaims = User.Claims;
             var username = User.FindFirstValue("username") ?? null;
@@ -334,7 +333,6 @@ namespace ecommerce_dash_api.Controllers
                 return Forbid();
             }
         }
-
 
         //+------------------------------------------------------------------+
         //| Category                                            
@@ -489,7 +487,6 @@ namespace ecommerce_dash_api.Controllers
             }
         }
 
-
         //+------------------------------------------------------------------+
         //| Currency                                            
         //+------------------------------------------------------------------+
@@ -642,7 +639,6 @@ namespace ecommerce_dash_api.Controllers
                 return Forbid();
             }
         }
-
 
         //+------------------------------------------------------------------+
         //| Year                                            
@@ -797,7 +793,6 @@ namespace ecommerce_dash_api.Controllers
             }
         }
 
-
         //+------------------------------------------------------------------+
         //| Season                                            
         //+------------------------------------------------------------------+
@@ -950,7 +945,6 @@ namespace ecommerce_dash_api.Controllers
                 return Forbid();
             }
         }
-
 
         //+------------------------------------------------------------------+
         //| Section                                            
@@ -1105,7 +1099,6 @@ namespace ecommerce_dash_api.Controllers
             }
         }
 
-
         //+------------------------------------------------------------------+
         //| Supplier                                            
         //+------------------------------------------------------------------+
@@ -1258,7 +1251,6 @@ namespace ecommerce_dash_api.Controllers
                 return Forbid();
             }
         }
-
 
         //+------------------------------------------------------------------+
         //| Tag                                            
@@ -1413,7 +1405,6 @@ namespace ecommerce_dash_api.Controllers
             }
         }
 
-
         //+------------------------------------------------------------------+
         //| Attribute                                            
         //+------------------------------------------------------------------+
@@ -1431,7 +1422,6 @@ namespace ecommerce_dash_api.Controllers
                     var result = await _setupService.GetAllAttributesWithOptionsAsync();
                     await _apiService.CreateLogAsync(LogLevelEnum.INFO.ToString(), LogMessageTemplates.successful.ToString(), null, username, ipAddress, actionName, null);
                     return Ok(result);
-
                 }
                 catch (Exception ex)
                 {

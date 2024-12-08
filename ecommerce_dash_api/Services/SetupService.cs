@@ -5,6 +5,7 @@ using ecommerce_dash_api.QRYS;
 using ecommerce_dash_api.Utils;
 using Microsoft.EntityFrameworkCore;
 using System.Data;
+using System.Xml.Linq;
 using Attribute = ecommerce_dash_api.Models.Attribute;
 
 namespace ecommerce_dash_api.Services
@@ -57,7 +58,6 @@ namespace ecommerce_dash_api.Services
             return true;
         }
 
-
         //+------------------------------------------------------------------+
         //| Brand                                            
         //+------------------------------------------------------------------+
@@ -68,10 +68,18 @@ namespace ecommerce_dash_api.Services
         }
         public async Task<bool> CreateBrandAsync(BrandCreateDTO brandDTO, string? username)
         {
+            var fileExtension = Path.GetExtension(brandDTO.LogoFile.FileName);
+            var uniqueFileName = $"{Guid.NewGuid()}{fileExtension}";
+            var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", "brands", uniqueFileName);
+            using(Stream stream = new FileStream(filePath, FileMode.Create))
+            {
+                brandDTO.LogoFile.CopyTo(stream);
+            }
+
             Brand brand = new Brand();
             brand.Name = brandDTO.Name;
             brand.Website = brandDTO.Website;
-            brand.LogoUrl = brandDTO.LogoUrl;
+            brand.LogoUrl = filePath;
             brand.CountryId = brandDTO.CountryId;
             brand.UpdatedBy = username;
             await _setupRepository.CreateBrandAsync(brand);
@@ -81,9 +89,24 @@ namespace ecommerce_dash_api.Services
         public async Task<bool> UpdateBrandAsync(BrandUpdateDTO brandDTO, string? username)
         {
             Brand brand = await _setupRepository.GetBrandByIdAsync(brandDTO.Id);
+            var filePath = brand.LogoUrl;
+            if (brandDTO.LogoFile != null) {
+                if (!string.IsNullOrEmpty(brand.LogoUrl) && File.Exists(brand.LogoUrl))
+                {
+                    File.Delete(brand.LogoUrl); // Deletes the old file
+                }
+                var fileExtension = Path.GetExtension(brandDTO.LogoFile.FileName);
+                var uniqueFileName = $"{Guid.NewGuid()}{fileExtension}";
+                filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", "brands", uniqueFileName);
+                using (Stream stream = new FileStream(filePath, FileMode.Create))
+                {
+                    brandDTO.LogoFile.CopyTo(stream);
+                }
+            }
+        
             brand.Name = brandDTO.Name;
             brand.Website = brandDTO.Website;
-            brand.LogoUrl = brandDTO.LogoUrl;
+            brand.LogoUrl = filePath;
             brand.CountryId = brandDTO.CountryId;
             brand.UpdatedBy = username;
             await _setupRepository.UpdateBrandAsync(brand);
@@ -98,7 +121,6 @@ namespace ecommerce_dash_api.Services
             await _context.SaveChangesAsync();
             return true;
         }
-
 
         //+------------------------------------------------------------------+
         //| Category                                            
@@ -134,7 +156,6 @@ namespace ecommerce_dash_api.Services
             await _context.SaveChangesAsync();
             return true;
         }
-
 
         //+------------------------------------------------------------------+
         //| Currency                                            
@@ -177,7 +198,6 @@ namespace ecommerce_dash_api.Services
             return true;
         }
 
-
         //+------------------------------------------------------------------+
         //| Year                                            
         //+------------------------------------------------------------------+
@@ -212,7 +232,6 @@ namespace ecommerce_dash_api.Services
             await _context.SaveChangesAsync();
             return true;
         }
-
 
         //+------------------------------------------------------------------+
         //| Season                                            
@@ -249,7 +268,6 @@ namespace ecommerce_dash_api.Services
             return true;
         }
 
-
         //+------------------------------------------------------------------+
         //| Section                                            
         //+------------------------------------------------------------------+
@@ -260,36 +278,36 @@ namespace ecommerce_dash_api.Services
         }
         public async Task<bool> CreateSectionAsync(SectionCreateDTO sectionDTO, string? username)
         {
-            Section section = new Section();
-            section.Name = sectionDTO.Name;
-            section.UpdatedBy = username;
-            var sectionCategories = sectionDTO.Categories.Select(sectionId => new SectionCategory
+            var section = new Section
             {
-                SectionId = section.Id,
-                CategoryId = sectionId,
+                Name = sectionDTO.Name,
+                UpdatedBy = username,
+            };
+            var sectionCategories = sectionDTO.Categories.Select(categoryId => new SectionCategory
+            {
+                CategoryId = categoryId,
                 UpdatedBy = username
             }).ToList();
-            section.SectionCategorySections = sectionCategories;
+            section.SectionCategories = sectionCategories;
             await _setupRepository.CreateSectionAsync(section);
-            await _context.SaveChangesAsync();
+            _context.SaveChanges();
             return true;
         }
         public async Task<bool> UpdateSectionAsync(SectionUpdateDTO sectionDTO, string? username)
         {
+            await _setupRepository.DeleteSectionCategoriesBySectionIdAsync(sectionDTO.Id);
             Section section = await _setupRepository.GetSectionByIdAsync(sectionDTO.Id);
             section.Name = sectionDTO.Name;
             section.UpdatedBy = username;
-            var sectionCategoriesToDelete = await _context.SectionCategories.Where(i => i.SectionId == section.Id).ToListAsync();
-            await _setupRepository.DeleteSectionCategoriesAsync(sectionCategoriesToDelete);
-            var sectionCategories = sectionDTO.Categories.Select(sectionId => new SectionCategory
+            var sectionCategories = sectionDTO.Categories.Select(categoryId => new SectionCategory
             {
-                SectionId = section.Id,
-                CategoryId = sectionId,
+                CategoryId = categoryId,
+                Section = section,
                 UpdatedBy = username
             }).ToList();
-            section.SectionCategorySections = sectionCategories;
+            section.SectionCategories = sectionCategories;
             await _setupRepository.UpdateSectionAsync(section);
-            await _context.SaveChangesAsync();
+            _context.SaveChanges();
             return true;
         }
         public async Task<bool> DeleteSectionAsync(int id)
@@ -300,7 +318,6 @@ namespace ecommerce_dash_api.Services
             await _context.SaveChangesAsync();
             return true;
         }
-
 
         //+------------------------------------------------------------------+
         //| Supplier                                            
@@ -349,7 +366,6 @@ namespace ecommerce_dash_api.Services
             return true;
         }
 
-
         //+------------------------------------------------------------------+
         //| Tag                                            
         //+------------------------------------------------------------------+
@@ -385,7 +401,6 @@ namespace ecommerce_dash_api.Services
             return true;
         }
 
-
         //+------------------------------------------------------------------+
         //| Attribute                                            
         //+------------------------------------------------------------------+
@@ -394,44 +409,44 @@ namespace ecommerce_dash_api.Services
             var result = await _setupRepository.GetAllAttributesWithOptionsAsync();
             return result;
         }
-
         public async Task<bool> CreateAttributeAsync(AttributeCreateDTO attributeDTO, string? username)
         {
-            Attribute attribute = new Attribute();
-            attribute.Name = attributeDTO.Name;
-            attribute.UpdatedBy = username;
-            var AttributeOptions = attributeDTO.Values.Select(optionValue => new AttributeOption
+            Attribute attribute = new Attribute
             {
-                AttributeId = attribute.Id,
-                Value = optionValue,
-                UpdatedBy = username
-            }).ToList();
-
-            attribute.AttributeOptions = AttributeOptions;
+                Name = attributeDTO.Name,
+                UpdatedBy = username,
+            };           
             await _setupRepository.CreateAttributeAsync(attribute);
+            foreach (var option in attributeDTO.Options) {
+                AttributeOption attributeOption = new AttributeOption
+                {
+                    Attribute = attribute,
+                    Option = option
+                };
+                await _setupRepository.CreateAttributeOptionAsync(attributeOption);
+            }           
             await _context.SaveChangesAsync();
             return true;
         }
-
         public async Task<bool> UpdateAttributeAsync(AttributeUpdateDTO attributeDTO, string? username)
         {
+            await _setupRepository.DeleteAttributeOptionsByAttributeIdAsync(attributeDTO.Id);
             Attribute attribute = await _setupRepository.GetAttributeByIdAsync(attributeDTO.Id);
             attribute.Name = attributeDTO.Name;
             attribute.UpdatedBy = username;
-            var attributeOptionsToDelete = await _context.AttributeOptions.Where(i => i.AttributeId == attribute.Id).ToListAsync();
-            await _setupRepository.DeleteAttributeOptionsAsync(attributeOptionsToDelete);
-            var attributeOptions = attributeDTO.Values.Select(optionValue => new AttributeOption
-            {
-                AttributeId = attribute.Id,
-                Value = optionValue,
-                UpdatedBy = username
-            }).ToList();
-            attribute.AttributeOptions = attributeOptions;
             await _setupRepository.UpdateAttributeAsync(attribute);
+            foreach (var option in attributeDTO.Options)
+            {
+                AttributeOption attributeOption = new AttributeOption
+                {
+                    Attribute = attribute,
+                    Option = option
+                };
+                await _setupRepository.CreateAttributeOptionAsync(attributeOption);
+            }
             await _context.SaveChangesAsync();
             return true;
         }
-
         public async Task<bool> DeleteAttributeAsync(int id)
         {
             var attribute = await _context.Attributes

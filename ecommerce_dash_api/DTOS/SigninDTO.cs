@@ -9,7 +9,7 @@ namespace ecommerce_dash_api.DTOS
         public string Username
         {
             get => _username;
-            set => _username = value.ToLower();
+            set => _username = value.Trim().ToLower();
         }
 
         [Required(AllowEmptyStrings = false), StringLength(255, MinimumLength = 6, ErrorMessage = "Password must be between 6 and 255 characters.")]

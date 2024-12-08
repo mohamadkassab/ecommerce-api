@@ -13,9 +13,7 @@ public partial class Section
 
     public string? UpdatedBy { get; set; }
 
-    public virtual ICollection<SectionCategory> SectionCategoryCategories { get; set; } = new List<SectionCategory>();
-
-    public virtual ICollection<SectionCategory> SectionCategorySections { get; set; } = new List<SectionCategory>();
+    public virtual ICollection<SectionCategory> SectionCategories { get; set; } = new List<SectionCategory>();
 
     public virtual User? UpdatedByNavigation { get; set; }
 }

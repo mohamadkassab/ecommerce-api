@@ -15,5 +15,7 @@ public partial class Category
 
     public virtual ICollection<ProductCategory> ProductCategories { get; set; } = new List<ProductCategory>();
 
+    public virtual ICollection<SectionCategory> SectionCategories { get; set; } = new List<SectionCategory>();
+
     public virtual User? UpdatedByNavigation { get; set; }
 }

@@ -172,19 +172,18 @@ public partial class EcommerceContext : DbContext
 
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.AttributeId).HasColumnName("attribute_id");
+            entity.Property(e => e.Option)
+                .HasMaxLength(255)
+                .HasColumnName("option");
             entity.Property(e => e.UpdatedAt)
                 .ValueGeneratedOnAddOrUpdate()
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")
                 .HasColumnType("datetime")
                 .HasColumnName("updated_at");
             entity.Property(e => e.UpdatedBy).HasColumnName("updated_by");
-            entity.Property(e => e.Value)
-                .HasMaxLength(255)
-                .HasColumnName("value");
 
             entity.HasOne(d => d.Attribute).WithMany(p => p.AttributeOptions)
                 .HasForeignKey(d => d.AttributeId)
-                .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("attribute_option_ibfk_2");
 
             entity.HasOne(d => d.UpdatedByNavigation).WithMany(p => p.AttributeOptions)
@@ -224,7 +223,6 @@ public partial class EcommerceContext : DbContext
 
             entity.HasOne(d => d.Country).WithMany(p => p.Brands)
                 .HasForeignKey(d => d.CountryId)
-                .OnDelete(DeleteBehavior.SetNull)
                 .HasConstraintName("brand_ibfk_2");
 
             entity.HasOne(d => d.UpdatedByNavigation).WithMany(p => p.Brands)
@@ -577,12 +575,10 @@ public partial class EcommerceContext : DbContext
 
             entity.HasOne(d => d.Order).WithMany(p => p.OrderItems)
                 .HasForeignKey(d => d.OrderId)
-                .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("order_item_ibfk_1");
 
             entity.HasOne(d => d.Product).WithMany(p => p.OrderItems)
                 .HasForeignKey(d => d.ProductId)
-                .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("order_item_ibfk_2");
         });
 
@@ -611,12 +607,10 @@ public partial class EcommerceContext : DbContext
 
             entity.HasOne(d => d.Order).WithOne(p => p.OrderPayment)
                 .HasForeignKey<OrderPayment>(d => d.OrderId)
-                .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("order_payment_ibfk_1");
 
             entity.HasOne(d => d.PaymentMethod).WithMany(p => p.OrderPayments)
                 .HasForeignKey(d => d.PaymentMethodId)
-                .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("order_payment_ibfk_2");
         });
 
@@ -648,12 +642,10 @@ public partial class EcommerceContext : DbContext
 
             entity.HasOne(d => d.Order).WithOne(p => p.OrderShipping)
                 .HasForeignKey<OrderShipping>(d => d.OrderId)
-                .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("order_shipping_ibfk_1");
 
             entity.HasOne(d => d.ShippingMethod).WithMany(p => p.OrderShippings)
                 .HasForeignKey(d => d.ShippingMethodId)
-                .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("order_shipping_ibfk_2");
         });
 
@@ -806,12 +798,10 @@ public partial class EcommerceContext : DbContext
 
             entity.HasOne(d => d.AttributeOption).WithMany(p => p.ProductAttributeOptions)
                 .HasForeignKey(d => d.AttributeOptionId)
-                .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("product_attribute_option_ibfk_3");
 
             entity.HasOne(d => d.Product).WithMany(p => p.ProductAttributeOptions)
                 .HasForeignKey(d => d.ProductId)
-                .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("product_attribute_option_ibfk_2");
 
             entity.HasOne(d => d.UpdatedByNavigation).WithMany(p => p.ProductAttributeOptions)
@@ -845,12 +835,10 @@ public partial class EcommerceContext : DbContext
 
             entity.HasOne(d => d.Category).WithMany(p => p.ProductCategories)
                 .HasForeignKey(d => d.CategoryId)
-                .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("product_category_ibfk_3");
 
             entity.HasOne(d => d.Product).WithMany(p => p.ProductCategories)
                 .HasForeignKey(d => d.ProductId)
-                .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("product_category_ibfk_2");
 
             entity.HasOne(d => d.UpdatedByNavigation).WithMany(p => p.ProductCategories)
@@ -925,7 +913,6 @@ public partial class EcommerceContext : DbContext
 
             entity.HasOne(d => d.Product).WithMany(p => p.ProductMedia)
                 .HasForeignKey(d => d.ProductId)
-                .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("product_media_ibfk_2");
 
             entity.HasOne(d => d.UpdatedByNavigation).WithMany(p => p.ProductMedia)
@@ -951,7 +938,6 @@ public partial class EcommerceContext : DbContext
 
             entity.HasOne(d => d.Product).WithOne(p => p.ProductQuantity)
                 .HasForeignKey<ProductQuantity>(d => d.ProductId)
-                .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("product_quantity_ibfk_1");
         });
 
@@ -979,12 +965,10 @@ public partial class EcommerceContext : DbContext
 
             entity.HasOne(d => d.Product).WithMany(p => p.ProductTags)
                 .HasForeignKey(d => d.ProductId)
-                .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("product_tag_ibfk_2");
 
             entity.HasOne(d => d.Tag).WithMany(p => p.ProductTags)
                 .HasForeignKey(d => d.TagId)
-                .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("product_tag_ibfk_3");
 
             entity.HasOne(d => d.UpdatedByNavigation).WithMany(p => p.ProductTags)
@@ -1119,7 +1103,7 @@ public partial class EcommerceContext : DbContext
 
             entity.HasIndex(e => e.CategoryId, "section_category_ibfk_3");
 
-            entity.HasIndex(e => new { e.SectionId, e.CategoryId }, "section_id").IsUnique();
+            entity.HasIndex(e => new { e.SectionId, e.CategoryId }, "section_category_unique").IsUnique();
 
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.CategoryId).HasColumnName("category_id");
@@ -1131,14 +1115,12 @@ public partial class EcommerceContext : DbContext
                 .HasColumnName("updated_at");
             entity.Property(e => e.UpdatedBy).HasColumnName("updated_by");
 
-            entity.HasOne(d => d.Category).WithMany(p => p.SectionCategoryCategories)
+            entity.HasOne(d => d.Category).WithMany(p => p.SectionCategories)
                 .HasForeignKey(d => d.CategoryId)
-                .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("section_category_ibfk_3");
 
-            entity.HasOne(d => d.Section).WithMany(p => p.SectionCategorySections)
+            entity.HasOne(d => d.Section).WithMany(p => p.SectionCategories)
                 .HasForeignKey(d => d.SectionId)
-                .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("section_category_ibfk_2");
 
             entity.HasOne(d => d.UpdatedByNavigation).WithMany(p => p.SectionCategories)

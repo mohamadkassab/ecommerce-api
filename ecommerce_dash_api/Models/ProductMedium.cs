@@ -7,7 +7,7 @@ public partial class ProductMedium
 {
     public int Id { get; set; }
 
-    public int? ProductId { get; set; }
+    public int ProductId { get; set; }
 
     public string MediaType { get; set; } = null!;
 
@@ -21,7 +21,7 @@ public partial class ProductMedium
 
     public string? UpdatedBy { get; set; }
 
-    public virtual Product? Product { get; set; }
+    public virtual Product Product { get; set; } = null!;
 
     public virtual User? UpdatedByNavigation { get; set; }
 }

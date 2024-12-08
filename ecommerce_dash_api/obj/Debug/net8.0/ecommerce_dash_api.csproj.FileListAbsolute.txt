@@ -266,3 +266,4 @@ C:\Users\User\Desktop\MK\Projects\Ecommerce\ecommerce_api\ecommerce_dash_api\obj
 C:\Users\User\Desktop\MK\Projects\Ecommerce\ecommerce_api\ecommerce_dash_api\obj\Debug\net8.0\ref\ecommerce_dash_api.dll
 C:\Users\User\Desktop\MK\Projects\Ecommerce\ecommerce_api\ecommerce_dash_api\bin\Debug\net8.0\runtimes\win\lib\net8.0\System.Windows.Extensions.dll
 C:\Users\User\Desktop\MK\Projects\Ecommerce\ecommerce_api\ecommerce_dash_api\bin\Debug\net8.0\Newtonsoft.Json.dll
+C:\Users\User\Desktop\MK\Projects\Ecommerce\ecommerce_api\ecommerce_dash_api\bin\Debug\net8.0\ecommerce_dash_api.staticwebassets.runtime.json

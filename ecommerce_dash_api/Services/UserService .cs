@@ -2,9 +2,11 @@
 using ecommerce_dash_api.Interfaces;
 using ecommerce_dash_api.Models;
 using ecommerce_dash_api.QRYS;
+using ecommerce_dash_api.Repositories;
 using ecommerce_dash_api.Utils;
 using Microsoft.EntityFrameworkCore;
 using System;
+using static System.Collections.Specialized.BitVector32;
 
 
 namespace ecommerce_dash_api.Services
@@ -27,9 +29,9 @@ namespace ecommerce_dash_api.Services
         //+------------------------------------------------------------------+
         //| User                                            
         //+------------------------------------------------------------------+
-        public async Task<List<UserWithRolesAndPermissionsQRY>> GetAllUsersWithRolesAndPermissionsAsync()
+        public async Task<List<UserWithRolesQRY>> GetAllUsersWithRoles()
         {
-            var result = await _userRepository.GetAllUsersWithRolesAndPermissions();
+            var result = await _userRepository.GetAllUsersWithRoles();
             return result;
         }
         public async Task<string> SigninAsync(SigninDTO signinDTO)
@@ -47,20 +49,48 @@ namespace ecommerce_dash_api.Services
         }     
         public async Task<bool> CreateUserAsync(UserCreateDTO userDto, string? username)
         {
-
             if (await _userRepository.UsernameExistsAsync(userDto.Username))
             {
                 throw new InvalidOperationException("Email is already registered");
             }
 
-            User user = new User();
+            var user = new User
+            {
+                FirstName = userDto.FirstName,
+                LastName = userDto.LastName,
+                Phone = userDto.Phone,
+                Username = userDto.Username,
+                Dob = userDto.Dob,
+                PasswordHash = _passwordHasher.HashPassword(userDto.Password),
+                Address = userDto.Address,
+                UpdatedBy = username
+            };
+            var userRoles = userDto.Roles.Select(roleId => new UserRole
+            {
+                UserId = user.Id,
+                RoleId = roleId,
+                UpdatedBy = username
+            }).ToList();
+
+            user.UserRoleUsers = userRoles;
+            await _userRepository.CreateUserAsync(user);
+            await _context.SaveChangesAsync();
+            return true;  
+        }
+        public async Task<bool> UpdateUserAsync(UserUpdateDTO? userDto, string? username)
+        {
+            await _userRepository.DeleteUserRolesByUserIdAsync(userDto.Id);
+            User user = await _userRepository.GetUserAsync(userDto.Id);
             user.FirstName = userDto.FirstName;
             user.LastName = userDto.LastName;
-            user.Phone = userDto.Phone;
-            user.Username = userDto.Username;
             user.Dob = userDto.Dob;
-            user.PasswordHash = _passwordHasher.HashPassword(userDto.Password);
+            user.Phone = userDto.Phone;
+            user.Address = userDto.Address;
             user.UpdatedBy = username;
+            if (!string.IsNullOrEmpty(userDto.Password))
+            {
+                user.PasswordHash = _passwordHasher.HashPassword(userDto.Password);
+            }
             var userRoles = userDto.Roles.Select(roleId => new UserRole
             {
                 UserId = user.Id,
@@ -68,75 +98,9 @@ namespace ecommerce_dash_api.Services
                 UpdatedBy = username
             }).ToList();
             user.UserRoleUsers = userRoles;
-            await _userRepository.CreateUserAsync(user);
+            await _userRepository.UpdateUserAsync(user);
             await _context.SaveChangesAsync();
-
-            return true;    
-        }
-        public async Task<bool> UpdateUserAsync(UserUpdateDTO? userDto, string? username)
-        {
-            User user = await _userRepository.GetUserAsync(userDto.Id);
-            if (user != null)
-            {
-                user.FirstName = userDto.FirstName;
-                user.LastName = userDto.LastName;
-                user.Dob = userDto.Dob;
-                user.Phone = userDto.Phone;
-                user.Address = userDto.Address;
-                user.UpdatedBy = username;
-
-                if (!string.IsNullOrEmpty(userDto.Password))
-                {
-                    user.PasswordHash = _passwordHasher.HashPassword(userDto.Password);
-                }
-
-                var userRoles = await _context.UserRoles.Where(ur => ur.UserId == user.Id).ToListAsync();
-                await _userRepository.DeleteUserRolesAsync(userRoles);
-                userRoles = userDto.Roles.Select(roleId => new UserRole
-                {
-                    UserId = user.Id,
-                    RoleId = roleId,
-                    UpdatedBy = username
-                }).ToList();
-                await _userRepository.UpdateUserAsync(user);
-                await _context.SaveChangesAsync();
-
-                return true;
-            }
-            return false;
-
-            //public async Task AddUserWithRoles(AppDbContext context)
-            //{
-            //    // Create a new user
-            //    var newUser = new User
-            //    {
-            //        Username = "john_doe",
-            //        FirstName = "John",
-            //        LastName = "Doe",
-            //        DOB = new DateTime(1990, 1, 1),
-            //        Phone = "1234567890",
-            //        Address = "123 Main Street",
-            //        PasswordHash = "hashed_password_here",
-            //        UpdatedBy = "admin",
-            //        FailedLoginAttempts = 0,
-            //        IsActive = true
-            //    };
-
-            //    // Assign roles to the user
-            //    var rolesToAssign = await context.Roles
-            //        .Where(r => r.Name == "Admin" || r.Name == "Editor") // Example roles
-            //        .ToListAsync();
-
-            //    newUser.UserRoles = rolesToAssign.Select(r => new UserRole
-            //    {
-            //        RoleId = r.Id,
-            //        UpdatedBy = "admin"
-            //    }).ToList();
-
-            //    // Add the user to the database
-            //    context.Users.Add(newUser);
-            //    await context.SaveChangesAsync();
-            //}
+            return true;
         }
         public async Task<bool> DeleteUserAsync(int userId)
         {
@@ -164,7 +128,6 @@ namespace ecommerce_dash_api.Services
             return true;
         }
 
-
         //+------------------------------------------------------------------+
         //| Role                                            
         //+------------------------------------------------------------------+
@@ -175,20 +138,17 @@ namespace ecommerce_dash_api.Services
         }
         public async Task<bool> CreateRoleAsync(RoleCreateDTO createRoleDto, string? username)
         {
-            Role role = new Role();
-            List<RolePermission> rolePermissions = new List<RolePermission>();
-            role.Name = createRoleDto.RoleName;
-
-            foreach (var permissionId in createRoleDto.Permissions)
+            Role role = new Role
             {
-                var rolePermission = new RolePermission
-                {
-                    RoleId = role.Id,
-                    PermissionId = permissionId,
-                    UpdatedBy = username
-                };
-                rolePermissions.Add(rolePermission);
-            }
+                Name = createRoleDto.Name,
+                UpdatedBy = username,
+            };
+            var rolePermissions = createRoleDto.Permissions.Select(permissionId => new RolePermission
+            {
+                RoleId = role.Id,
+                PermissionId = permissionId,
+                UpdatedBy = username
+            }).ToList();
             role.RolePermissions = rolePermissions;
             await _context.Roles.AddAsync(role);
             await _context.SaveChangesAsync();
@@ -197,26 +157,16 @@ namespace ecommerce_dash_api.Services
         }
         public async Task<bool> UpdateRoleAsync(RoleUpdateDTO updateRoleDto, string? username)
         {
+            await _userRepository.DeleteRolePermissionsAsync(updateRoleDto.Id);
             Role role = await _userRepository.GetRoleByIdAsync(updateRoleDto.Id);
-            List<RolePermission> rolePermissions = new List<RolePermission>();
-            role.Name = updateRoleDto.RoleName;
+            role.Name = updateRoleDto.Name;
             role.UpdatedBy = username;
-
-            var rolePermissionsToDelete = await _context.RolePermissions
-            .Where(rp => rp.RoleId == updateRoleDto.Id)
-            .ToListAsync();
-            await _userRepository.DeleteRolePermissionsAsync(rolePermissionsToDelete);
-
-            foreach (var permissionId in updateRoleDto.Permissions)
+            var rolePermissions = updateRoleDto.Permissions.Select(permissionId => new RolePermission
             {
-                var rolePermission = new RolePermission
-                {
-                    RoleId = updateRoleDto.Id,
-                    PermissionId = permissionId,
-                    UpdatedBy = username
-                };
-                rolePermissions.Add(rolePermission);
-            }
+                RoleId = updateRoleDto.Id,
+                PermissionId = permissionId,
+                UpdatedBy = username
+            }).ToList();
             role.RolePermissions = rolePermissions;
             await _userRepository.UpdateRoleAsync(role);
             await _context.SaveChangesAsync();
@@ -231,7 +181,6 @@ namespace ecommerce_dash_api.Services
             await _context.SaveChangesAsync();
             return true;
         }
-
 
         //+------------------------------------------------------------------+
         //| Permission                                            

@@ -1,12 +1,9 @@
-﻿using ecommerce_dash_api.DTOS;
-using ecommerce_dash_api.Interfaces;
+﻿using ecommerce_dash_api.Interfaces;
 using ecommerce_dash_api.Models;
 using ecommerce_dash_api.QRYS;
+using ecommerce_dash_api.Utils;
 using Microsoft.EntityFrameworkCore;
-using MySqlX.XDevAPI;
 using System.Data;
-using System.Diagnostics.Metrics;
-using static System.Collections.Specialized.BitVector32;
 using Attribute = ecommerce_dash_api.Models.Attribute;
 using Section = ecommerce_dash_api.Models.Section;
 
@@ -15,10 +12,11 @@ namespace ecommerce_dash_api.Repositories
     public class SetupRepository : ISetupRepository
     {
         private readonly EcommerceContext _context;
-
-        public SetupRepository(EcommerceContext context)
+        private readonly IHelpersFunctions _helpersFunctions;
+        public SetupRepository(EcommerceContext context, IHelpersFunctions helpersFunctions)
         {
             _context = context;
+            _helpersFunctions = helpersFunctions;
         }
 
         //+------------------------------------------------------------------+
@@ -27,20 +25,6 @@ namespace ecommerce_dash_api.Repositories
         public async Task<Country?> GetCountryByIdAsync(int id)
         {
             return await _context.Countries.FirstOrDefaultAsync(i => i.Id == id);
-        }
-        public async Task CreateCountryAsync(Country country)
-        {
-            await _context.Countries.AddAsync(country);
-        }
-        public Task UpdateCountryAsync(Country country)
-        {
-            _context.Countries.Update(country);
-            return Task.CompletedTask;
-        }
-        public Task DeleteCountryAsync(Country country)
-        {
-            _context.Countries.Remove(country);
-            return Task.CompletedTask;
         }
         public async Task<List<CountryQRY>> GetAllCountriesAsync()
         {
@@ -57,7 +41,20 @@ namespace ecommerce_dash_api.Repositories
 
             return result;
         }
-
+        public async Task CreateCountryAsync(Country country)
+        {
+            await _context.Countries.AddAsync(country);
+        }
+        public Task UpdateCountryAsync(Country country)
+        {
+            _context.Countries.Update(country);
+            return Task.CompletedTask;
+        }
+        public Task DeleteCountryAsync(Country country)
+        {
+            _context.Countries.Remove(country);
+            return Task.CompletedTask;
+        }
 
         //+------------------------------------------------------------------+
         //| Brand                                            
@@ -65,6 +62,24 @@ namespace ecommerce_dash_api.Repositories
         public async Task<Brand?> GetBrandByIdAsync(int id)
         {
             return await _context.Brands.FirstOrDefaultAsync(i => i.Id == id);
+        }
+        public async Task<List<BrandQRY>> GetAllBrandsAsync()
+        {
+            var result = await _context.Brands
+          .Include(i => i.Country) 
+          .Select(i => new BrandQRY
+          {
+              Id = i.Id,
+              Name = i.Name,
+              Website = i.Website,
+              LogoFile = _helpersFunctions.GetFileByUrl(i.LogoUrl),
+              UpdatedAt = i.UpdatedAt,
+              UpdatedBy = i.UpdatedBy,
+              Country = i.Country 
+          })
+          .ToListAsync();
+
+            return result;
         }
         public async Task CreateBrandAsync(Brand brand)
         {
@@ -80,24 +95,6 @@ namespace ecommerce_dash_api.Repositories
             _context.Brands.Remove(brand);
             return Task.CompletedTask;
         }
-        public async Task<List<BrandQRY>> GetAllBrandsAsync()
-        {
-            var result = await _context.Brands
-           .Select(i => new BrandQRY
-           {
-               Id = i.Id,
-               Name = i.Name,
-               Website = i.Website,
-               LogoUrl = i.LogoUrl,
-               CountryId = i.CountryId,
-               UpdatedAt = i.UpdatedAt,
-               UpdatedBy = i.UpdatedBy,
-           })
-           .ToListAsync();
-
-            return result;
-        }
-
 
         //+------------------------------------------------------------------+
         //| Category                                            
@@ -105,20 +102,6 @@ namespace ecommerce_dash_api.Repositories
         public async Task<Category?> GetCategoryByIdAsync(int id)
         {
             return await _context.Categories.FirstOrDefaultAsync(i => i.Id == id);
-        }
-        public async Task CreateCategoryAsync(Category category)
-        {
-            await _context.Categories.AddAsync(category);
-        }
-        public Task UpdateCategoryAsync(Category category)
-        {
-            _context.Categories.Update(category);
-            return Task.CompletedTask;
-        }
-        public Task DeleteCategoryAsync(Category category)
-        {
-            _context.Categories.Remove(category);
-            return Task.CompletedTask;
         }
         public async Task<List<CategoryQRY>> GetAllCategoriesAsync()
         {
@@ -134,7 +117,20 @@ namespace ecommerce_dash_api.Repositories
 
             return result;
         }
-
+        public async Task CreateCategoryAsync(Category category)
+        {
+            await _context.Categories.AddAsync(category);
+        }
+        public Task UpdateCategoryAsync(Category category)
+        {
+            _context.Categories.Update(category);
+            return Task.CompletedTask;
+        }
+        public Task DeleteCategoryAsync(Category category)
+        {
+            _context.Categories.Remove(category);
+            return Task.CompletedTask;
+        }
 
         //+------------------------------------------------------------------+
         //| Currency                                            
@@ -142,20 +138,6 @@ namespace ecommerce_dash_api.Repositories
         public async Task<Currency?> GetCurrencyByIdAsync(int id)
         {
             return await _context.Currencies.FirstOrDefaultAsync(i => i.Id == id);
-        }
-        public async Task CreateCurrencyAsync(Currency currency)
-        {
-            await _context.Currencies.AddAsync(currency);
-        }
-        public Task UpdateCurrencyAsync(Currency currency)
-        {
-            _context.Currencies.Update(currency);
-            return Task.CompletedTask;
-        }
-        public Task DeleteCurrencyAsync(Currency currency)
-        {
-            _context.Currencies.Remove(currency);
-            return Task.CompletedTask;
         }
         public async Task<List<CurrencyQRY>> GetAllCurrenciesAsync()
         {
@@ -174,11 +156,28 @@ namespace ecommerce_dash_api.Repositories
 
             return result;
         }
-
-
+        public async Task CreateCurrencyAsync(Currency currency)
+        {
+            await _context.Currencies.AddAsync(currency);
+        }
+        public Task UpdateCurrencyAsync(Currency currency)
+        {
+            _context.Currencies.Update(currency);
+            return Task.CompletedTask;
+        }
+        public Task DeleteCurrencyAsync(Currency currency)
+        {
+            _context.Currencies.Remove(currency);
+            return Task.CompletedTask;
+        }
+     
         //+------------------------------------------------------------------+
         //| Year                                            
         //+------------------------------------------------------------------+
+        public async Task<Year?> GetYearByIdAsync(int id)
+        {
+            return await _context.Years.FirstOrDefaultAsync(i => i.Id == id);
+        }
         public async Task<List<YearQRY>> GetAllYearsAsync()
         {
             var result = await _context.Years
@@ -192,10 +191,6 @@ namespace ecommerce_dash_api.Repositories
             .ToListAsync();
 
             return result;
-        }
-        public async Task<Year?> GetYearByIdAsync(int id)
-        {
-            return await _context.Years.FirstOrDefaultAsync(i => i.Id == id);
         }
         public async Task CreateYearAsync(Year year)
         {
@@ -212,27 +207,12 @@ namespace ecommerce_dash_api.Repositories
             return Task.CompletedTask;
         }
 
-
         //+------------------------------------------------------------------+
         //| Season                                            
         //+------------------------------------------------------------------+
         public async Task<Season?> GetSeasonByIdAsync(int id)
         {
             return await _context.Seasons.FirstOrDefaultAsync(i => i.Id == id);
-        }
-        public async Task CreateSeasonAsync(Season season)
-        {
-            await _context.Seasons.AddAsync(season);
-        }
-        public Task UpdateSeasonAsync(Season season)
-        {
-            _context.Seasons.Update(season);
-            return Task.CompletedTask;
-        }
-        public Task DeleteSeasonAsync(Season season)
-        {
-            _context.Seasons.Remove(season);
-            return Task.CompletedTask;
         }
         public async Task<List<SeasonQRY>> GetAllSeasonsAsync()
         {
@@ -248,7 +228,20 @@ namespace ecommerce_dash_api.Repositories
 
             return result;
         }
-
+        public async Task CreateSeasonAsync(Season season)
+        {
+            await _context.Seasons.AddAsync(season);
+        }
+        public Task UpdateSeasonAsync(Season season)
+        {
+            _context.Seasons.Update(season);
+            return Task.CompletedTask;
+        }
+        public Task DeleteSeasonAsync(Season season)
+        {
+            _context.Seasons.Remove(season);
+            return Task.CompletedTask;
+        }
 
         //+------------------------------------------------------------------+
         //| Section                                            
@@ -260,18 +253,19 @@ namespace ecommerce_dash_api.Repositories
         public async Task<List<SectionQRY>> GetAllSectionsWithCategoriesAsync()
         {
             var result = await _context.Sections
+            .Include(i => i.SectionCategories)  
+                .ThenInclude(sc => sc.Category)  
             .Select(i => new SectionQRY
             {
                 Id = i.Id,
                 Name = i.Name,
                 UpdatedAt = i.UpdatedAt,
                 UpdatedBy = i.UpdatedBy,
-                Categories = i.SectionCategoryCategories.Select(sc => new CategoryQRY
+                Categories = i.SectionCategories.Select(sc => new CategoryQRY
                 {
                     Id = sc.Category.Id,
                     Name = sc.Category.Name
                 }).ToList()
-
             })
             .ToListAsync();
 
@@ -291,12 +285,15 @@ namespace ecommerce_dash_api.Repositories
             _context.Sections.Remove(section);
             return Task.CompletedTask;
         }
-        public Task DeleteSectionCategoriesAsync(List<SectionCategory> sectionCategories)
+        public Task DeleteSectionCategoriesBySectionIdAsync(int sectionId)
         {
-            _context.SectionCategories.RemoveRange(sectionCategories);
+            var records = _context.SectionCategories.Where(i => i.SectionId == sectionId).ToList();
+            if (records.Any())
+            {
+                _context.SectionCategories.RemoveRange(records);
+            }
             return Task.CompletedTask;
         }
-
 
         //+------------------------------------------------------------------+
         //| Supplier                                            
@@ -340,10 +337,13 @@ namespace ecommerce_dash_api.Repositories
             return Task.CompletedTask;
         }
 
-
         //+------------------------------------------------------------------+
         //| Tag                                            
         //+------------------------------------------------------------------+
+        public async Task<Tag?> GetTagByIdAsync(int id)
+        {
+            return await _context.Tags.FirstOrDefaultAsync(i => i.Id == id);
+        }
         public async Task<List<TagQRY>> GetAllTagsAsync()
         {
             var result = await _context.Tags
@@ -357,10 +357,6 @@ namespace ecommerce_dash_api.Repositories
              .ToListAsync();
 
             return result;
-        }
-        public async Task<Tag?> GetTagByIdAsync(int id)
-        {
-            return await _context.Tags.FirstOrDefaultAsync(i => i.Id == id);
         }
         public async Task CreateTagAsync(Tag tag)
         {
@@ -376,7 +372,6 @@ namespace ecommerce_dash_api.Repositories
             _context.Tags.Remove(tag);
             return Task.CompletedTask;
         }
-
 
         //+------------------------------------------------------------------+
         //| Attribute                                            
@@ -394,12 +389,7 @@ namespace ecommerce_dash_api.Repositories
                 Name = i.Name,
                 UpdatedAt = i.UpdatedAt,
                 UpdatedBy = i.UpdatedBy,
-                Options = i.AttributeOptions.Select(ao => new OptionQRY
-                {
-                    Id = ao.Attribute.Id,
-                    Name = ao.Attribute.Name
-                }).ToList()
-
+                Options = i.AttributeOptions.Select(ao => ao.Option).ToList()
             })
             .ToListAsync();
 
@@ -408,6 +398,10 @@ namespace ecommerce_dash_api.Repositories
         public async Task CreateAttributeAsync(Attribute attribute)
         {
             await _context.Attributes.AddAsync(attribute);
+        }
+        public async Task CreateAttributeOptionAsync(AttributeOption attributeOption)
+        {
+            await _context.AttributeOptions.AddAsync(attributeOption);
         }
         public Task UpdateAttributeAsync(Attribute attribute)
         {
@@ -419,9 +413,13 @@ namespace ecommerce_dash_api.Repositories
             _context.Attributes.Remove(attribute);
             return Task.CompletedTask;
         }
-        public Task DeleteAttributeOptionsAsync(List<AttributeOption> attributeOptions)
+        public Task DeleteAttributeOptionsByAttributeIdAsync(int attributeId)
         {
-            _context.AttributeOptions.RemoveRange(attributeOptions);
+            var records = _context.AttributeOptions.Where(i => i.AttributeId == attributeId).ToList();
+            if (records.Any())
+            {
+                _context.AttributeOptions.RemoveRange(records);
+            }
             return Task.CompletedTask;
         }
     }

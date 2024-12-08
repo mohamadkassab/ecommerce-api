@@ -14,7 +14,6 @@ namespace ecommerce_dash_api.Interfaces
         Task<bool> UpdateCountryAsync(CountryUpdateDTO countryDTO, string? username);
         Task<bool> DeleteCountryAsync(int id);
 
-
         //+------------------------------------------------------------------+
         //| Brand                                            
         //+------------------------------------------------------------------+
@@ -22,7 +21,6 @@ namespace ecommerce_dash_api.Interfaces
         Task<bool> CreateBrandAsync(BrandCreateDTO brandDTO, string? username);
         Task<bool> UpdateBrandAsync(BrandUpdateDTO brandDTO, string? username);
         Task<bool> DeleteBrandAsync(int id);
-
 
         //+------------------------------------------------------------------+
         //| Category                                            
@@ -32,7 +30,6 @@ namespace ecommerce_dash_api.Interfaces
         Task<bool> UpdateCategoryAsync(CategoryUpdateDTO categoryDTO, string? username);
         Task<bool> DeleteCategoryAsync(int id);
 
-
         //+------------------------------------------------------------------+
         //| Currency                                            
         //+------------------------------------------------------------------+
@@ -40,7 +37,6 @@ namespace ecommerce_dash_api.Interfaces
         Task<bool> CreateCurrencyAsync(CurrencyCreateDTO currencyDTO, string? username);
         Task<bool> UpdateCurrencyAsync(CurrencyUpdateDTO currencyDTO, string? username);
         Task<bool> DeleteCurrencyAsync(int id);
-
 
         //+------------------------------------------------------------------+
         //| Year                                            
@@ -50,7 +46,6 @@ namespace ecommerce_dash_api.Interfaces
         Task<bool> UpdateYearAsync(YearUpdateDTO yearDTO, string? username);
         Task<bool> DeleteYearAsync(int id);
 
-
         //+------------------------------------------------------------------+
         //| Season                                            
         //+------------------------------------------------------------------+
@@ -58,7 +53,6 @@ namespace ecommerce_dash_api.Interfaces
         Task<bool> CreateSeasonAsync(SeasonCreateDTO seasonDTO, string? username);
         Task<bool> UpdateSeasonAsync(SeasonUpdateDTO seasonDTO, string? username);
         Task<bool> DeleteSeasonAsync(int id);
-
 
         //+------------------------------------------------------------------+
         //| Section                                            
@@ -68,7 +62,6 @@ namespace ecommerce_dash_api.Interfaces
         Task<bool> UpdateSectionAsync(SectionUpdateDTO sectionDTO, string? username);
         Task<bool> DeleteSectionAsync(int id);
 
-
         //+------------------------------------------------------------------+
         //| Supplier                                            
         //+------------------------------------------------------------------+
@@ -77,7 +70,6 @@ namespace ecommerce_dash_api.Interfaces
         Task<bool> UpdateSupplierAsync(SupplierUpdateDTO supplierDTO, string? username);
         Task<bool> DeleteSupplierAsync(int id);
 
-
         //+------------------------------------------------------------------+
         //| Tag                                            
         //+------------------------------------------------------------------+
@@ -85,7 +77,6 @@ namespace ecommerce_dash_api.Interfaces
         Task<bool> CreateTagAsync(TagCreateDTO tagDTO, string? username);
         Task<bool> UpdateTagAsync(TagUpdateDTO tagDTO, string? username);
         Task<bool> DeleteTagAsync(int id);
-
 
         //+------------------------------------------------------------------+
         //| Attribute                                            

@@ -15,7 +15,6 @@ namespace ecommerce_dash_api.Interfaces
         Task<Country?> GetCountryByIdAsync(int id);
         Task DeleteCountryAsync(Country country);
 
-
         //+------------------------------------------------------------------+
         //| Brand                                            
         //+------------------------------------------------------------------+
@@ -24,7 +23,6 @@ namespace ecommerce_dash_api.Interfaces
         Task UpdateBrandAsync(Brand brand);
         Task<Brand?> GetBrandByIdAsync(int id);
         Task DeleteBrandAsync(Brand brand);
-
 
         //+------------------------------------------------------------------+
         //| Category                                            
@@ -35,7 +33,6 @@ namespace ecommerce_dash_api.Interfaces
         Task<Category?> GetCategoryByIdAsync(int id);
         Task DeleteCategoryAsync(Category category);
 
-
         //+------------------------------------------------------------------+
         //| Currency                                            
         //+------------------------------------------------------------------+
@@ -44,7 +41,6 @@ namespace ecommerce_dash_api.Interfaces
         Task UpdateCurrencyAsync(Currency currency);
         Task<Currency?> GetCurrencyByIdAsync(int id);
         Task DeleteCurrencyAsync(Currency currency);
-
 
         //+------------------------------------------------------------------+
         //| Year                                            
@@ -55,7 +51,6 @@ namespace ecommerce_dash_api.Interfaces
         Task<Year?> GetYearByIdAsync(int id);
         Task DeleteYearAsync(Year year);
 
-
         //+------------------------------------------------------------------+
         //| Season                                            
         //+------------------------------------------------------------------+
@@ -65,7 +60,6 @@ namespace ecommerce_dash_api.Interfaces
         Task<Season?> GetSeasonByIdAsync(int id);
         Task DeleteSeasonAsync(Season season);
 
-
         //+------------------------------------------------------------------+
         //| Section                                            
         //+------------------------------------------------------------------+
@@ -74,8 +68,7 @@ namespace ecommerce_dash_api.Interfaces
         Task CreateSectionAsync(Section section);
         Task UpdateSectionAsync(Section section);
         Task DeleteSectionAsync(Section section);
-        Task DeleteSectionCategoriesAsync(List<SectionCategory> sectionCategories);
-
+        Task DeleteSectionCategoriesBySectionIdAsync(int sectionId);
 
         //+------------------------------------------------------------------+
         //| Supplier                                            
@@ -86,7 +79,6 @@ namespace ecommerce_dash_api.Interfaces
         Task<Supplier?> GetSupplierByIdAsync(int id);
         Task DeleteSupplierAsync(Supplier supplier);
 
-
         //+------------------------------------------------------------------+
         //| Tag                                            
         //+------------------------------------------------------------------+
@@ -96,15 +88,15 @@ namespace ecommerce_dash_api.Interfaces
         Task<Tag?> GetTagByIdAsync(int id);
         Task DeleteTagAsync(Tag tag);
 
-
         //+------------------------------------------------------------------+
         //| Attribute                                            
         //+------------------------------------------------------------------+
         Task<Attribute?> GetAttributeByIdAsync(int id);
         Task<List<AttributeQRY>> GetAllAttributesWithOptionsAsync();
         Task CreateAttributeAsync(Attribute attribute);
+        Task CreateAttributeOptionAsync(AttributeOption attributeOption);
         Task UpdateAttributeAsync(Attribute attribute);
         Task DeleteAttributeAsync(Attribute attribute);
-        Task DeleteAttributeOptionsAsync(List<AttributeOption> attributeOptions);
+        Task DeleteAttributeOptionsByAttributeIdAsync(int attributeId);
     }
 }

@@ -44,8 +44,6 @@ builder.Services.AddDbContext<EcommerceContext>(options =>
                         new MySqlServerVersion(new Version(8, 0, 23))));
 
 
-
-
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())

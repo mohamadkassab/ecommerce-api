@@ -35,11 +35,11 @@ public class UserRepository : IUserRepository
 
         return (userWithRolesAndPermissions?.User, userWithRolesAndPermissions?.Roles, userWithRolesAndPermissions?.Permissions);
     }
-    public async Task<List<UserWithRolesAndPermissionsQRY>> GetAllUsersWithRolesAndPermissions()
+    public async Task<List<UserWithRolesQRY>> GetAllUsersWithRoles()
     {
         var result = await _context.Users
              .Where(u => u.Id != 1)
-            .Select(u => new UserWithRolesAndPermissionsQRY
+            .Select(u => new UserWithRolesQRY
             {
                 Id = u.Id,
                 Username = u.Username,
@@ -52,20 +52,11 @@ public class UserRepository : IUserRepository
                 UpdatedBy = u.UpdatedBy,
                 FailedLoginAttempts = u.FailedLoginAttempts,
                 IsActive = u.IsActive,
-
-
                 Roles = u.UserRoleUsers.Select(ur => new RoleWithoutPermissionsQRY
                 {
                     Id = ur.Role.Id,
-                    RoleName = ur.Role.Name
+                    Name = ur.Role.Name
                 }).ToList(),
-
-                Permissions = u.UserRoleUsers.SelectMany(ur => ur.Role.RolePermissions.Select(rp => new PermissionQRY
-                {
-                    Id = rp.Permission.Id,
-                    PermissionName = rp.Permission.Name
-                })).ToList(),
-
             }).ToListAsync();
 
         return result;
@@ -88,12 +79,15 @@ public class UserRepository : IUserRepository
         _context.Users.Remove(user);
         return Task.CompletedTask;
     }
-    public Task DeleteUserRolesAsync(List<UserRole> userRoles)
+    public Task DeleteUserRolesByUserIdAsync(int userId)
     {
-        _context.UserRoles.RemoveRange(userRoles);
+        var records = _context.UserRoles.Where(i => i.UserId == userId).ToList();
+        if (records.Any())
+        {
+            _context.UserRoles.RemoveRange(records);
+        }
         return Task.CompletedTask;
     }
-
 
     //+------------------------------------------------------------------+
     //| Role                                            
@@ -108,12 +102,14 @@ public class UserRepository : IUserRepository
         .Select(i => new RoleQRY
         {
             Id = i.Id,
-            RoleName = i.Name,
+            Name = i.Name,
             Permissions = i.RolePermissions.Select(rp => new PermissionQRY
             {
                 Id = rp.Permission.Id,
-                PermissionName = rp.Permission.Name
-            }).ToList()
+                Name = rp.Permission.Name
+            }).ToList(),
+            UpdatedAt = i.UpdatedAt,
+            UpdatedBy = i.UpdatedBy,
         })
         .ToListAsync();
 
@@ -124,9 +120,13 @@ public class UserRepository : IUserRepository
         _context.Roles.Update(role);
         return Task.CompletedTask;
     }
-    public Task DeleteRolePermissionsAsync(List<RolePermission> rolePermissions)
+    public Task DeleteRolePermissionsAsync(int roleId)
     {
-        _context.RolePermissions.RemoveRange(rolePermissions);
+        var records = _context.RolePermissions.Where(i => i.RoleId == roleId).ToList();
+        if (records.Any())
+        {
+            _context.RolePermissions.RemoveRange(records);
+        }
         return Task.CompletedTask;
     }
     public Task DeleteRoleAsync(Role role)
@@ -134,7 +134,6 @@ public class UserRepository : IUserRepository
         _context.Roles.Remove(role);
         return Task.CompletedTask;
     }
-
 
     //+------------------------------------------------------------------+
     //| Permission                                            
@@ -145,7 +144,7 @@ public class UserRepository : IUserRepository
        .Select(i => new PermissionQRY
        {
            Id = i.Id,
-           PermissionName = i.Name,
+           Name = i.Name,
        })
        .ToListAsync();
 

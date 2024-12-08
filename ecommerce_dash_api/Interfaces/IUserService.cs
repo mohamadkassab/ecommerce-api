@@ -12,10 +12,10 @@ namespace ecommerce_dash_api.Interfaces
         //+------------------------------------------------------------------+
         //| User                                            
         //+------------------------------------------------------------------+
-        Task<List<UserWithRolesAndPermissionsQRY>> GetAllUsersWithRolesAndPermissionsAsync();
+        Task<List<UserWithRolesQRY>> GetAllUsersWithRoles();
         Task<string> SigninAsync(SigninDTO loginDto);
         Task<bool> CreateUserAsync(UserCreateDTO userDto, string? username);
-        Task<bool> UpdateUserAsync(UserUpdateDTO? userDto, string? username);
+        Task<bool> UpdateUserAsync(UserUpdateDTO userDto, string? username);
         Task<bool> DeleteUserAsync(int userId);
         Task<bool> ChangePasswordAsync(ChangePasswordDTO changePassword, string? username);
 

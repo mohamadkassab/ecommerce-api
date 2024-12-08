@@ -10,7 +10,7 @@ namespace ecommerce_dash_api.DTOS
         public string Username
         {
             get => _username;
-            set => _username = value.ToLower();
+            set => _username = value.Trim().ToLower();
         }
 
         private string _firstname = null!;
@@ -18,7 +18,7 @@ namespace ecommerce_dash_api.DTOS
         public string FirstName
         {
             get => _firstname;
-            set => _firstname = value.ToLower();
+            set => _firstname = value.Trim().ToLower();
         }
 
         private string _lastname = null!;
@@ -26,7 +26,7 @@ namespace ecommerce_dash_api.DTOS
         public string LastName
         {
             get => _lastname;
-            set => _lastname = value.ToLower();
+            set => _lastname = value.Trim().ToLower();
         }
 
         public DateOnly Dob { get; set; }
@@ -35,12 +35,11 @@ namespace ecommerce_dash_api.DTOS
         public string Phone { get; set; } = null!;
 
         [MaxLength(255, ErrorMessage = "maximum length is 255")]
-        public string Address { get; set; }
+        public string? Address { get; set; }
 
         [Required(AllowEmptyStrings = false), StringLength(255, MinimumLength = 6, ErrorMessage = "Password must be between 6 and 255 characters.")]
         [DataType(DataType.Password)]
         public string Password { get; set; } = null!;
-
         public List<int> Roles { get; set; }
     }
 }
