@@ -23,7 +23,8 @@ namespace ecommerce_dash_api.DTOS
         [Required]
         public decimal ExchangeRateUsd { get; set; }
 
+
         [Required]
-        public int CountryId { get; set; }
+        public string Country { get; set; } = null!;
     }
 }

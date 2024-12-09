@@ -76,11 +76,12 @@ namespace ecommerce_dash_api.Services
                 brandDTO.LogoFile.CopyTo(stream);
             }
 
+            var country = await _context.Countries.FirstOrDefaultAsync(c => c.Name == brandDTO.Country);
             Brand brand = new Brand();
             brand.Name = brandDTO.Name;
-            brand.Website = brandDTO.Website;
+            brand.Website = brandDTO.Website ?? "";
             brand.LogoUrl = filePath;
-            brand.CountryId = brandDTO.CountryId;
+            brand.CountryId = country.Id;
             brand.UpdatedBy = username;
             await _setupRepository.CreateBrandAsync(brand);
             await _context.SaveChangesAsync();
@@ -89,6 +90,7 @@ namespace ecommerce_dash_api.Services
         public async Task<bool> UpdateBrandAsync(BrandUpdateDTO brandDTO, string? username)
         {
             Brand brand = await _setupRepository.GetBrandByIdAsync(brandDTO.Id);
+            var country = await _context.Countries.FirstOrDefaultAsync(c => c.Name == brandDTO.Country);
             var filePath = brand.LogoUrl;
             if (brandDTO.LogoFile != null) {
                 if (!string.IsNullOrEmpty(brand.LogoUrl) && File.Exists(brand.LogoUrl))
@@ -105,9 +107,9 @@ namespace ecommerce_dash_api.Services
             }
         
             brand.Name = brandDTO.Name;
-            brand.Website = brandDTO.Website;
+            brand.Website = brandDTO.Website ?? "";
             brand.LogoUrl = filePath;
-            brand.CountryId = brandDTO.CountryId;
+            brand.CountryId = country.Id;
             brand.UpdatedBy = username;
             await _setupRepository.UpdateBrandAsync(brand);
             await _context.SaveChangesAsync();
@@ -167,11 +169,12 @@ namespace ecommerce_dash_api.Services
         }
         public async Task<bool> CreateCurrencyAsync(CurrencyCreateDTO currencyDTO, string? username)
         {
+            var country = await _context.Countries.FirstOrDefaultAsync(c => c.Name == currencyDTO.Country);
             Currency currency = new Currency();
             currency.Name = currencyDTO.Name;
             currency.Symbol = currencyDTO.Symbol;
             currency.ExchangeRateUsd = currencyDTO.ExchangeRateUsd;
-            currency.CountryId = currencyDTO.CountryId;
+            currency.CountryId = country.Id;
             currency.UpdatedBy = username;
             await _setupRepository.CreateCurrencyAsync(currency);
             await _context.SaveChangesAsync();
@@ -180,10 +183,11 @@ namespace ecommerce_dash_api.Services
         public async Task<bool> UpdateCurrencyAsync(CurrencyUpdateDTO currencyDTO, string? username)
         {
             Currency currency = await _setupRepository.GetCurrencyByIdAsync(currencyDTO.Id);
+            var country = await _context.Countries.FirstOrDefaultAsync(c => c.Name == currencyDTO.Country);
             currency.Name = currencyDTO.Name;
             currency.Symbol = currencyDTO.Symbol;
             currency.ExchangeRateUsd = currencyDTO.ExchangeRateUsd;
-            currency.CountryId = currencyDTO.CountryId;
+            currency.CountryId = country.Id;
             currency.UpdatedBy = username;
             await _setupRepository.UpdateCurrencyAsync(currency);
             await _context.SaveChangesAsync();

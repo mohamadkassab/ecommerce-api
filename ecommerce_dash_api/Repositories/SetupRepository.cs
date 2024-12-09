@@ -75,7 +75,7 @@ namespace ecommerce_dash_api.Repositories
               LogoFile = _helpersFunctions.GetFileByUrl(i.LogoUrl),
               UpdatedAt = i.UpdatedAt,
               UpdatedBy = i.UpdatedBy,
-              Country = i.Country 
+              Country = i.Country.Name 
           })
           .ToListAsync();
 
@@ -148,7 +148,7 @@ namespace ecommerce_dash_api.Repositories
                 Name = i.Name,
                 Symbol = i.Symbol,
                 ExchangeRateUsd = i.ExchangeRateUsd,
-                CountryId = i.CountryId,
+                Country = i.Country.Name,
                 UpdatedAt = i.UpdatedAt,
                 UpdatedBy = i.UpdatedBy,
             })

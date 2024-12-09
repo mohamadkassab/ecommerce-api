@@ -17,9 +17,9 @@ namespace ecommerce_dash_api.DTOS
         public string? Website { get; set; }
 
         [MaxFileSize(10 * 1024 * 1024)]
-        public IFormFile? LogoFile { get; set; } = null!;
+        public IFormFile? LogoFile { get; set; }
 
         [Required]
-        public int CountryId { get; set; }
+        public string Country { get; set; } = null!;
     }
 }

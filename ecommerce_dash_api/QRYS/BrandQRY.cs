@@ -8,7 +8,7 @@ namespace ecommerce_dash_api.QRYS
         public string Name { get; set; } = null!;
         public string? Website { get; set; }
         public byte[]? LogoFile { get; set; }
-        public Country Country { get; set; } = null!;
+        public string Country { get; set; } = null!;
         public DateTime? UpdatedAt { get; set; }
         public string? UpdatedBy { get; set; }
     }
