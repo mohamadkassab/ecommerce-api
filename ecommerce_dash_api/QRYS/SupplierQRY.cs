@@ -9,7 +9,7 @@
         public string? City { get; set; }
         public string? Email { get; set; }
         public string? Website { get; set; }
-        public int? CountryId { get; set; }
+        public string? Country { get; set; }
         public DateTime? UpdatedAt { get; set; }
         public string? UpdatedBy { get; set; }
     }

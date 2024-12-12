@@ -11,7 +11,7 @@ public partial class Country
 
     public string Code { get; set; } = null!;
 
-    public DateTime? UpdatedAt { get; set; }
+    public DateTime UpdatedAt { get; set; }
 
     public string? UpdatedBy { get; set; }
 

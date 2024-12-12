@@ -1,24 +1,52 @@
 {
   "Files": [
     {
-      "Id": "C:\\Users\\User\\Desktop\\MK\\Projects\\Ecommerce\\ecommerce_api\\ecommerce_dash_api\\wwwroot\\images\\brands\\4d02e4e0-fd0a-451d-a4ae-0fea0bb770d5.jpg",
+      "Id": "C:\\Users\\mhmdk\\Desktop\\Projects\\ecommerce-api\\ecommerce_dash_api\\wwwroot\\images\\brands\\2af16110-ea26-4b91-8af9-8cc452a8255a.jpg",
+      "PackagePath": "staticwebassets\\images\\brands\\2af16110-ea26-4b91-8af9-8cc452a8255a.jpg"
+    },
+    {
+      "Id": "C:\\Users\\mhmdk\\Desktop\\Projects\\ecommerce-api\\ecommerce_dash_api\\wwwroot\\images\\brands\\4d02e4e0-fd0a-451d-a4ae-0fea0bb770d5.jpg",
       "PackagePath": "staticwebassets\\images\\brands\\4d02e4e0-fd0a-451d-a4ae-0fea0bb770d5.jpg"
     },
     {
-      "Id": "C:\\Users\\User\\Desktop\\MK\\Projects\\Ecommerce\\ecommerce_api\\ecommerce_dash_api\\wwwroot\\images\\brands\\b4ed26be-bc07-49aa-91f5-b04b9e4acefe.jpg",
+      "Id": "C:\\Users\\mhmdk\\Desktop\\Projects\\ecommerce-api\\ecommerce_dash_api\\wwwroot\\images\\brands\\7d52bc13-d65c-47c6-ac1c-f98db8db6b11.png",
+      "PackagePath": "staticwebassets\\images\\brands\\7d52bc13-d65c-47c6-ac1c-f98db8db6b11.png"
+    },
+    {
+      "Id": "C:\\Users\\mhmdk\\Desktop\\Projects\\ecommerce-api\\ecommerce_dash_api\\wwwroot\\images\\brands\\8d929890-bb9b-4746-ae95-271c188da064.png",
+      "PackagePath": "staticwebassets\\images\\brands\\8d929890-bb9b-4746-ae95-271c188da064.png"
+    },
+    {
+      "Id": "C:\\Users\\mhmdk\\Desktop\\Projects\\ecommerce-api\\ecommerce_dash_api\\wwwroot\\images\\brands\\99a5075f-c8b4-448d-bf99-dfa230985717.png",
+      "PackagePath": "staticwebassets\\images\\brands\\99a5075f-c8b4-448d-bf99-dfa230985717.png"
+    },
+    {
+      "Id": "C:\\Users\\mhmdk\\Desktop\\Projects\\ecommerce-api\\ecommerce_dash_api\\wwwroot\\images\\brands\\b4ed26be-bc07-49aa-91f5-b04b9e4acefe.jpg",
       "PackagePath": "staticwebassets\\images\\brands\\b4ed26be-bc07-49aa-91f5-b04b9e4acefe.jpg"
     },
     {
-      "Id": "C:\\Users\\User\\Desktop\\MK\\Projects\\Ecommerce\\ecommerce_api\\ecommerce_dash_api\\wwwroot\\images\\brands\\c8207563-dac3-49ba-9f42-cabc02373987.jpg",
+      "Id": "C:\\Users\\mhmdk\\Desktop\\Projects\\ecommerce-api\\ecommerce_dash_api\\wwwroot\\images\\brands\\b6855251-da54-4199-8e2f-c7738b882a07.jpg",
+      "PackagePath": "staticwebassets\\images\\brands\\b6855251-da54-4199-8e2f-c7738b882a07.jpg"
+    },
+    {
+      "Id": "C:\\Users\\mhmdk\\Desktop\\Projects\\ecommerce-api\\ecommerce_dash_api\\wwwroot\\images\\brands\\c8207563-dac3-49ba-9f42-cabc02373987.jpg",
       "PackagePath": "staticwebassets\\images\\brands\\c8207563-dac3-49ba-9f42-cabc02373987.jpg"
     },
     {
-      "Id": "C:\\Users\\User\\Desktop\\MK\\Projects\\Ecommerce\\ecommerce_api\\ecommerce_dash_api\\wwwroot\\images\\brands\\cb2e2801-9e89-4fba-ae7c-1f0ae5a49a58.png",
+      "Id": "C:\\Users\\mhmdk\\Desktop\\Projects\\ecommerce-api\\ecommerce_dash_api\\wwwroot\\images\\brands\\cb2e2801-9e89-4fba-ae7c-1f0ae5a49a58.png",
       "PackagePath": "staticwebassets\\images\\brands\\cb2e2801-9e89-4fba-ae7c-1f0ae5a49a58.png"
     },
     {
-      "Id": "C:\\Users\\User\\Desktop\\MK\\Projects\\Ecommerce\\ecommerce_api\\ecommerce_dash_api\\wwwroot\\images\\brands\\e13a5276-42d7-4c66-99bf-52414fee9a45.jpg",
+      "Id": "C:\\Users\\mhmdk\\Desktop\\Projects\\ecommerce-api\\ecommerce_dash_api\\wwwroot\\images\\brands\\d95e0813-eacb-4f3a-85de-dd7155b2d4c2.png",
+      "PackagePath": "staticwebassets\\images\\brands\\d95e0813-eacb-4f3a-85de-dd7155b2d4c2.png"
+    },
+    {
+      "Id": "C:\\Users\\mhmdk\\Desktop\\Projects\\ecommerce-api\\ecommerce_dash_api\\wwwroot\\images\\brands\\e13a5276-42d7-4c66-99bf-52414fee9a45.jpg",
       "PackagePath": "staticwebassets\\images\\brands\\e13a5276-42d7-4c66-99bf-52414fee9a45.jpg"
+    },
+    {
+      "Id": "C:\\Users\\mhmdk\\Desktop\\Projects\\ecommerce-api\\ecommerce_dash_api\\wwwroot\\images\\brands\\e5257766-41d3-4c54-a3f7-d0238328ca74.png",
+      "PackagePath": "staticwebassets\\images\\brands\\e5257766-41d3-4c54-a3f7-d0238328ca74.png"
     },
     {
       "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.build.ecommerce_dash_api.props",
@@ -31,6 +59,10 @@
     {
       "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildTransitive.ecommerce_dash_api.props",
       "PackagePath": "buildTransitive\\ecommerce_dash_api.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.ecommerce_dash_api.Microsoft.AspNetCore.StaticWebAssetEndpoints.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssetEndpoints.props"
     },
     {
       "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.ecommerce_dash_api.Microsoft.AspNetCore.StaticWebAssets.props",

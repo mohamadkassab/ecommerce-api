@@ -92,7 +92,7 @@ public partial class EcommerceContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseMySql("server=127.0.0.1;database=ecommerce;user=root;password=123456", Microsoft.EntityFrameworkCore.ServerVersion.Parse("8.0.37-mysql"));
+        => optionsBuilder.UseMySql("server=127.0.0.1;database=ecommerce;user=root;password=123456", Microsoft.EntityFrameworkCore.ServerVersion.Parse("8.0.40-mysql"));
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -203,7 +203,7 @@ public partial class EcommerceContext : DbContext
 
             entity.HasIndex(e => e.CountryId, "brand_ibfk_2");
 
-            entity.HasIndex(e => e.Name, "name").IsUnique();
+            entity.HasIndex(e => e.Name, "name1").IsUnique();
 
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.CountryId).HasColumnName("country_id");
@@ -240,7 +240,7 @@ public partial class EcommerceContext : DbContext
 
             entity.HasIndex(e => e.UpdatedBy, "category_ibfk_1");
 
-            entity.HasIndex(e => e.Name, "name").IsUnique();
+            entity.HasIndex(e => e.Name, "name2").IsUnique();
 
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.Name).HasColumnName("name");
@@ -335,7 +335,7 @@ public partial class EcommerceContext : DbContext
 
             entity.HasIndex(e => e.UpdatedBy, "country_ibfk_1");
 
-            entity.HasIndex(e => e.Name, "name").IsUnique();
+            entity.HasIndex(e => e.Name, "name3").IsUnique();
 
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.Code).HasColumnName("code");
@@ -364,7 +364,7 @@ public partial class EcommerceContext : DbContext
 
             entity.HasIndex(e => e.CountryId, "currency_ibfk_2");
 
-            entity.HasIndex(e => e.Name, "name").IsUnique();
+            entity.HasIndex(e => e.Name, "name4").IsUnique();
 
             entity.HasIndex(e => e.Symbol, "symbol").IsUnique();
 
@@ -588,7 +588,7 @@ public partial class EcommerceContext : DbContext
 
             entity.ToTable("order_payment");
 
-            entity.HasIndex(e => e.OrderId, "order_id").IsUnique();
+            entity.HasIndex(e => e.OrderId, "order_id1").IsUnique();
 
             entity.HasIndex(e => e.PaymentMethodId, "order_payment_ibfk_2");
 
@@ -620,7 +620,7 @@ public partial class EcommerceContext : DbContext
 
             entity.ToTable("order_shipping");
 
-            entity.HasIndex(e => e.OrderId, "order_id").IsUnique();
+            entity.HasIndex(e => e.OrderId, "order_id2").IsUnique();
 
             entity.HasIndex(e => e.ShippingMethodId, "order_shipping_ibfk_2");
 
@@ -655,7 +655,7 @@ public partial class EcommerceContext : DbContext
 
             entity.ToTable("payment_method");
 
-            entity.HasIndex(e => e.Name, "name").IsUnique();
+            entity.HasIndex(e => e.Name, "name5").IsUnique();
 
             entity.HasIndex(e => e.UpdatedBy, "payment_method_ibfk_1");
 
@@ -687,7 +687,7 @@ public partial class EcommerceContext : DbContext
 
             entity.ToTable("permission");
 
-            entity.HasIndex(e => e.Name, "name").IsUnique();
+            entity.HasIndex(e => e.Name, "name6").IsUnique();
 
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.Name).HasColumnName("name");
@@ -699,7 +699,7 @@ public partial class EcommerceContext : DbContext
 
             entity.ToTable("product");
 
-            entity.HasIndex(e => e.Code, "code").IsUnique();
+            entity.HasIndex(e => e.Code, "code1").IsUnique();
 
             entity.HasIndex(e => e.IsActive, "idx_is_active");
 
@@ -821,7 +821,7 @@ public partial class EcommerceContext : DbContext
 
             entity.HasIndex(e => e.CategoryId, "product_category_ibfk_3");
 
-            entity.HasIndex(e => new { e.ProductId, e.CategoryId }, "product_id").IsUnique();
+            entity.HasIndex(e => new { e.ProductId, e.CategoryId }, "product_id1").IsUnique();
 
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.CategoryId).HasColumnName("category_id");
@@ -854,7 +854,7 @@ public partial class EcommerceContext : DbContext
 
             entity.ToTable("product_info");
 
-            entity.HasIndex(e => e.ProductId, "product_id").IsUnique();
+            entity.HasIndex(e => e.ProductId, "product_id2").IsUnique();
 
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.LongDescription)
@@ -928,7 +928,7 @@ public partial class EcommerceContext : DbContext
 
             entity.ToTable("product_quantity");
 
-            entity.HasIndex(e => e.ProductId, "product_id").IsUnique();
+            entity.HasIndex(e => e.ProductId, "product_id3").IsUnique();
 
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.ProductId).HasColumnName("product_id");
@@ -947,7 +947,7 @@ public partial class EcommerceContext : DbContext
 
             entity.ToTable("product_tag");
 
-            entity.HasIndex(e => new { e.ProductId, e.TagId }, "product_id").IsUnique();
+            entity.HasIndex(e => new { e.ProductId, e.TagId }, "product_id4").IsUnique();
 
             entity.HasIndex(e => e.UpdatedBy, "product_tag_ibfk_1");
 
@@ -984,7 +984,7 @@ public partial class EcommerceContext : DbContext
 
             entity.ToTable("role");
 
-            entity.HasIndex(e => e.Name, "name").IsUnique();
+            entity.HasIndex(e => e.Name, "name7").IsUnique();
 
             entity.HasIndex(e => e.UpdatedBy, "role_ibfk_1");
 
@@ -1047,7 +1047,7 @@ public partial class EcommerceContext : DbContext
 
             entity.ToTable("season");
 
-            entity.HasIndex(e => e.Name, "name").IsUnique();
+            entity.HasIndex(e => e.Name, "name8").IsUnique();
 
             entity.HasIndex(e => e.UpdatedBy, "season_ibfk_1");
 
@@ -1073,7 +1073,7 @@ public partial class EcommerceContext : DbContext
 
             entity.ToTable("section");
 
-            entity.HasIndex(e => e.Name, "name").IsUnique();
+            entity.HasIndex(e => e.Name, "name9").IsUnique();
 
             entity.HasIndex(e => e.UpdatedBy, "section_ibfk_1");
 
@@ -1136,7 +1136,7 @@ public partial class EcommerceContext : DbContext
 
             entity.ToTable("shipping_method");
 
-            entity.HasIndex(e => e.Name, "name").IsUnique();
+            entity.HasIndex(e => e.Name, "name10").IsUnique();
 
             entity.HasIndex(e => e.UpdatedBy, "shipping_method_ibfk_1");
 
@@ -1168,7 +1168,7 @@ public partial class EcommerceContext : DbContext
 
             entity.ToTable("supplier");
 
-            entity.HasIndex(e => e.Name, "name").IsUnique();
+            entity.HasIndex(e => e.Name, "name11").IsUnique();
 
             entity.HasIndex(e => e.UpdatedBy, "supplier_ibfk_1");
 
@@ -1217,7 +1217,7 @@ public partial class EcommerceContext : DbContext
 
             entity.ToTable("tag");
 
-            entity.HasIndex(e => e.Name, "name").IsUnique();
+            entity.HasIndex(e => e.Name, "name12").IsUnique();
 
             entity.HasIndex(e => e.UpdatedBy, "tag_ibfk_1");
 
@@ -1278,24 +1278,20 @@ public partial class EcommerceContext : DbContext
 
             entity.ToTable("user");
 
-            entity.HasIndex(e => e.IsActive, "idx_is_active");
+            entity.HasIndex(e => e.Username, "AK_user_username").IsUnique();
 
-            entity.HasIndex(e => e.Username, "username").IsUnique();
+            entity.HasIndex(e => e.IsActive, "idx_is_active1");
 
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.Address)
                 .HasMaxLength(255)
                 .HasColumnName("address");
             entity.Property(e => e.Dob).HasColumnName("DOB");
-            entity.Property(e => e.FailedLoginAttempts)
-                .HasDefaultValueSql("'0'")
-                .HasColumnName("failed_login_attempts");
+            entity.Property(e => e.FailedLoginAttempts).HasColumnName("failed_login_attempts");
             entity.Property(e => e.FirstName)
                 .HasMaxLength(255)
                 .HasColumnName("first_name");
-            entity.Property(e => e.IsActive)
-                .HasDefaultValueSql("'1'")
-                .HasColumnName("is_active");
+            entity.Property(e => e.IsActive).HasColumnName("is_active");
             entity.Property(e => e.LastName)
                 .HasMaxLength(255)
                 .HasColumnName("last_name");
@@ -1359,7 +1355,7 @@ public partial class EcommerceContext : DbContext
 
             entity.ToTable("year");
 
-            entity.HasIndex(e => e.Name, "name").IsUnique();
+            entity.HasIndex(e => e.Name, "name13").IsUnique();
 
             entity.HasIndex(e => e.UpdatedBy, "year_ibfk_1");
 

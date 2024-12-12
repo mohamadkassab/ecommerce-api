@@ -5,9 +5,9 @@ namespace ecommerce_dash_api.Models;
 
 public partial class ApiLog
 {
-    public DateTime? Timestamp { get; set; }
-
     public int Id { get; set; }
+
+    public DateTime? Timestamp { get; set; }
 
     public string? LogLevel { get; set; }
 

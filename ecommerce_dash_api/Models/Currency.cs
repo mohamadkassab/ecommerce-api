@@ -15,7 +15,7 @@ public partial class Currency
 
     public int? CountryId { get; set; }
 
-    public DateTime? UpdatedAt { get; set; }
+    public DateTime UpdatedAt { get; set; }
 
     public string? UpdatedBy { get; set; }
 

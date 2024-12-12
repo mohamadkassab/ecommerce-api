@@ -17,7 +17,6 @@ namespace ecommerce_dash_api.Services
         private readonly IUserRepository _userRepository;
         private readonly IPasswordHasher _passwordHasher;
         private readonly JwtToken _jwtToken;
-
         public UserService(IUserRepository userRepository, IPasswordHasher passwordHasher, JwtToken jwtToken, EcommerceContext context)
         {
             _userRepository = userRepository;

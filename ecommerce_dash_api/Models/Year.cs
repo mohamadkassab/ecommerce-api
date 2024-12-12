@@ -9,7 +9,7 @@ public partial class Year
 
     public int? Name { get; set; }
 
-    public DateTime? UpdatedAt { get; set; }
+    public DateTime UpdatedAt { get; set; }
 
     public string? UpdatedBy { get; set; }
 

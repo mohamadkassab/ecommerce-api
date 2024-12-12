@@ -21,13 +21,13 @@ public partial class User
 
     public string PasswordHash { get; set; } = null!;
 
-    public DateTime? UpdatedAt { get; set; }
+    public DateTime UpdatedAt { get; set; }
 
     public string UpdatedBy { get; set; } = null!;
 
-    public int? FailedLoginAttempts { get; set; }
+    public int FailedLoginAttempts { get; set; }
 
-    public bool? IsActive { get; set; }
+    public bool IsActive { get; set; }
 
     public virtual ICollection<AttributeOption> AttributeOptions { get; set; } = new List<AttributeOption>();
 

@@ -142,6 +142,7 @@ namespace ecommerce_dash_api.Repositories
         public async Task<List<CurrencyQRY>> GetAllCurrenciesAsync()
         {
             var result = await _context.Currencies
+            .Include(i => i.Country)
             .Select(i => new CurrencyQRY
             {
                 Id = i.Id,
@@ -305,6 +306,7 @@ namespace ecommerce_dash_api.Repositories
         public async Task<List<SupplierQRY>> GetAllSuppliersAsync()
         {
             var result = await _context.Suppliers
+            .Include(i => i.Country)
             .Select(i => new SupplierQRY
             {
                 Id = i.Id,
@@ -314,7 +316,7 @@ namespace ecommerce_dash_api.Repositories
                 City = i.City,
                 Email = i.Email,
                 Website = i.Website,
-                CountryId = i.CountryId,
+                Country = i.Country.Name,
                 UpdatedAt = i.UpdatedAt,
                 UpdatedBy = i.UpdatedBy,
             })

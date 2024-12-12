@@ -333,6 +333,7 @@ namespace ecommerce_dash_api.Services
         }
         public async Task<bool> CreateSupplierAsync(SupplierCreateDTO supplierDTO, string? username)
         {
+            var country = await _context.Countries.FirstOrDefaultAsync(c => c.Name == supplierDTO.Country);
             Supplier supplier = new Supplier();
             supplier.Name = supplierDTO.Name;
             supplier.Phone = supplierDTO.Phone;
@@ -340,7 +341,7 @@ namespace ecommerce_dash_api.Services
             supplier.City = supplierDTO.City;
             supplier.Email = supplierDTO.Email;
             supplier.Website = supplierDTO.Website;
-            supplier.CountryId = supplierDTO.CountryId;
+            supplier.CountryId = country.Id;
             supplier.UpdatedBy = username;
             await _setupRepository.CreateSupplierAsync(supplier);
             await _context.SaveChangesAsync();
@@ -349,13 +350,14 @@ namespace ecommerce_dash_api.Services
         public async Task<bool> UpdateSupplierAsync(SupplierUpdateDTO supplierDTO, string? username)
         {
             Supplier supplier = await _setupRepository.GetSupplierByIdAsync(supplierDTO.Id);
+            var country = await _context.Countries.FirstOrDefaultAsync(c => c.Name == supplierDTO.Country);
             supplier.Name = supplierDTO.Name;
             supplier.Phone = supplierDTO.Phone;
             supplier.Address = supplierDTO.Address;
             supplier.City = supplierDTO.City;
             supplier.Email = supplierDTO.Email;
             supplier.Website = supplierDTO.Website;
-            supplier.CountryId = supplierDTO.CountryId;
+            supplier.CountryId = country.Id;
             supplier.UpdatedBy = username;
             await _setupRepository.UpdateSupplierAsync(supplier);
             await _context.SaveChangesAsync();
