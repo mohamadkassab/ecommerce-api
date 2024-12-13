@@ -7,17 +7,17 @@ public partial class Transaction
 {
     public int Id { get; set; }
 
-    public int? ProductId { get; set; }
+    public int ProductId { get; set; }
 
-    public int? Quantity { get; set; }
+    public int Quantity { get; set; }
 
     public string TransactionType { get; set; } = null!;
 
-    public DateTime? UpdatedAt { get; set; }
+    public DateTime UpdatedAt { get; set; }
 
     public string? UpdatedBy { get; set; }
 
-    public virtual Product? Product { get; set; }
+    public virtual Product Product { get; set; } = null!;
 
     public virtual User? UpdatedByNavigation { get; set; }
 }

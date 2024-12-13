@@ -31,6 +31,195 @@ namespace ecommerce_dash_api.Controllers
 
 
         //+------------------------------------------------------------------+
+        //| Permission                                            
+        //+------------------------------------------------------------------+
+        [HttpGet("GetAllPermissions")]
+        public async Task<IActionResult> GetAllPermissions()
+        {
+            var userClaims = User.Claims;
+            var username = User.FindFirstValue("username") ?? null;
+            var ipAddress = HttpContext?.Connection?.RemoteIpAddress?.ToString() ?? null;
+            var actionName = this.ControllerContext?.RouteData?.Values["action"]?.ToString() ?? null;
+            if (userClaims.Any(c => c.Type == "permission" && c.Value == "role_crud") || (username == "root@e.com"))
+
+            {
+                try
+                {
+                    var result = await _userService.GetAllPermissionsAsync();
+                    await _apiService.CreateLogAsync(LogLevelEnum.INFO.ToString(), LogMessageTemplates.successful.ToString(), null, username, ipAddress, actionName, null);
+                    return Ok(result);
+                }
+                catch (Exception ex)
+                {
+                    string errorMessage = $"Error: {ex.Message}";
+                    string innerMessage = ex.InnerException != null ? $"Inner Exception: {ex?.InnerException?.Message}" : string.Empty;
+                    await _apiService.CreateLogAsync(LogLevelEnum.ERROR.ToString(), $"{errorMessage}\n{innerMessage}", ex?.StackTrace, username, ipAddress, actionName, null);
+                    return BadRequest(new { message = innerMessage != string.Empty ? ex?.InnerException?.Message : ex?.Message });
+                }
+            }
+            else
+            {
+                return Forbid();
+            }
+        }
+
+        //+------------------------------------------------------------------+
+        //| Role                                            
+        //+------------------------------------------------------------------+
+        [HttpGet("GetAllRolesAndPermissions")]
+        public async Task<IActionResult> GetAllRolesAndPermissions()
+        {
+            var userClaims = User.Claims;
+            var username = User.FindFirstValue("username") ?? null;
+            var ipAddress = HttpContext?.Connection?.RemoteIpAddress?.ToString() ?? null;
+            var actionName = this.ControllerContext?.RouteData?.Values["action"]?.ToString() ?? null;
+            if (userClaims.Any(c => c.Type == "permission" && (c.Value == "user_crud" || c.Value == "role_crud")) || (username == "root@e.com"))
+
+            {
+                try
+                {
+                    var result = await _userService.GetAllRolesWithPermissionsAsync();
+                    await _apiService.CreateLogAsync(LogLevelEnum.INFO.ToString(), LogMessageTemplates.successful.ToString(), null, username, ipAddress, actionName, null);
+                    return Ok(result);
+
+                }
+                catch (Exception ex)
+                {
+                    string errorMessage = $"Error: {ex.Message}";
+                    string innerMessage = ex.InnerException != null ? $"Inner Exception: {ex?.InnerException?.Message}" : string.Empty;
+                    await _apiService.CreateLogAsync(LogLevelEnum.ERROR.ToString(), $"{errorMessage}\n{innerMessage}", ex?.StackTrace, username, ipAddress, actionName, null);
+                    return BadRequest(new { message = innerMessage != string.Empty ? ex?.InnerException?.Message : ex.Message });
+                }
+            }
+            else
+            {
+                return Forbid();
+            }
+        }
+        [HttpPost("CreateRole")]
+        public async Task<IActionResult> CreateRole([FromBody] RoleCreateDTO role)
+        {
+            var userClaims = User.Claims;
+            var username = User.FindFirstValue("username") ?? null;
+            var ipAddress = HttpContext?.Connection?.RemoteIpAddress?.ToString() ?? null;
+            var actionName = this.ControllerContext?.RouteData?.Values["action"]?.ToString() ?? null;
+            if (userClaims.Any(c => c.Type == "permission" && c.Value == "role_crud") || (username == "root@e.com"))
+
+            {
+                try
+                {
+                    if (!ModelState.IsValid)
+                    {
+                        await _apiService.CreateLogAsync(LogLevelEnum.WARNING.ToString(), LogMessageTemplates.invalid_model_state.ToString(), null, username, ipAddress, actionName, role);
+                        return BadRequest(ModelState);
+                    }
+
+                    var response = await _userService.CreateRoleAsync(role, username);
+                    if (response)
+                    {
+                        await _apiService.CreateLogAsync(LogLevelEnum.INFO.ToString(), LogMessageTemplates.successful.ToString(), null, username, ipAddress, actionName, role);
+                        return Ok();
+                    }
+                    await _apiService.CreateLogAsync(LogLevelEnum.WARNING.ToString(), LogMessageTemplates.failed.ToString(), null, username, ipAddress, actionName, role);
+                    return BadRequest(new { message = "Create role failed" });
+                }
+                catch (Exception ex)
+                {
+                    string errorMessage = $"Error: {ex.Message}";
+                    string innerMessage = ex.InnerException != null ? $"Inner Exception: {ex?.InnerException?.Message}" : string.Empty;
+                    await _apiService.CreateLogAsync(LogLevelEnum.ERROR.ToString(), $"{errorMessage}\n{innerMessage}", ex?.StackTrace, username, ipAddress, actionName, role);
+                    return BadRequest(new { message = innerMessage != string.Empty ? ex?.InnerException?.Message : ex?.Message });
+                }
+            }
+            else
+            {
+                return Forbid();
+            }
+        }
+
+        [HttpPut("UpdateRole")]
+        public async Task<IActionResult> UpdateRole([FromBody] RoleUpdateDTO role)
+        {
+            var userClaims = User.Claims;
+            var username = User.FindFirstValue("username") ?? null;
+            var ipAddress = HttpContext?.Connection?.RemoteIpAddress?.ToString() ?? null;
+            var actionName = this.ControllerContext?.RouteData?.Values["action"]?.ToString() ?? null;
+            if (userClaims.Any(c => c.Type == "permission" && c.Value == "role_crud") || (username == "root@e.com"))
+            {
+                try
+                {
+                    if (!ModelState.IsValid)
+                    {
+                        await _apiService.CreateLogAsync(LogLevelEnum.WARNING.ToString(), LogMessageTemplates.invalid_model_state.ToString(), null, username, ipAddress, actionName, role);
+                        return BadRequest(ModelState);
+                    }
+
+                    var response = await _userService.UpdateRoleAsync(role, username);
+                    if (response)
+                    {
+                        await _apiService.CreateLogAsync(LogLevelEnum.INFO.ToString(), LogMessageTemplates.successful.ToString(), null, username, ipAddress, actionName, role);
+                        return Ok();
+                    }
+                    await _apiService.CreateLogAsync(LogLevelEnum.WARNING.ToString(), LogMessageTemplates.failed.ToString(), null, username, ipAddress, actionName, role);
+                    return BadRequest(new { message = "Update role failed" });
+                }
+                catch (Exception ex)
+                {
+                    string errorMessage = $"Error: {ex.Message}";
+                    string innerMessage = ex.InnerException != null ? $"Inner Exception: {ex?.InnerException?.Message}" : string.Empty;
+                    await _apiService.CreateLogAsync(LogLevelEnum.ERROR.ToString(), $"{errorMessage}\n{innerMessage}", ex.StackTrace, username, ipAddress, actionName, role);
+                    return BadRequest(new { message = innerMessage != string.Empty ? ex?.InnerException?.Message : ex.Message });
+                }
+            }
+            else
+            {
+                return Forbid();
+            }
+        }
+
+        [HttpDelete("DeleteRole/{id}")]
+        public async Task<IActionResult> DeleteRole(int id)
+        {
+            var userClaims = User.Claims;
+            var username = User.FindFirstValue("username") ?? null;
+            var ipAddress = HttpContext?.Connection?.RemoteIpAddress?.ToString() ?? null;
+            var actionName = this.ControllerContext?.RouteData?.Values["action"]?.ToString() ?? null;
+
+            if (userClaims.Any(c => c.Type == "permission" && c.Value == "role_crud") || (username == "root@e.com"))
+
+            {
+                try
+                {
+                    if (!ModelState.IsValid)
+                    {
+                        await _apiService.CreateLogAsync(LogLevelEnum.WARNING.ToString(), LogMessageTemplates.invalid_model_state.ToString(), null, username, ipAddress, actionName, id);
+                        return BadRequest(ModelState);
+                    }
+
+                    var response = await _userService.DeleteRoleAsync(id);
+                    if (response)
+                    {
+                        await _apiService.CreateLogAsync(LogLevelEnum.INFO.ToString(), LogMessageTemplates.successful.ToString(), null, username, ipAddress, actionName, id);
+                        return Ok();
+                    }
+                    await _apiService.CreateLogAsync(LogLevelEnum.WARNING.ToString(), LogMessageTemplates.failed.ToString(), null, username, ipAddress, actionName, id);
+                    return BadRequest(new { message = "Delete role failed" });
+                }
+                catch (Exception ex)
+                {
+                    string errorMessage = $"Error: {ex.Message}";
+                    string innerMessage = ex.InnerException != null ? $"Inner Exception: {ex?.InnerException?.Message}" : string.Empty;
+                    await _apiService.CreateLogAsync(LogLevelEnum.ERROR.ToString(), $"{errorMessage}\n{innerMessage}", ex.StackTrace, username, ipAddress, actionName, id);
+                    return BadRequest(new { message = innerMessage != string.Empty ? ex.InnerException.Message : ex.Message });
+                }
+            }
+            else
+            {
+                return Forbid();
+            }
+        }
+
+        //+------------------------------------------------------------------+
         //| User                                            
         //+------------------------------------------------------------------+
         [HttpPost("Signin")]
@@ -283,197 +472,6 @@ namespace ecommerce_dash_api.Controllers
                 string innerMessage = ex.InnerException != null ? $"Inner Exception: {ex?.InnerException?.Message}" : string.Empty;
                 await _apiService.CreateLogAsync(LogLevelEnum.ERROR.ToString(), $"{errorMessage}\n{innerMessage}", ex?.StackTrace, username, ipAddress, actionName, changePassword);
                 return BadRequest(new { message = innerMessage != string.Empty ? ex?.InnerException?.Message : ex?.Message });
-            }
-        }
-
-
-        //+------------------------------------------------------------------+
-        //| Role                                            
-        //+------------------------------------------------------------------+
-        [HttpGet("GetAllRolesAndPermissions")]
-        public async Task<IActionResult> GetAllRolesAndPermissions()
-        {
-            var userClaims = User.Claims;
-            var username = User.FindFirstValue("username") ?? null;
-            var ipAddress = HttpContext?.Connection?.RemoteIpAddress?.ToString() ?? null;
-            var actionName = this.ControllerContext?.RouteData?.Values["action"]?.ToString() ?? null;
-            if (userClaims.Any(c => c.Type == "permission" && (c.Value == "user_crud" || c.Value == "role_crud")) || (username == "root@e.com"))
-
-            {
-                try
-                {
-                    var result = await _userService.GetAllRolesWithPermissionsAsync();
-                    await _apiService.CreateLogAsync(LogLevelEnum.INFO.ToString(), LogMessageTemplates.successful.ToString(), null, username, ipAddress, actionName, null);
-                    return Ok(result);
-
-                }
-                catch (Exception ex)
-                {
-                    string errorMessage = $"Error: {ex.Message}";
-                    string innerMessage = ex.InnerException != null ? $"Inner Exception: {ex?.InnerException?.Message}" : string.Empty;
-                    await _apiService.CreateLogAsync(LogLevelEnum.ERROR.ToString(), $"{errorMessage}\n{innerMessage}", ex?.StackTrace, username, ipAddress, actionName, null);
-                    return BadRequest(new { message = innerMessage != string.Empty ? ex?.InnerException?.Message : ex.Message });
-                }
-            }
-            else
-            {
-                return Forbid();
-            }
-        }
-        [HttpPost("CreateRole")]
-        public async Task<IActionResult> CreateRole([FromBody] RoleCreateDTO role)
-        {
-            var userClaims = User.Claims;
-            var username = User.FindFirstValue("username") ?? null;
-            var ipAddress = HttpContext?.Connection?.RemoteIpAddress?.ToString() ?? null;
-            var actionName = this.ControllerContext?.RouteData?.Values["action"]?.ToString() ?? null;
-            if (userClaims.Any(c => c.Type == "permission" && c.Value == "role_crud") || (username == "root@e.com"))
-
-            {
-                try
-            {
-                if (!ModelState.IsValid)
-                {
-                    await _apiService.CreateLogAsync(LogLevelEnum.WARNING.ToString(), LogMessageTemplates.invalid_model_state.ToString(), null, username, ipAddress, actionName, role);
-                    return BadRequest(ModelState);
-                }
-
-                var response = await _userService.CreateRoleAsync(role, username);
-                if (response)
-                {
-                    await _apiService.CreateLogAsync(LogLevelEnum.INFO.ToString(), LogMessageTemplates.successful.ToString(), null, username, ipAddress, actionName, role);
-                    return Ok();
-                }
-                await _apiService.CreateLogAsync(LogLevelEnum.WARNING.ToString(), LogMessageTemplates.failed.ToString(), null, username, ipAddress, actionName, role);
-                return BadRequest(new { message = "Create role failed" });
-            }
-            catch (Exception ex)
-            {
-                string errorMessage = $"Error: {ex.Message}";
-                string innerMessage = ex.InnerException != null ? $"Inner Exception: {ex?.InnerException?.Message}" : string.Empty;
-                await _apiService.CreateLogAsync(LogLevelEnum.ERROR.ToString(), $"{errorMessage}\n{innerMessage}", ex?.StackTrace, username, ipAddress, actionName, role);
-                return BadRequest(new { message = innerMessage != string.Empty ? ex?.InnerException?.Message : ex?.Message });
-            }
-            }
-            else
-            {
-                return Forbid();
-            }
-        }
-
-        [HttpPut("UpdateRole")]
-        public async Task<IActionResult> UpdateRole([FromBody] RoleUpdateDTO role)
-        {
-            var userClaims = User.Claims;
-            var username = User.FindFirstValue("username") ?? null;
-            var ipAddress = HttpContext?.Connection?.RemoteIpAddress?.ToString() ?? null;
-            var actionName = this.ControllerContext?.RouteData?.Values["action"]?.ToString() ?? null;
-            if (userClaims.Any(c => c.Type == "permission" && c.Value == "role_crud") || (username == "root@e.com"))
-            {
-                try
-                {
-                    if (!ModelState.IsValid)
-                    {
-                        await _apiService.CreateLogAsync(LogLevelEnum.WARNING.ToString(), LogMessageTemplates.invalid_model_state.ToString(), null, username, ipAddress, actionName, role);
-                        return BadRequest(ModelState);
-                    }
-
-                    var response = await _userService.UpdateRoleAsync(role, username);
-                    if (response)
-                    {
-                        await _apiService.CreateLogAsync(LogLevelEnum.INFO.ToString(), LogMessageTemplates.successful.ToString(), null, username, ipAddress, actionName, role);
-                        return Ok();
-                    }
-                    await _apiService.CreateLogAsync(LogLevelEnum.WARNING.ToString(), LogMessageTemplates.failed.ToString(), null, username, ipAddress, actionName, role);
-                    return BadRequest(new { message = "Update role failed" });
-                }
-                catch (Exception ex)
-                {
-                    string errorMessage = $"Error: {ex.Message}";
-                    string innerMessage = ex.InnerException != null ? $"Inner Exception: {ex?.InnerException?.Message}" : string.Empty;
-                    await _apiService.CreateLogAsync(LogLevelEnum.ERROR.ToString(), $"{errorMessage}\n{innerMessage}", ex.StackTrace, username, ipAddress, actionName, role);
-                    return BadRequest(new { message = innerMessage != string.Empty ? ex?.InnerException?.Message : ex.Message });
-                }
-            }
-            else
-            {
-                return Forbid();
-            }
-        }
-
-        [HttpDelete("DeleteRole/{id}")]
-        public async Task<IActionResult> DeleteRole(int id)
-        {
-            var userClaims = User.Claims;
-            var username = User.FindFirstValue("username") ?? null;
-            var ipAddress = HttpContext?.Connection?.RemoteIpAddress?.ToString() ?? null;
-            var actionName = this.ControllerContext?.RouteData?.Values["action"]?.ToString() ?? null;
-
-            if (userClaims.Any(c => c.Type == "permission" && c.Value == "role_crud") || (username == "root@e.com"))
-
-            {
-                try
-            {
-                if (!ModelState.IsValid)
-                {
-                    await _apiService.CreateLogAsync(LogLevelEnum.WARNING.ToString(), LogMessageTemplates.invalid_model_state.ToString(), null, username, ipAddress, actionName, id);
-                    return BadRequest(ModelState);
-                }
-
-                var response = await _userService.DeleteRoleAsync(id);
-                if (response)
-                {
-                    await _apiService.CreateLogAsync(LogLevelEnum.INFO.ToString(), LogMessageTemplates.successful.ToString(), null, username, ipAddress, actionName, id);
-                    return Ok();
-                }
-                await _apiService.CreateLogAsync(LogLevelEnum.WARNING.ToString(), LogMessageTemplates.failed.ToString(), null, username, ipAddress, actionName, id);
-                return BadRequest(new { message = "Delete role failed" });
-            }
-            catch (Exception ex)
-            {
-                string errorMessage = $"Error: {ex.Message}";
-                string innerMessage = ex.InnerException != null ? $"Inner Exception: {ex?.InnerException?.Message}" : string.Empty;
-                await _apiService.CreateLogAsync(LogLevelEnum.ERROR.ToString(), $"{errorMessage}\n{innerMessage}", ex.StackTrace, username, ipAddress, actionName, id);
-                return BadRequest(new { message = innerMessage != string.Empty ? ex.InnerException.Message : ex.Message });
-            }
-            }
-            else
-            {
-                return Forbid();
-            }
-        }
-
-
-        //+------------------------------------------------------------------+
-        //| Permission                                            
-        //+------------------------------------------------------------------+
-        [HttpGet("GetAllPermissions")]
-        public async Task<IActionResult> GetAllPermissions()
-        {
-            var userClaims = User.Claims;
-            var username = User.FindFirstValue("username") ?? null;
-            var ipAddress = HttpContext?.Connection?.RemoteIpAddress?.ToString() ?? null;
-            var actionName = this.ControllerContext?.RouteData?.Values["action"]?.ToString() ?? null;
-            if (userClaims.Any(c => c.Type == "permission" && c.Value == "role_crud") || (username == "root@e.com"))
-
-            {
-                try
-            {
-                var result = await _userService.GetAllPermissionsAsync();
-                await _apiService.CreateLogAsync(LogLevelEnum.INFO.ToString(), LogMessageTemplates.successful.ToString(), null, username, ipAddress, actionName, null);
-                return Ok(result);
-            }
-            catch (Exception ex)
-            {
-                string errorMessage = $"Error: {ex.Message}";
-                string innerMessage = ex.InnerException != null ? $"Inner Exception: {ex?.InnerException?.Message}" : string.Empty;
-                await _apiService.CreateLogAsync(LogLevelEnum.ERROR.ToString(), $"{errorMessage}\n{innerMessage}", ex?.StackTrace, username, ipAddress, actionName, null);
-                return BadRequest(new { message = innerMessage != string.Empty ? ex?.InnerException?.Message : ex?.Message });
-                }
-            }
-            else
-            {
-                return Forbid();
             }
         }
     }

@@ -1,3 +1,3 @@
 eval "$(ssh-agent -s)"
-ssh-add ~/.ssh/id_rsa_mhmdkassab
+ssh-add ~/.ssh/id_rsa
 git push -u origin main

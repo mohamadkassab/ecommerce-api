@@ -476,6 +476,16 @@
   },
   {
     "ContainingType": "ecommerce_dash_api.Controllers.SetupController",
+    "Method": "GetAllPaymentM",
+    "RelativePath": "Setup/GetAllPaymentM",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ecommerce_dash_api.Controllers.SetupController",
     "Method": "GetAllSeasons",
     "RelativePath": "Setup/GetAllSeasons",
     "HttpMethod": "GET",
@@ -488,6 +498,16 @@
     "ContainingType": "ecommerce_dash_api.Controllers.SetupController",
     "Method": "GetAllSections",
     "RelativePath": "Setup/GetAllSections",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ecommerce_dash_api.Controllers.SetupController",
+    "Method": "GetAllShippingM",
+    "RelativePath": "Setup/GetAllShippingM",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
@@ -626,6 +646,37 @@
   },
   {
     "ContainingType": "ecommerce_dash_api.Controllers.SetupController",
+    "Method": "UpdatePaymentM",
+    "RelativePath": "Setup/UpdatePaymentM",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "Id",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "Name",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "IconFile",
+        "Type": "Microsoft.AspNetCore.Http.IFormFile",
+        "IsRequired": false
+      },
+      {
+        "Name": "IsActive",
+        "Type": "System.Boolean",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ecommerce_dash_api.Controllers.SetupController",
     "Method": "UpdateSeason",
     "RelativePath": "Setup/UpdateSeason",
     "HttpMethod": "PUT",
@@ -652,6 +703,37 @@
         "Name": "section",
         "Type": "ecommerce_dash_api.DTOS.SectionUpdateDTO",
         "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ecommerce_dash_api.Controllers.SetupController",
+    "Method": "UpdateShippingM",
+    "RelativePath": "Setup/UpdateShippingM",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "Id",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "Name",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "IconFile",
+        "Type": "Microsoft.AspNetCore.Http.IFormFile",
+        "IsRequired": false
+      },
+      {
+        "Name": "IsActive",
+        "Type": "System.Boolean",
+        "IsRequired": false
       }
     ],
     "ReturnTypes": []

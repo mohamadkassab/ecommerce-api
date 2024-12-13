@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "XOCpSL1BvdpZ+bn8cz6Sgt4ZT6Bk3ZOtT/SEDOMz7UY=",
+  "Hash": "oxQNRMOT81Kb8m0pyQTSfYrSOPuRggEW3eMKGy0EAro=",
   "Source": "ecommerce_dash_api",
   "BasePath": "_content/ecommerce_dash_api",
   "Mode": "Default",
@@ -267,6 +267,48 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\images\\brands\\e5257766-41d3-4c54-a3f7-d0238328ca74.png"
+    },
+    {
+      "Identity": "C:\\Users\\mhmdk\\Desktop\\Projects\\ecommerce-api\\ecommerce_dash_api\\wwwroot\\images\\payment-methods\\9a7b793e-272f-498a-a8e5-0edebf06989d.png",
+      "SourceId": "ecommerce_dash_api",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\mhmdk\\Desktop\\Projects\\ecommerce-api\\ecommerce_dash_api\\wwwroot\\",
+      "BasePath": "_content/ecommerce_dash_api",
+      "RelativePath": "images/payment-methods/9a7b793e-272f-498a-a8e5-0edebf06989d#[.{fingerprint}]?.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "5tmuou21f8",
+      "Integrity": "+X4XqjMOqA9Hx/kORq9cvqEU4x2DXUuzmVao/yN56fY=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\payment-methods\\9a7b793e-272f-498a-a8e5-0edebf06989d.png"
+    },
+    {
+      "Identity": "C:\\Users\\mhmdk\\Desktop\\Projects\\ecommerce-api\\ecommerce_dash_api\\wwwroot\\images\\shipping-methods\\9a7b793e-272f-498a-a8e5-0edebf06989d.png",
+      "SourceId": "ecommerce_dash_api",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\mhmdk\\Desktop\\Projects\\ecommerce-api\\ecommerce_dash_api\\wwwroot\\",
+      "BasePath": "_content/ecommerce_dash_api",
+      "RelativePath": "images/shipping-methods/9a7b793e-272f-498a-a8e5-0edebf06989d#[.{fingerprint}]?.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "5tmuou21f8",
+      "Integrity": "+X4XqjMOqA9Hx/kORq9cvqEU4x2DXUuzmVao/yN56fY=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\shipping-methods\\9a7b793e-272f-498a-a8e5-0edebf06989d.png"
     }
   ],
   "Endpoints": [
@@ -1251,6 +1293,170 @@
         {
           "Name": "integrity",
           "Value": "sha256-bVwPx4YUlToqctRQ/JVWprFsn5317u49ReRrigMJR7E="
+        }
+      ]
+    },
+    {
+      "Route": "images/payment-methods/9a7b793e-272f-498a-a8e5-0edebf06989d.5tmuou21f8.png",
+      "AssetFile": "C:\\Users\\mhmdk\\Desktop\\Projects\\ecommerce-api\\ecommerce_dash_api\\wwwroot\\images\\payment-methods\\9a7b793e-272f-498a-a8e5-0edebf06989d.png",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "23109"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/png"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"+X4XqjMOqA9Hx/kORq9cvqEU4x2DXUuzmVao/yN56fY=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 13 Dec 2024 11:57:29 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "5tmuou21f8"
+        },
+        {
+          "Name": "label",
+          "Value": "images/payment-methods/9a7b793e-272f-498a-a8e5-0edebf06989d.png"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-+X4XqjMOqA9Hx/kORq9cvqEU4x2DXUuzmVao/yN56fY="
+        }
+      ]
+    },
+    {
+      "Route": "images/payment-methods/9a7b793e-272f-498a-a8e5-0edebf06989d.png",
+      "AssetFile": "C:\\Users\\mhmdk\\Desktop\\Projects\\ecommerce-api\\ecommerce_dash_api\\wwwroot\\images\\payment-methods\\9a7b793e-272f-498a-a8e5-0edebf06989d.png",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "23109"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/png"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"+X4XqjMOqA9Hx/kORq9cvqEU4x2DXUuzmVao/yN56fY=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 13 Dec 2024 11:57:29 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-+X4XqjMOqA9Hx/kORq9cvqEU4x2DXUuzmVao/yN56fY="
+        }
+      ]
+    },
+    {
+      "Route": "images/shipping-methods/9a7b793e-272f-498a-a8e5-0edebf06989d.5tmuou21f8.png",
+      "AssetFile": "C:\\Users\\mhmdk\\Desktop\\Projects\\ecommerce-api\\ecommerce_dash_api\\wwwroot\\images\\shipping-methods\\9a7b793e-272f-498a-a8e5-0edebf06989d.png",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "23109"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/png"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"+X4XqjMOqA9Hx/kORq9cvqEU4x2DXUuzmVao/yN56fY=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 13 Dec 2024 11:57:29 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "5tmuou21f8"
+        },
+        {
+          "Name": "label",
+          "Value": "images/shipping-methods/9a7b793e-272f-498a-a8e5-0edebf06989d.png"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-+X4XqjMOqA9Hx/kORq9cvqEU4x2DXUuzmVao/yN56fY="
+        }
+      ]
+    },
+    {
+      "Route": "images/shipping-methods/9a7b793e-272f-498a-a8e5-0edebf06989d.png",
+      "AssetFile": "C:\\Users\\mhmdk\\Desktop\\Projects\\ecommerce-api\\ecommerce_dash_api\\wwwroot\\images\\shipping-methods\\9a7b793e-272f-498a-a8e5-0edebf06989d.png",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "23109"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/png"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"+X4XqjMOqA9Hx/kORq9cvqEU4x2DXUuzmVao/yN56fY=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 13 Dec 2024 11:57:29 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-+X4XqjMOqA9Hx/kORq9cvqEU4x2DXUuzmVao/yN56fY="
         }
       ]
     }

@@ -216,5 +216,41 @@
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\brands\e5257766-41d3-4c54-a3f7-d0238328ca74.png'))</OriginalItemSpec>
     </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\payment-methods\9a7b793e-272f-498a-a8e5-0edebf06989d.png'))">
+      <SourceType>Package</SourceType>
+      <SourceId>ecommerce_dash_api</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/ecommerce_dash_api</BasePath>
+      <RelativePath>images/payment-methods/9a7b793e-272f-498a-a8e5-0edebf06989d.png</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <Fingerprint>5tmuou21f8</Fingerprint>
+      <Integrity>+X4XqjMOqA9Hx/kORq9cvqEU4x2DXUuzmVao/yN56fY=</Integrity>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\payment-methods\9a7b793e-272f-498a-a8e5-0edebf06989d.png'))</OriginalItemSpec>
+    </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\shipping-methods\9a7b793e-272f-498a-a8e5-0edebf06989d.png'))">
+      <SourceType>Package</SourceType>
+      <SourceId>ecommerce_dash_api</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/ecommerce_dash_api</BasePath>
+      <RelativePath>images/shipping-methods/9a7b793e-272f-498a-a8e5-0edebf06989d.png</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <Fingerprint>5tmuou21f8</Fingerprint>
+      <Integrity>+X4XqjMOqA9Hx/kORq9cvqEU4x2DXUuzmVao/yN56fY=</Integrity>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\shipping-methods\9a7b793e-272f-498a-a8e5-0edebf06989d.png'))</OriginalItemSpec>
+    </StaticWebAsset>
   </ItemGroup>
 </Project>

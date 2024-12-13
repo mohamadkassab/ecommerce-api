@@ -21,6 +21,9 @@ namespace ecommerce_dash_api.Controllers
             _apiService = apiService;
         }
 
+        //+------------------------------------------------------------------+
+        //| Log                                            
+        //+------------------------------------------------------------------+
         [HttpPost("createLog")]
         public async Task<IActionResult> CreateLog(ApiLog apiLog)
         {

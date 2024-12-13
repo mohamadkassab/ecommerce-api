@@ -7,17 +7,9 @@ namespace ecommerce_dash_api.Interfaces
     public interface IUserRepository
     {
         //+------------------------------------------------------------------+
-        //| User                                            
+        //| Permission                                            
         //+------------------------------------------------------------------+
-        Task<User?> GetUserAsync(int id);
-        Task<(User? user, List<string>? roles, List<string>? permissions)> GetUserByUsernameAsync(string username);
-        Task<List<UserWithRolesQRY>> GetAllUsersWithRoles();
-        Task<bool> UsernameExistsAsync(string username);
-        Task CreateUserAsync(User user);
-        Task UpdateUserAsync(User user);  
-        Task DeleteUserAsync(User user);
-        Task DeleteUserRolesByUserIdAsync(int userId);
-
+        Task<List<PermissionQRY>> GetAllPermissionsAsync();
 
         //+------------------------------------------------------------------+
         //| Role                                            
@@ -28,10 +20,16 @@ namespace ecommerce_dash_api.Interfaces
         Task DeleteRoleAsync(Role role);
         Task DeleteRolePermissionsAsync(int permissionId);
 
-
         //+------------------------------------------------------------------+
-        //| Permission                                            
+        //| User                                            
         //+------------------------------------------------------------------+
-        Task<List<PermissionQRY>> GetAllPermissionsAsync();
+        Task<User?> GetUserAsync(int id);
+        Task<(User? user, List<string>? roles, List<string>? permissions)> GetUserByUsernameAsync(string username);
+        Task<List<UserWithRolesQRY>> GetAllUsersWithRoles();
+        Task<bool> UsernameExistsAsync(string username);
+        Task CreateUserAsync(User user);
+        Task UpdateUserAsync(User user);
+        Task DeleteUserAsync(User user);
+        Task DeleteUserRolesByUserIdAsync(int userId);
     }
 }

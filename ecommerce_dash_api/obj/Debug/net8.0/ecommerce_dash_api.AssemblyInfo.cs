@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ecommerce_dash_api")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+f6a8541ff56474df5bbbb634f0ca2d77dc53d1c9")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+f99f791c9b8dcbaf65074e3d3c86e119eb01222b")]
 [assembly: System.Reflection.AssemblyProductAttribute("ecommerce_dash_api")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ecommerce_dash_api")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -21,7 +21,7 @@ public partial class Supplier
 
     public int? CountryId { get; set; }
 
-    public DateTime? UpdatedAt { get; set; }
+    public DateTime UpdatedAt { get; set; }
 
     public string? UpdatedBy { get; set; }
 

@@ -11,11 +11,11 @@ public partial class PaymentMethod
 
     public string IconUrl { get; set; } = null!;
 
-    public DateTime? UpdatedAt { get; set; }
+    public DateTime UpdatedAt { get; set; }
 
     public string? UpdatedBy { get; set; }
 
-    public bool? IsActive { get; set; }
+    public bool IsActive { get; set; }
 
     public virtual ICollection<Customer> Customers { get; set; } = new List<Customer>();
 

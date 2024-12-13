@@ -15,6 +15,68 @@ public class UserRepository : IUserRepository
     }
 
     //+------------------------------------------------------------------+
+    //| Permission                                            
+    //+------------------------------------------------------------------+
+    public async Task<List<PermissionQRY>> GetAllPermissionsAsync()
+    {
+        var result = await _context.Permissions
+       .Select(i => new PermissionQRY
+       {
+           Id = i.Id,
+           Name = i.Name,
+       })
+       .ToListAsync();
+
+        return result;
+    }
+
+    //+------------------------------------------------------------------+
+    //| Role                                            
+    //+------------------------------------------------------------------+
+    public async Task<Role?> GetRoleByIdAsync(int id)
+    {
+        return await _context.Roles.FirstOrDefaultAsync(i => i.Id == id);
+    }
+    public async Task<List<RoleQRY>> GetAllRolesWithPermissionsAsync()
+    {
+        var result = await _context.Roles
+        .Select(i => new RoleQRY
+        {
+            Id = i.Id,
+            Name = i.Name,
+            Permissions = i.RolePermissions.Select(rp => new PermissionQRY
+            {
+                Id = rp.Permission.Id,
+                Name = rp.Permission.Name
+            }).ToList(),
+            UpdatedAt = i.UpdatedAt,
+            UpdatedBy = i.UpdatedBy,
+        })
+        .ToListAsync();
+
+        return result;
+    }
+    public Task UpdateRoleAsync(Role role)
+    {
+        _context.Roles.Update(role);
+        return Task.CompletedTask;
+    }
+    public Task DeleteRolePermissionsAsync(int roleId)
+    {
+        var records = _context.RolePermissions.Where(i => i.RoleId == roleId).ToList();
+        if (records.Any())
+        {
+            _context.RolePermissions.RemoveRange(records);
+        }
+        return Task.CompletedTask;
+    }
+    public Task DeleteRoleAsync(Role role)
+    {
+        _context.Roles.Remove(role);
+        return Task.CompletedTask;
+    }
+
+    //+------------------------------------------------------------------+
     //| User                                            
     //+------------------------------------------------------------------+
     public async Task<User?> GetUserAsync(int id)
@@ -67,7 +129,7 @@ public class UserRepository : IUserRepository
     }
     public async Task CreateUserAsync(User user)
     {
-       await _context.Users.AddAsync(user);
+        await _context.Users.AddAsync(user);
     }
     public Task UpdateUserAsync(User user)
     {
@@ -87,68 +149,6 @@ public class UserRepository : IUserRepository
             _context.UserRoles.RemoveRange(records);
         }
         return Task.CompletedTask;
-    }
-
-    //+------------------------------------------------------------------+
-    //| Role                                            
-    //+------------------------------------------------------------------+
-    public async Task<Role?> GetRoleByIdAsync(int id)
-    {
-        return await _context.Roles.FirstOrDefaultAsync(i => i.Id == id);
-    }
-    public async Task<List<RoleQRY>> GetAllRolesWithPermissionsAsync()
-    {
-        var result = await _context.Roles
-        .Select(i => new RoleQRY
-        {
-            Id = i.Id,
-            Name = i.Name,
-            Permissions = i.RolePermissions.Select(rp => new PermissionQRY
-            {
-                Id = rp.Permission.Id,
-                Name = rp.Permission.Name
-            }).ToList(),
-            UpdatedAt = i.UpdatedAt,
-            UpdatedBy = i.UpdatedBy,
-        })
-        .ToListAsync();
-
-        return result;
-    }
-    public Task UpdateRoleAsync(Role role)
-    {
-        _context.Roles.Update(role);
-        return Task.CompletedTask;
-    }
-    public Task DeleteRolePermissionsAsync(int roleId)
-    {
-        var records = _context.RolePermissions.Where(i => i.RoleId == roleId).ToList();
-        if (records.Any())
-        {
-            _context.RolePermissions.RemoveRange(records);
-        }
-        return Task.CompletedTask;
-    }
-    public Task DeleteRoleAsync(Role role)
-    {
-        _context.Roles.Remove(role);
-        return Task.CompletedTask;
-    }
-
-    //+------------------------------------------------------------------+
-    //| Permission                                            
-    //+------------------------------------------------------------------+
-    public async Task<List<PermissionQRY>> GetAllPermissionsAsync()
-    {
-        var result = await _context.Permissions
-       .Select(i => new PermissionQRY
-       {
-           Id = i.Id,
-           Name = i.Name,
-       })
-       .ToListAsync();
-
-        return result;
     }
 }
 

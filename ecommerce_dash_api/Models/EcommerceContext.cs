@@ -1262,7 +1262,6 @@ public partial class EcommerceContext : DbContext
 
             entity.HasOne(d => d.Product).WithMany(p => p.Transactions)
                 .HasForeignKey(d => d.ProductId)
-                .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("transaction_ibfk_2");
 
             entity.HasOne(d => d.UpdatedByNavigation).WithMany(p => p.Transactions)

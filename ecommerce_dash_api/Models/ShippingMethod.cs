@@ -9,13 +9,13 @@ public partial class ShippingMethod
 
     public string Name { get; set; } = null!;
 
-    public string? IconUrl { get; set; }
+    public string IconUrl { get; set; } = null!;
 
-    public DateTime? UpdatedAt { get; set; }
+    public DateTime UpdatedAt { get; set; }
 
     public string? UpdatedBy { get; set; }
 
-    public bool? IsActive { get; set; }
+    public bool IsActive { get; set; }
 
     public virtual ICollection<OrderShipping> OrderShippings { get; set; } = new List<OrderShipping>();
 

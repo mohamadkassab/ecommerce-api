@@ -22,38 +22,57 @@ namespace ecommerce_dash_api.Services
         }
 
         //+------------------------------------------------------------------+
-        //| Country                                            
+        //| Attribute                                            
         //+------------------------------------------------------------------+
-        public async Task<List<CountryQRY>> GetAllCountriesAsync()
+        public async Task<List<AttributeQRY>> GetAllAttributesWithOptionsAsync()
         {
-            var result = await _setupRepository.GetAllCountriesAsync();
+            var result = await _setupRepository.GetAllAttributesWithOptionsAsync();
             return result;
         }
-        public async Task<bool> CreateCountryAsync(CountryCreateDTO countryDTO, string? username)
+        public async Task<bool> CreateAttributeAsync(AttributeCreateDTO attributeDTO, string? username)
         {
-            Country country = new Country();
-            country.Name = countryDTO.Name;
-            country.Code = countryDTO.Code;
-            country.UpdatedBy = username;
-            await _setupRepository.CreateCountryAsync(country);
+            Attribute attribute = new Attribute
+            {
+                Name = attributeDTO.Name,
+                UpdatedBy = username,
+            };
+            await _setupRepository.CreateAttributeAsync(attribute);
+            foreach (var option in attributeDTO.Options)
+            {
+                AttributeOption attributeOption = new AttributeOption
+                {
+                    Attribute = attribute,
+                    Option = option
+                };
+                await _setupRepository.CreateAttributeOptionAsync(attributeOption);
+            }
             await _context.SaveChangesAsync();
             return true;
         }
-        public async Task<bool> UpdateCountryAsync(CountryUpdateDTO countryDTO, string? username)
+        public async Task<bool> UpdateAttributeAsync(AttributeUpdateDTO attributeDTO, string? username)
         {
-            Country country = await _setupRepository.GetCountryByIdAsync(countryDTO.Id);
-            country.Name = countryDTO.Name;
-            country.Code = countryDTO.Code;
-            country.UpdatedBy = username;
-            await _setupRepository.UpdateCountryAsync(country);
+            await _setupRepository.DeleteAttributeOptionsByAttributeIdAsync(attributeDTO.Id);
+            Attribute attribute = await _setupRepository.GetAttributeByIdAsync(attributeDTO.Id);
+            attribute.Name = attributeDTO.Name;
+            attribute.UpdatedBy = username;
+            await _setupRepository.UpdateAttributeAsync(attribute);
+            foreach (var option in attributeDTO.Options)
+            {
+                AttributeOption attributeOption = new AttributeOption
+                {
+                    Attribute = attribute,
+                    Option = option
+                };
+                await _setupRepository.CreateAttributeOptionAsync(attributeOption);
+            }
             await _context.SaveChangesAsync();
             return true;
         }
-        public async Task<bool> DeleteCountryAsync(int id)
+        public async Task<bool> DeleteAttributeAsync(int id)
         {
-            var country = await _context.Countries
+            var attribute = await _context.Attributes
             .Where(i => i.Id == id).FirstOrDefaultAsync();
-            await _setupRepository.DeleteCountryAsync(country);
+            await _setupRepository.DeleteAttributeAsync(attribute);
             await _context.SaveChangesAsync();
             return true;
         }
@@ -160,6 +179,43 @@ namespace ecommerce_dash_api.Services
         }
 
         //+------------------------------------------------------------------+
+        //| Country                                            
+        //+------------------------------------------------------------------+
+        public async Task<List<CountryQRY>> GetAllCountriesAsync()
+        {
+            var result = await _setupRepository.GetAllCountriesAsync();
+            return result;
+        }
+        public async Task<bool> CreateCountryAsync(CountryCreateDTO countryDTO, string? username)
+        {
+            Country country = new Country();
+            country.Name = countryDTO.Name;
+            country.Code = countryDTO.Code;
+            country.UpdatedBy = username;
+            await _setupRepository.CreateCountryAsync(country);
+            await _context.SaveChangesAsync();
+            return true;
+        }
+        public async Task<bool> UpdateCountryAsync(CountryUpdateDTO countryDTO, string? username)
+        {
+            Country country = await _setupRepository.GetCountryByIdAsync(countryDTO.Id);
+            country.Name = countryDTO.Name;
+            country.Code = countryDTO.Code;
+            country.UpdatedBy = username;
+            await _setupRepository.UpdateCountryAsync(country);
+            await _context.SaveChangesAsync();
+            return true;
+        }
+        public async Task<bool> DeleteCountryAsync(int id)
+        {
+            var country = await _context.Countries
+            .Where(i => i.Id == id).FirstOrDefaultAsync();
+            await _setupRepository.DeleteCountryAsync(country);
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
+        //+------------------------------------------------------------------+
         //| Currency                                            
         //+------------------------------------------------------------------+
         public async Task<List<CurrencyQRY>> GetAllCurrenciesAsync()
@@ -203,36 +259,37 @@ namespace ecommerce_dash_api.Services
         }
 
         //+------------------------------------------------------------------+
-        //| Year                                            
+        //| Payment method                                            
         //+------------------------------------------------------------------+
-        public async Task<List<YearQRY>> GetAllYearsAsync()
+        public async Task<List<PaymentMQRY>> GetAllPaymentMAsync()
         {
-            var result = await _setupRepository.GetAllYearsAsync();
+            var result = await _setupRepository.GetAllPaymentMAsync();
             return result;
         }
-        public async Task<bool> CreateYearAsync(YearCreateDTO yearDTO, string? username)
+        public async Task<bool> UpdatePaymentMAsync(PaymentMUpdateDTO paymentMDTO, string? username)
         {
-            Year year = new Year();
-            year.Name = yearDTO.Name;
-            year.UpdatedBy = username;
-            await _setupRepository.CreateYearAsync(year);
-            await _context.SaveChangesAsync();
-            return true;
-        }
-        public async Task<bool> UpdateYearAsync(YearUpdateDTO yearDTO, string? username)
-        {
-            Year year = await _setupRepository.GetYearByIdAsync(yearDTO.Id);
-            year.Name = yearDTO.Name;
-            year.UpdatedBy = username;
-            await _setupRepository.UpdateYearAsync(year);
-            await _context.SaveChangesAsync();
-            return true;
-        }
-        public async Task<bool> DeleteYearAsync(int id)
-        {
-            var year = await _context.Years
-            .Where(i => i.Id == id).FirstOrDefaultAsync();
-            await _setupRepository.DeleteYearAsync(year);
+            PaymentMethod paymentM = await _setupRepository.GetPaymentMByIdAsync(paymentMDTO.Id);
+            var filePath = paymentM.IconUrl;
+            if (paymentMDTO.IconFile != null)
+            {
+                if (!string.IsNullOrEmpty(paymentM.IconUrl) && File.Exists(paymentM.IconUrl))
+                {
+                    File.Delete(paymentM.IconUrl); // Deletes the old file
+                }
+                var fileExtension = Path.GetExtension(paymentMDTO.IconFile.FileName);
+                var uniqueFileName = $"{Guid.NewGuid()}{fileExtension}";
+                filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", "shipping-methods", uniqueFileName);
+                using (Stream stream = new FileStream(filePath, FileMode.Create))
+                {
+                    paymentMDTO.IconFile.CopyTo(stream);
+                }
+            }
+
+            paymentM.Name = paymentMDTO.Name;
+            paymentM.IconUrl = filePath;
+            paymentM.IsActive = paymentMDTO.IsActive;
+            paymentM.UpdatedBy = username;
+            await _setupRepository.UpdatePaymentMAsync(paymentM);
             await _context.SaveChangesAsync();
             return true;
         }
@@ -324,6 +381,42 @@ namespace ecommerce_dash_api.Services
         }
 
         //+------------------------------------------------------------------+
+        //| Shipping method                                            
+        //+------------------------------------------------------------------+
+        public async Task<List<ShippingMQRY>> GetAllShippingMAsync()
+        {
+            var result = await _setupRepository.GetAllShippingMAsync();
+            return result;
+        }
+        public async Task<bool> UpdateShippingMAsync(ShippingMUpdateDTO shippingMDTO, string? username)
+        {
+            ShippingMethod shippingM = await _setupRepository.GetShippingMByIdAsync(shippingMDTO.Id);
+            var filePath = shippingM.IconUrl;
+            if (shippingMDTO.IconFile != null)
+            {
+                if (!string.IsNullOrEmpty(shippingM.IconUrl) && File.Exists(shippingM.IconUrl))
+                {
+                    File.Delete(shippingM.IconUrl); // Deletes the old file
+                }
+                var fileExtension = Path.GetExtension(shippingMDTO.IconFile.FileName);
+                var uniqueFileName = $"{Guid.NewGuid()}{fileExtension}";
+                filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", "shipping-methods", uniqueFileName);
+                using (Stream stream = new FileStream(filePath, FileMode.Create))
+                {
+                    shippingMDTO.IconFile.CopyTo(stream);
+                }
+            }
+
+            shippingM.Name = shippingMDTO.Name;
+            shippingM.IconUrl = filePath;
+            shippingM.IsActive = shippingMDTO.IsActive;
+            shippingM.UpdatedBy = username;
+            await _setupRepository.UpdateShippingMAsync(shippingM);
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
+        //+------------------------------------------------------------------+
         //| Supplier                                            
         //+------------------------------------------------------------------+
         public async Task<List<SupplierQRY>> GetAllSuppliersAsync()
@@ -408,56 +501,36 @@ namespace ecommerce_dash_api.Services
         }
 
         //+------------------------------------------------------------------+
-        //| Attribute                                            
+        //| Year                                            
         //+------------------------------------------------------------------+
-        public async Task<List<AttributeQRY>> GetAllAttributesWithOptionsAsync()
+        public async Task<List<YearQRY>> GetAllYearsAsync()
         {
-            var result = await _setupRepository.GetAllAttributesWithOptionsAsync();
+            var result = await _setupRepository.GetAllYearsAsync();
             return result;
         }
-        public async Task<bool> CreateAttributeAsync(AttributeCreateDTO attributeDTO, string? username)
+        public async Task<bool> CreateYearAsync(YearCreateDTO yearDTO, string? username)
         {
-            Attribute attribute = new Attribute
-            {
-                Name = attributeDTO.Name,
-                UpdatedBy = username,
-            };           
-            await _setupRepository.CreateAttributeAsync(attribute);
-            foreach (var option in attributeDTO.Options) {
-                AttributeOption attributeOption = new AttributeOption
-                {
-                    Attribute = attribute,
-                    Option = option
-                };
-                await _setupRepository.CreateAttributeOptionAsync(attributeOption);
-            }           
+            Year year = new Year();
+            year.Name = yearDTO.Name;
+            year.UpdatedBy = username;
+            await _setupRepository.CreateYearAsync(year);
             await _context.SaveChangesAsync();
             return true;
         }
-        public async Task<bool> UpdateAttributeAsync(AttributeUpdateDTO attributeDTO, string? username)
+        public async Task<bool> UpdateYearAsync(YearUpdateDTO yearDTO, string? username)
         {
-            await _setupRepository.DeleteAttributeOptionsByAttributeIdAsync(attributeDTO.Id);
-            Attribute attribute = await _setupRepository.GetAttributeByIdAsync(attributeDTO.Id);
-            attribute.Name = attributeDTO.Name;
-            attribute.UpdatedBy = username;
-            await _setupRepository.UpdateAttributeAsync(attribute);
-            foreach (var option in attributeDTO.Options)
-            {
-                AttributeOption attributeOption = new AttributeOption
-                {
-                    Attribute = attribute,
-                    Option = option
-                };
-                await _setupRepository.CreateAttributeOptionAsync(attributeOption);
-            }
+            Year year = await _setupRepository.GetYearByIdAsync(yearDTO.Id);
+            year.Name = yearDTO.Name;
+            year.UpdatedBy = username;
+            await _setupRepository.UpdateYearAsync(year);
             await _context.SaveChangesAsync();
             return true;
         }
-        public async Task<bool> DeleteAttributeAsync(int id)
+        public async Task<bool> DeleteYearAsync(int id)
         {
-            var attribute = await _context.Attributes
+            var year = await _context.Years
             .Where(i => i.Id == id).FirstOrDefaultAsync();
-            await _setupRepository.DeleteAttributeAsync(attribute);
+            await _setupRepository.DeleteYearAsync(year);
             await _context.SaveChangesAsync();
             return true;
         }

@@ -8,8 +8,7 @@ namespace ecommerce_dash_api.Utils
 {
     public static class DependencyGroup
     {
-        public static IServiceCollection AddDependencyGroup(
-             this IServiceCollection services)
+        public static IServiceCollection AddDependencyGroup(this IServiceCollection services)
         {
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IUserService, UserService>();

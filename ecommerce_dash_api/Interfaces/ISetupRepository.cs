@@ -7,13 +7,15 @@ namespace ecommerce_dash_api.Interfaces
     public interface ISetupRepository
     {
         //+------------------------------------------------------------------+
-        //| Country                                            
+        //| Attribute                                            
         //+------------------------------------------------------------------+
-        Task<List<CountryQRY>> GetAllCountriesAsync();
-        Task CreateCountryAsync(Country country);
-        Task UpdateCountryAsync(Country country);
-        Task<Country?> GetCountryByIdAsync(int id);
-        Task DeleteCountryAsync(Country country);
+        Task<Attribute?> GetAttributeByIdAsync(int id);
+        Task<List<AttributeQRY>> GetAllAttributesWithOptionsAsync();
+        Task CreateAttributeAsync(Attribute attribute);
+        Task CreateAttributeOptionAsync(AttributeOption attributeOption);
+        Task UpdateAttributeAsync(Attribute attribute);
+        Task DeleteAttributeAsync(Attribute attribute);
+        Task DeleteAttributeOptionsByAttributeIdAsync(int attributeId);
 
         //+------------------------------------------------------------------+
         //| Brand                                            
@@ -34,6 +36,15 @@ namespace ecommerce_dash_api.Interfaces
         Task DeleteCategoryAsync(Category category);
 
         //+------------------------------------------------------------------+
+        //| Country                                            
+        //+------------------------------------------------------------------+
+        Task<List<CountryQRY>> GetAllCountriesAsync();
+        Task CreateCountryAsync(Country country);
+        Task UpdateCountryAsync(Country country);
+        Task<Country?> GetCountryByIdAsync(int id);
+        Task DeleteCountryAsync(Country country);
+
+        //+------------------------------------------------------------------+
         //| Currency                                            
         //+------------------------------------------------------------------+
         Task<List<CurrencyQRY>> GetAllCurrenciesAsync();
@@ -43,13 +54,11 @@ namespace ecommerce_dash_api.Interfaces
         Task DeleteCurrencyAsync(Currency currency);
 
         //+------------------------------------------------------------------+
-        //| Year                                            
+        //| Payment method                                            
         //+------------------------------------------------------------------+
-        Task<List<YearQRY>> GetAllYearsAsync();
-        Task CreateYearAsync(Year year);
-        Task UpdateYearAsync(Year year);
-        Task<Year?> GetYearByIdAsync(int id);
-        Task DeleteYearAsync(Year year);
+        Task<List<PaymentMQRY>> GetAllPaymentMAsync();
+        Task<PaymentMethod?> GetPaymentMByIdAsync(int id);
+        Task UpdatePaymentMAsync(PaymentMethod paymentM);
 
         //+------------------------------------------------------------------+
         //| Season                                            
@@ -71,6 +80,13 @@ namespace ecommerce_dash_api.Interfaces
         Task DeleteSectionCategoriesBySectionIdAsync(int sectionId);
 
         //+------------------------------------------------------------------+
+        //| Shipping method                                            
+        //+------------------------------------------------------------------+
+        Task<List<ShippingMQRY>> GetAllShippingMAsync();
+        Task<ShippingMethod?> GetShippingMByIdAsync(int id);
+        Task UpdateShippingMAsync(ShippingMethod shippingM);
+
+        //+------------------------------------------------------------------+
         //| Supplier                                            
         //+------------------------------------------------------------------+
         Task<List<SupplierQRY>> GetAllSuppliersAsync();
@@ -89,14 +105,12 @@ namespace ecommerce_dash_api.Interfaces
         Task DeleteTagAsync(Tag tag);
 
         //+------------------------------------------------------------------+
-        //| Attribute                                            
+        //| Year                                            
         //+------------------------------------------------------------------+
-        Task<Attribute?> GetAttributeByIdAsync(int id);
-        Task<List<AttributeQRY>> GetAllAttributesWithOptionsAsync();
-        Task CreateAttributeAsync(Attribute attribute);
-        Task CreateAttributeOptionAsync(AttributeOption attributeOption);
-        Task UpdateAttributeAsync(Attribute attribute);
-        Task DeleteAttributeAsync(Attribute attribute);
-        Task DeleteAttributeOptionsByAttributeIdAsync(int attributeId);
+        Task<List<YearQRY>> GetAllYearsAsync();
+        Task CreateYearAsync(Year year);
+        Task UpdateYearAsync(Year year);
+        Task<Year?> GetYearByIdAsync(int id);
+        Task DeleteYearAsync(Year year);
     }
 }
