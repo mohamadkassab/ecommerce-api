@@ -40,8 +40,11 @@ namespace ecommerce_dash_api.DTOS
 
         [StringLength(255)]
         [DataType(DataType.Password)]
-        public string? Password { get; set; } = null!;
+        public string? Password { get; set; }
 
         public List<int> Roles { get; set; } = new List<int>();
+
+        [Required]
+        public Boolean IsActive { get; set; }
     }
 }

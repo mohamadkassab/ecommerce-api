@@ -1,11 +1,8 @@
-using ecommerce_dash_api.Interfaces;
 using ecommerce_dash_api.Models;
-using ecommerce_dash_api.Services;
 using ecommerce_dash_api.Utils;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using System.Configuration;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);

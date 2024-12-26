@@ -29,6 +29,10 @@
       "PackagePath": "staticwebassets\\images\\brands\\b6855251-da54-4199-8e2f-c7738b882a07.jpg"
     },
     {
+      "Id": "C:\\Users\\mhmdk\\Desktop\\Projects\\ecommerce-api\\ecommerce_dash_api\\wwwroot\\images\\brands\\c4d4e60e-a3a7-4c53-b05e-19af28d61784.jpg",
+      "PackagePath": "staticwebassets\\images\\brands\\c4d4e60e-a3a7-4c53-b05e-19af28d61784.jpg"
+    },
+    {
       "Id": "C:\\Users\\mhmdk\\Desktop\\Projects\\ecommerce-api\\ecommerce_dash_api\\wwwroot\\images\\brands\\c8207563-dac3-49ba-9f42-cabc02373987.jpg",
       "PackagePath": "staticwebassets\\images\\brands\\c8207563-dac3-49ba-9f42-cabc02373987.jpg"
     },
@@ -51,6 +55,22 @@
     {
       "Id": "C:\\Users\\mhmdk\\Desktop\\Projects\\ecommerce-api\\ecommerce_dash_api\\wwwroot\\images\\payment-methods\\9a7b793e-272f-498a-a8e5-0edebf06989d.png",
       "PackagePath": "staticwebassets\\images\\payment-methods\\9a7b793e-272f-498a-a8e5-0edebf06989d.png"
+    },
+    {
+      "Id": "C:\\Users\\mhmdk\\Desktop\\Projects\\ecommerce-api\\ecommerce_dash_api\\wwwroot\\images\\product-media\\2c3d0daa-5ca1-4274-af17-fb7d27d129ed.jpg",
+      "PackagePath": "staticwebassets\\images\\product-media\\2c3d0daa-5ca1-4274-af17-fb7d27d129ed.jpg"
+    },
+    {
+      "Id": "C:\\Users\\mhmdk\\Desktop\\Projects\\ecommerce-api\\ecommerce_dash_api\\wwwroot\\images\\product-media\\b5041e1c-e231-4cdb-9590-b11231ee4186.jpg",
+      "PackagePath": "staticwebassets\\images\\product-media\\b5041e1c-e231-4cdb-9590-b11231ee4186.jpg"
+    },
+    {
+      "Id": "C:\\Users\\mhmdk\\Desktop\\Projects\\ecommerce-api\\ecommerce_dash_api\\wwwroot\\images\\product-media\\f6153927-ad1d-4a21-957c-30e06972d5a5.jpg",
+      "PackagePath": "staticwebassets\\images\\product-media\\f6153927-ad1d-4a21-957c-30e06972d5a5.jpg"
+    },
+    {
+      "Id": "C:\\Users\\mhmdk\\Desktop\\Projects\\ecommerce-api\\ecommerce_dash_api\\wwwroot\\images\\shipping-methods\\431dc03d-76bd-49ed-b3c3-309aaa479ca4.jpg",
+      "PackagePath": "staticwebassets\\images\\shipping-methods\\431dc03d-76bd-49ed-b3c3-309aaa479ca4.jpg"
     },
     {
       "Id": "C:\\Users\\mhmdk\\Desktop\\Projects\\ecommerce-api\\ecommerce_dash_api\\wwwroot\\images\\shipping-methods\\9a7b793e-272f-498a-a8e5-0edebf06989d.png",

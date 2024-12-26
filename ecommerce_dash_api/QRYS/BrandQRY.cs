@@ -6,10 +6,10 @@ namespace ecommerce_dash_api.QRYS
     {
         public int Id { get; set; }
         public string Name { get; set; } = null!;
-        public string? Website { get; set; }
+        public string Website { get; set; } = string.Empty;
         public byte[]? LogoFile { get; set; }
         public string Country { get; set; } = null!;
         public DateTime UpdatedAt { get; set; }
-        public string? UpdatedBy { get; set; }
+        public string UpdatedBy { get; set; } = string.Empty;
     }
 }

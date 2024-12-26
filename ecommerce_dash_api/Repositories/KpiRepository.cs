@@ -23,7 +23,9 @@ namespace ecommerce_dash_api.Repositories
         //+------------------------------------------------------------------+
         public Task<List<ChartQRY>> GetAllChartsAsync()
         {
-            var result = _context.Charts.Select(i => new ChartQRY
+            var result = _context.Charts
+            .AsNoTracking()
+            .Select(i => new ChartQRY
             {
                 Id = i.Id,
                 Label = i.Label,

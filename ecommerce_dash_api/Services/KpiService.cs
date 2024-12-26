@@ -36,31 +36,20 @@ namespace ecommerce_dash_api.Services
             var chart = new Chart { Label = createChartDto.Label, Query = createChartDto?.Query, Type = createChartDto.ChartType };
             await _context.Charts.AddAsync(chart);
 
-            try
+            foreach (var chartpropertydto in createChartDto?.ChartProperties)
             {
-                await _context.SaveChangesAsync();
-
-                foreach (var chartpropertydto in createChartDto?.ChartProperties)
+                var charproperty = new ChartProperty
                 {
-                    var charproperty = new ChartProperty
-                    {
-                        ChartId = chart.Id,
-                        Name = chartpropertydto.PropertyName,
-                        Value = chartpropertydto.PropertyValue,
-                        UpdatedBy = username
-                    };
+                    Chart = chart,
+                    Name = chartpropertydto.PropertyName,
+                    Value = chartpropertydto.PropertyValue,
+                    UpdatedBy = username
+                };
 
-                    await _kpiRepository.CreateChartAsync(charproperty);
-                }
-                await _context.SaveChangesAsync();
-                return true;
+                await _kpiRepository.CreateChartAsync(charproperty);
             }
-            catch (Exception ex)
-            {
-                _context.Charts.Remove(chart);
-                await _context.SaveChangesAsync();
-                throw;
-            }
+            await _context.SaveChangesAsync();
+            return true;   
         }
         public async Task<bool> UpdateChartAsync(ChartUpdateDTO updateChartDto, string? username)
         {

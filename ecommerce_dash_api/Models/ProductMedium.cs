@@ -15,9 +15,7 @@ public partial class ProductMedium
 
     public string AltText { get; set; } = null!;
 
-    public bool? IsPrimary { get; set; }
-
-    public DateTime? UpdatedAt { get; set; }
+    public DateTime UpdatedAt { get; set; }
 
     public string? UpdatedBy { get; set; }
 

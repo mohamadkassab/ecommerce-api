@@ -36,7 +36,6 @@ namespace ecommerce_dash_api.Interfaces
         Task<List<CountryQRY>> GetAllCountriesAsync();
         Task<bool> CreateCountryAsync(CountryCreateDTO countryDTO, string? username);
         Task<bool> UpdateCountryAsync(CountryUpdateDTO countryDTO, string? username);
-        Task<bool> DeleteCountryAsync(int id);
 
         //+------------------------------------------------------------------+
         //| Currency                                            
@@ -72,6 +71,7 @@ namespace ecommerce_dash_api.Interfaces
         //| Shipping method                                            
         //+------------------------------------------------------------------+
         Task<List<ShippingMQRY>> GetAllShippingMAsync();
+        Task<bool> CreateShippingMAsync(ShippingMCreateDTO shippingMDTO, string? username);
         Task<bool> UpdateShippingMAsync(ShippingMUpdateDTO shippingMDTO, string? username);
 
         //+------------------------------------------------------------------+
@@ -89,13 +89,5 @@ namespace ecommerce_dash_api.Interfaces
         Task<bool> CreateTagAsync(TagCreateDTO tagDTO, string? username);
         Task<bool> UpdateTagAsync(TagUpdateDTO tagDTO, string? username);
         Task<bool> DeleteTagAsync(int id);
-
-        //+------------------------------------------------------------------+
-        //| Year                                            
-        //+------------------------------------------------------------------+
-        Task<List<YearQRY>> GetAllYearsAsync();
-        Task<bool> CreateYearAsync(YearCreateDTO yearDTO, string? username);
-        Task<bool> UpdateYearAsync(YearUpdateDTO yearDTO, string? username);
-        Task<bool> DeleteYearAsync(int id);
     }
 }

@@ -11,6 +11,8 @@ public partial class ShippingMethod
 
     public string IconUrl { get; set; } = null!;
 
+    public bool Overseas { get; set; }
+
     public DateTime UpdatedAt { get; set; }
 
     public string? UpdatedBy { get; set; }

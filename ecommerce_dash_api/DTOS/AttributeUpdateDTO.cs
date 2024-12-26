@@ -4,6 +4,7 @@ namespace ecommerce_dash_api.DTOS
 {
     public class AttributeUpdateDTO
     {
+        [Required]
         public int Id { get; set; }
 
         private string _name = null!;
@@ -14,6 +15,6 @@ namespace ecommerce_dash_api.DTOS
             set => _name = value.Trim().ToUpper();
         }
 
-        public List<string> Options { get; set; }
+        public List<string> Options { get; set; } = new List<string>();
     }
 }

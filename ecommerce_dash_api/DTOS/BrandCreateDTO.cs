@@ -1,4 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using ecommerce_dash_api.Enum;
+using ecommerce_dash_api.Utils;
 
 namespace ecommerce_dash_api.DTOS
 {
@@ -12,11 +14,12 @@ namespace ecommerce_dash_api.DTOS
             set => _name = value.Trim().ToUpper();
         }
 
-        public string? Website { get; set; }
+        public string Website { get; set; } = string.Empty;
 
         [Required]
-        [MaxFileSize(10 * 1024 * 1024)]
-        public IFormFile LogoFile { get; set; }
+        [MaxFileSize(2 * 1024 * 1024)]
+        [FileTypeValidation(FileTypeEnum.Image)]
+        public IFormFile LogoFile { get; set; } = null!;
 
         [Required]
         public string Country { get; set; } = null!;

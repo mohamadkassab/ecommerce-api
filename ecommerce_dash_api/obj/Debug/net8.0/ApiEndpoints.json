@@ -74,6 +74,227 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "ecommerce_dash_api.Controllers.ProductController",
+    "Method": "CreateProduct",
+    "RelativePath": "Product/CreateProduct",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "product",
+        "Type": "ecommerce_dash_api.DTOS.ProductCreateDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ecommerce_dash_api.Controllers.ProductController",
+    "Method": "CreateProductContent",
+    "RelativePath": "Product/CreateProductContent",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "ProductId",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "ShortDescription",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "LongDescription",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Weight",
+        "Type": "System.Decimal",
+        "IsRequired": false
+      },
+      {
+        "Name": "ShippingWeight",
+        "Type": "System.Decimal",
+        "IsRequired": false
+      },
+      {
+        "Name": "MinOrder",
+        "Type": "System.Int16",
+        "IsRequired": false
+      },
+      {
+        "Name": "MaxOrder",
+        "Type": "System.Int16",
+        "IsRequired": false
+      },
+      {
+        "Name": "Categories",
+        "Type": "System.Collections.Generic.List\u00601[[System.String, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "Media",
+        "Type": "System.Collections.Generic.List\u00601[[Microsoft.AspNetCore.Http.IFormFile, Microsoft.AspNetCore.Http.Features, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "Tags",
+        "Type": "System.Collections.Generic.List\u00601[[System.String, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ecommerce_dash_api.Controllers.ProductController",
+    "Method": "CreateTransaction",
+    "RelativePath": "Product/CreateTransaction",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "transaction",
+        "Type": "ecommerce_dash_api.DTOS.TransactionCreateDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ecommerce_dash_api.Controllers.ProductController",
+    "Method": "GetAllProductContents",
+    "RelativePath": "Product/GetAllProductContents",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ecommerce_dash_api.Controllers.ProductController",
+    "Method": "GetAllProducts",
+    "RelativePath": "Product/GetAllProducts",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ecommerce_dash_api.Controllers.ProductController",
+    "Method": "GetAllTransactions",
+    "RelativePath": "Product/GetAllTransactions",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ecommerce_dash_api.Controllers.ProductController",
+    "Method": "GetProductMedia",
+    "RelativePath": "Product/GetProductMedia/{productId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "productId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ecommerce_dash_api.Controllers.ProductController",
+    "Method": "UpdateProduct",
+    "RelativePath": "Product/UpdateProduct",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "product",
+        "Type": "ecommerce_dash_api.DTOS.ProductUpdateDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ecommerce_dash_api.Controllers.ProductController",
+    "Method": "UpdateProductContent",
+    "RelativePath": "Product/UpdateProductContent",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "Id",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "ProductId",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "ShortDescription",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "LongDescription",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Weight",
+        "Type": "System.Decimal",
+        "IsRequired": false
+      },
+      {
+        "Name": "ShippingWeight",
+        "Type": "System.Decimal",
+        "IsRequired": false
+      },
+      {
+        "Name": "MinOrder",
+        "Type": "System.Int16",
+        "IsRequired": false
+      },
+      {
+        "Name": "MaxOrder",
+        "Type": "System.Int16",
+        "IsRequired": false
+      },
+      {
+        "Name": "Categories",
+        "Type": "System.Collections.Generic.List\u00601[[System.String, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "Media",
+        "Type": "System.Collections.Generic.List\u00601[[Microsoft.AspNetCore.Http.IFormFile, Microsoft.AspNetCore.Http.Features, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "Tags",
+        "Type": "System.Collections.Generic.List\u00601[[System.String, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "ecommerce_dash_api.Controllers.ServiceController",
     "Method": "CreateLog",
     "RelativePath": "Service/createLog",
@@ -218,6 +439,37 @@
   },
   {
     "ContainingType": "ecommerce_dash_api.Controllers.SetupController",
+    "Method": "CreateShippingM",
+    "RelativePath": "Setup/CreateShippingM",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "Name",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "IconFile",
+        "Type": "Microsoft.AspNetCore.Http.IFormFile",
+        "IsRequired": false
+      },
+      {
+        "Name": "Overseas",
+        "Type": "System.Boolean",
+        "IsRequired": false
+      },
+      {
+        "Name": "IsActive",
+        "Type": "System.Boolean",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ecommerce_dash_api.Controllers.SetupController",
     "Method": "CreateSupplier",
     "RelativePath": "Setup/CreateSupplier",
     "HttpMethod": "POST",
@@ -243,22 +495,6 @@
       {
         "Name": "tag",
         "Type": "ecommerce_dash_api.DTOS.TagCreateDTO",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "ecommerce_dash_api.Controllers.SetupController",
-    "Method": "CreateYear",
-    "RelativePath": "Setup/CreateYear",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "year",
-        "Type": "ecommerce_dash_api.DTOS.YearCreateDTO",
         "IsRequired": true
       }
     ],
@@ -300,22 +536,6 @@
     "ContainingType": "ecommerce_dash_api.Controllers.SetupController",
     "Method": "DeleteCategory",
     "RelativePath": "Setup/DeleteCategory/{id}",
-    "HttpMethod": "DELETE",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "id",
-        "Type": "System.Int32",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "ecommerce_dash_api.Controllers.SetupController",
-    "Method": "DeleteCountry",
-    "RelativePath": "Setup/DeleteCountry/{id}",
     "HttpMethod": "DELETE",
     "IsController": true,
     "Order": 0,
@@ -396,22 +616,6 @@
     "ContainingType": "ecommerce_dash_api.Controllers.SetupController",
     "Method": "DeleteTag",
     "RelativePath": "Setup/DeleteTag/{id}",
-    "HttpMethod": "DELETE",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "id",
-        "Type": "System.Int32",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "ecommerce_dash_api.Controllers.SetupController",
-    "Method": "DeleteYear",
-    "RelativePath": "Setup/DeleteYear/{id}",
     "HttpMethod": "DELETE",
     "IsController": true,
     "Order": 0,
@@ -528,16 +732,6 @@
     "ContainingType": "ecommerce_dash_api.Controllers.SetupController",
     "Method": "GetAllTags",
     "RelativePath": "Setup/GetAllTags",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "ecommerce_dash_api.Controllers.SetupController",
-    "Method": "GetAllYears",
-    "RelativePath": "Setup/GetAllYears",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
@@ -731,6 +925,11 @@
         "IsRequired": false
       },
       {
+        "Name": "Overseas",
+        "Type": "System.Boolean",
+        "IsRequired": false
+      },
+      {
         "Name": "IsActive",
         "Type": "System.Boolean",
         "IsRequired": false
@@ -765,22 +964,6 @@
       {
         "Name": "tag",
         "Type": "ecommerce_dash_api.DTOS.TagUpdateDTO",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "ecommerce_dash_api.Controllers.SetupController",
-    "Method": "UpdateYear",
-    "RelativePath": "Setup/UpdateYear",
-    "HttpMethod": "PUT",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "year",
-        "Type": "ecommerce_dash_api.DTOS.YearUpdateDTO",
         "IsRequired": true
       }
     ],

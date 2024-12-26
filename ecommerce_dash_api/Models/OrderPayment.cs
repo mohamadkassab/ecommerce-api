@@ -11,11 +11,11 @@ public partial class OrderPayment
 
     public int PaymentMethodId { get; set; }
 
-    public decimal? PaymentAmount { get; set; }
+    public decimal? Amount { get; set; }
 
-    public string PaymentStatus { get; set; } = null!;
+    public string Status { get; set; } = null!;
 
-    public DateTime? PaymentDate { get; set; }
+    public DateTime Timestamp { get; set; }
 
     public virtual Order Order { get; set; } = null!;
 

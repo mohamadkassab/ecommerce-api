@@ -5,6 +5,7 @@ namespace ecommerce_dash_api.DTOS
 {
     public class ChartUpdateDTO
     {
+        [Required]
         public int Id { get; set; }
 
         private string _label = null!;
@@ -15,9 +16,10 @@ namespace ecommerce_dash_api.DTOS
             set => _label = value.Trim().ToLower();
         }
 
-        public string? Query { get; set; }
+        public string Query { get; set; } = string.Empty;
 
-        [AtLeastOneRequired<ChartPropertyDTO>]
-        public List<ChartPropertyDTO> ChartProperties { get; set; } = null!;
+        [Required]
+        [RequiredNonEmptyList]
+        public List<ChartPropertyDTO> ChartProperties { get; set; } = new List<ChartPropertyDTO>();
     }
 }

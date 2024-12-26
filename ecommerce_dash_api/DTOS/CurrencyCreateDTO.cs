@@ -26,5 +26,8 @@ namespace ecommerce_dash_api.DTOS
 
         [Required]
         public string Country { get; set; } = null!;
+
+        [Required]
+        public Boolean IsActive { get; set; }
     }
 }

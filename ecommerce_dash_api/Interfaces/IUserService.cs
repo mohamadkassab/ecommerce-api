@@ -10,15 +10,9 @@ namespace ecommerce_dash_api.Interfaces
     public interface IUserService
     {
         //+------------------------------------------------------------------+
-        //| User                                            
+        //| Permission                                            
         //+------------------------------------------------------------------+
-        Task<List<UserWithRolesQRY>> GetAllUsersWithRoles();
-        Task<string> SigninAsync(SigninDTO loginDto);
-        Task<bool> CreateUserAsync(UserCreateDTO userDto, string? username);
-        Task<bool> UpdateUserAsync(UserUpdateDTO userDto, string? username);
-        Task<bool> DeleteUserAsync(int userId);
-        Task<bool> ChangePasswordAsync(ChangePasswordDTO changePassword, string? username);
-
+        Task<List<PermissionQRY>> GetAllPermissionsAsync();
 
         //+------------------------------------------------------------------+
         //| Role                                            
@@ -28,10 +22,14 @@ namespace ecommerce_dash_api.Interfaces
         Task<bool> UpdateRoleAsync(RoleUpdateDTO updateRoleDto, string? username);
         Task<bool> DeleteRoleAsync(int roleId);
 
-
         //+------------------------------------------------------------------+
-        //| Permission                                            
+        //| User                                            
         //+------------------------------------------------------------------+
-        Task<List<PermissionQRY>> GetAllPermissionsAsync();
+        Task<List<UserWithRolesQRY>> GetAllUsersWithRoles();
+        Task<string> SigninAsync(SigninDTO loginDto);
+        Task<bool> CreateUserAsync(UserCreateDTO userDto, string? username);
+        Task<bool> UpdateUserAsync(UserUpdateDTO userDto, string? username);
+        Task<bool> DeleteUserAsync(int userId);
+        Task<bool> ChangePasswordAsync(ChangePasswordDTO changePassword, string? username);
     }
 }

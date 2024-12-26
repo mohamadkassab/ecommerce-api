@@ -23,7 +23,7 @@ public partial class User
 
     public DateTime UpdatedAt { get; set; }
 
-    public string UpdatedBy { get; set; } = null!;
+    public string? UpdatedBy { get; set; }
 
     public int FailedLoginAttempts { get; set; }
 
@@ -47,11 +47,15 @@ public partial class User
 
     public virtual ICollection<Customer> Customers { get; set; } = new List<Customer>();
 
+    public virtual ICollection<User> InverseUpdatedByNavigation { get; set; } = new List<User>();
+
+    public virtual ICollection<Order> Orders { get; set; } = new List<Order>();
+
     public virtual ICollection<PaymentMethod> PaymentMethods { get; set; } = new List<PaymentMethod>();
 
-    public virtual ICollection<ProductAttributeOption> ProductAttributeOptions { get; set; } = new List<ProductAttributeOption>();
-
     public virtual ICollection<ProductCategory> ProductCategories { get; set; } = new List<ProductCategory>();
+
+    public virtual ICollection<ProductInfo> ProductInfos { get; set; } = new List<ProductInfo>();
 
     public virtual ICollection<ProductMedium> ProductMedia { get; set; } = new List<ProductMedium>();
 
@@ -77,9 +81,9 @@ public partial class User
 
     public virtual ICollection<Transaction> Transactions { get; set; } = new List<Transaction>();
 
+    public virtual User? UpdatedByNavigation { get; set; }
+
     public virtual ICollection<UserRole> UserRoleUpdatedByNavigations { get; set; } = new List<UserRole>();
 
     public virtual ICollection<UserRole> UserRoleUsers { get; set; } = new List<UserRole>();
-
-    public virtual ICollection<Year> Years { get; set; } = new List<Year>();
 }

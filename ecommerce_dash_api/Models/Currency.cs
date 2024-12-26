@@ -13,15 +13,15 @@ public partial class Currency
 
     public decimal ExchangeRateUsd { get; set; }
 
-    public int? CountryId { get; set; }
+    public int CountryId { get; set; }
 
     public DateTime UpdatedAt { get; set; }
 
     public string? UpdatedBy { get; set; }
 
-    public virtual Country? Country { get; set; }
+    public bool IsActive { get; set; }
 
-    public virtual ICollection<Customer> Customers { get; set; } = new List<Customer>();
+    public virtual Country Country { get; set; } = null!;
 
     public virtual User? UpdatedByNavigation { get; set; }
 }

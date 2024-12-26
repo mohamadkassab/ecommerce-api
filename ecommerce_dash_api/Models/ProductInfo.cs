@@ -17,9 +17,15 @@ public partial class ProductInfo
 
     public decimal ShippingWeight { get; set; }
 
-    public short? MinOrder { get; set; }
+    public short MinOrder { get; set; }
 
-    public short? MaxOrder { get; set; }
+    public short MaxOrder { get; set; }
+
+    public DateTime UpdatedAt { get; set; }
+
+    public string? UpdatedBy { get; set; }
 
     public virtual Product Product { get; set; } = null!;
+
+    public virtual User? UpdatedByNavigation { get; set; }
 }

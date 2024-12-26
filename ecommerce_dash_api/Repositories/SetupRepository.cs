@@ -30,6 +30,7 @@ namespace ecommerce_dash_api.Repositories
         public async Task<List<AttributeQRY>> GetAllAttributesWithOptionsAsync()
         {
             var result = await _context.Attributes
+            .AsNoTracking()
             .Select(i => new AttributeQRY
             {
                 Id = i.Id,
@@ -49,6 +50,10 @@ namespace ecommerce_dash_api.Repositories
         public async Task CreateAttributeOptionAsync(AttributeOption attributeOption)
         {
             await _context.AttributeOptions.AddAsync(attributeOption);
+        }
+        public async Task CreateAttributeOptionRangeAsync(IEnumerable<AttributeOption> attributeOptions)
+        {
+            await _context.AttributeOptions.AddRangeAsync(attributeOptions);
         }
         public Task UpdateAttributeAsync(Attribute attribute)
         {
@@ -77,21 +82,25 @@ namespace ecommerce_dash_api.Repositories
         {
             return await _context.Brands.FirstOrDefaultAsync(i => i.Id == id);
         }
+        public async Task<Brand?> GetBrandByNameAsync(string name)
+        {
+            return await _context.Brands.FirstOrDefaultAsync(i => i.Name == name);
+        }
         public async Task<List<BrandQRY>> GetAllBrandsAsync()
         {
             var result = await _context.Brands
-          .Include(i => i.Country) 
-          .Select(i => new BrandQRY
-          {
-              Id = i.Id,
-              Name = i.Name,
-              Website = i.Website,
-              LogoFile = _helpersFunctions.GetFileByUrl(i.LogoUrl),
-              UpdatedAt = i.UpdatedAt,
-              UpdatedBy = i.UpdatedBy,
-              Country = i.Country.Name 
-          })
-          .ToListAsync();
+            .AsNoTracking()
+              .Select(i => new BrandQRY
+              {
+                  Id = i.Id,
+                  Name = i.Name,
+                  Website = i.Website,
+                  LogoFile = _helpersFunctions.GetFileByUrl(i.LogoUrl),
+                  UpdatedAt = i.UpdatedAt,
+                  UpdatedBy = i.UpdatedBy,
+                  Country = i.Country.Name 
+              })
+            .ToListAsync();
 
             return result;
         }
@@ -120,6 +129,7 @@ namespace ecommerce_dash_api.Repositories
         public async Task<List<CategoryQRY>> GetAllCategoriesAsync()
         {
             var result = await _context.Categories
+            .AsNoTracking()
             .Select(i => new CategoryQRY
             {
                 Id = i.Id,
@@ -153,9 +163,14 @@ namespace ecommerce_dash_api.Repositories
         {
             return await _context.Countries.FirstOrDefaultAsync(i => i.Id == id);
         }
+        public async Task<Country?> GetCountryByNameAsync(string name)
+        {
+            return await _context.Countries.FirstOrDefaultAsync(i => i.Name == name);
+        }
         public async Task<List<CountryQRY>> GetAllCountriesAsync()
         {
             var result = await _context.Countries
+                .AsNoTracking()
               .Select(i => new CountryQRY
               {
                   Id = i.Id,
@@ -177,11 +192,6 @@ namespace ecommerce_dash_api.Repositories
             _context.Countries.Update(country);
             return Task.CompletedTask;
         }
-        public Task DeleteCountryAsync(Country country)
-        {
-            _context.Countries.Remove(country);
-            return Task.CompletedTask;
-        }
 
         //+------------------------------------------------------------------+
         //| Currency                                            
@@ -193,7 +203,7 @@ namespace ecommerce_dash_api.Repositories
         public async Task<List<CurrencyQRY>> GetAllCurrenciesAsync()
         {
             var result = await _context.Currencies
-            .Include(i => i.Country)
+            .AsNoTracking()
             .Select(i => new CurrencyQRY
             {
                 Id = i.Id,
@@ -201,6 +211,7 @@ namespace ecommerce_dash_api.Repositories
                 Symbol = i.Symbol,
                 ExchangeRateUsd = i.ExchangeRateUsd,
                 Country = i.Country.Name,
+                IsActive = i.IsActive,
                 UpdatedAt = i.UpdatedAt,
                 UpdatedBy = i.UpdatedBy,
             })
@@ -259,9 +270,14 @@ namespace ecommerce_dash_api.Repositories
         {
             return await _context.Seasons.FirstOrDefaultAsync(i => i.Id == id);
         }
+        public async Task<Season?> GetSeasonByNameAsync(string name)
+        {
+            return await _context.Seasons.FirstOrDefaultAsync(i => i.Name == name);
+        }
         public async Task<List<SeasonQRY>> GetAllSeasonsAsync()
         {
             var result = await _context.Seasons
+            .AsNoTracking()
             .Select(i => new SeasonQRY
             {
                 Id = i.Id,
@@ -298,6 +314,7 @@ namespace ecommerce_dash_api.Repositories
         public async Task<List<SectionQRY>> GetAllSectionsWithCategoriesAsync()
         {
             var result = await _context.Sections
+            .AsNoTracking()
             .Include(i => i.SectionCategories)  
                 .ThenInclude(sc => sc.Category)  
             .Select(i => new SectionQRY
@@ -346,22 +363,29 @@ namespace ecommerce_dash_api.Repositories
         public async Task<List<ShippingMQRY>> GetAllShippingMAsync()
         {
             var result = await _context.ShippingMethods
-          .Select(i => new ShippingMQRY
-          {
-              Id = i.Id,
-              Name = i.Name,
-              IconFile = _helpersFunctions.GetFileByUrl(i.IconUrl),
-              UpdatedAt = i.UpdatedAt,
-              UpdatedBy = i.UpdatedBy,
-              IsActive = i.IsActive
-          })
-          .ToListAsync();
+            .AsNoTracking()
+              .Select(i => new ShippingMQRY
+              {
+                  Id = i.Id,
+                  Name = i.Name,
+                  IconFile = _helpersFunctions.GetFileByUrl(i.IconUrl),
+                  Overseas = i.Overseas,
+                  UpdatedAt = i.UpdatedAt,
+                  UpdatedBy = i.UpdatedBy,
+                  IsActive = i.IsActive
+              })
+            .ToListAsync();
 
             return result;
         }
         public async Task<ShippingMethod?> GetShippingMByIdAsync(int id)
         {
             return await _context.ShippingMethods.FirstOrDefaultAsync(i => i.Id == id);
+        }
+        public Task CreateShippingMAsync(ShippingMethod shippingM)
+        {
+            _context.ShippingMethods.Add(shippingM);
+            return Task.CompletedTask;
         }
         public Task UpdateShippingMAsync(ShippingMethod shippingM)
         {
@@ -376,10 +400,14 @@ namespace ecommerce_dash_api.Repositories
         {
             return await _context.Suppliers.FirstOrDefaultAsync(i => i.Id == id);
         }
+        public async Task<Supplier?> GetSupplierByNameAsync(string name)
+        {
+            return await _context.Suppliers.FirstOrDefaultAsync(i => i.Name == name);
+        }
         public async Task<List<SupplierQRY>> GetAllSuppliersAsync()
         {
             var result = await _context.Suppliers
-            .Include(i => i.Country)
+            .AsNoTracking()
             .Select(i => new SupplierQRY
             {
                 Id = i.Id,
@@ -422,6 +450,7 @@ namespace ecommerce_dash_api.Repositories
         public async Task<List<TagQRY>> GetAllTagsAsync()
         {
             var result = await _context.Tags
+            .AsNoTracking()
              .Select(i => new TagQRY
              {
                  Id = i.Id,
@@ -448,40 +477,6 @@ namespace ecommerce_dash_api.Repositories
             return Task.CompletedTask;
         }
 
-        //+------------------------------------------------------------------+
-        //| Year                                            
-        //+------------------------------------------------------------------+
-        public async Task<Year?> GetYearByIdAsync(int id)
-        {
-            return await _context.Years.FirstOrDefaultAsync(i => i.Id == id);
-        }
-        public async Task<List<YearQRY>> GetAllYearsAsync()
-        {
-            var result = await _context.Years
-            .Select(i => new YearQRY
-            {
-                Id = i.Id,
-                Name = i.Name,
-                UpdatedAt = i.UpdatedAt,
-                UpdatedBy = i.UpdatedBy,
-            })
-            .ToListAsync();
 
-            return result;
-        }
-        public async Task CreateYearAsync(Year year)
-        {
-            await _context.Years.AddAsync(year);
-        }
-        public Task UpdateYearAsync(Year year)
-        {
-            _context.Years.Update(year);
-            return Task.CompletedTask;
-        }
-        public Task DeleteYearAsync(Year year)
-        {
-            _context.Years.Remove(year);
-            return Task.CompletedTask;
-        }
     }
 }

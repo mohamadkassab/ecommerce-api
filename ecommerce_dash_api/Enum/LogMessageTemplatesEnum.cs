@@ -1,6 +1,6 @@
 ﻿namespace ecommerce_dash_api.Enum
 {
-    public enum LogMessageTemplates
+    public enum LogMessageTemplatesEnum
     {
         invalid_model_state,
         successful,

@@ -11,13 +11,11 @@ public partial class AttributeOption
 
     public string Option { get; set; } = null!;
 
-    public DateTime? UpdatedAt { get; set; }
+    public DateTime UpdatedAt { get; set; }
 
     public string? UpdatedBy { get; set; }
 
     public virtual Attribute Attribute { get; set; } = null!;
-
-    public virtual ICollection<ProductAttributeOption> ProductAttributeOptions { get; set; } = new List<ProductAttributeOption>();
 
     public virtual User? UpdatedByNavigation { get; set; }
 }

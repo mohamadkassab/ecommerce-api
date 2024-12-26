@@ -6,6 +6,6 @@
         public string Name { get; set; } = null!;
         public List<PermissionQRY>? Permissions { get; set; }
         public DateTime UpdatedAt { get; set; }
-        public string? UpdatedBy { get; set; }
+        public string UpdatedBy { get; set; } = string.Empty;
     }
 }

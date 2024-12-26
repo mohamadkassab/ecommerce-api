@@ -13,11 +13,15 @@ public partial class Transaction
 
     public string TransactionType { get; set; } = null!;
 
+    public string? Note { get; set; }
+
     public DateTime UpdatedAt { get; set; }
 
     public string? UpdatedBy { get; set; }
 
     public virtual Product Product { get; set; } = null!;
+
+    public virtual ICollection<TransactionAttribute> TransactionAttributes { get; set; } = new List<TransactionAttribute>();
 
     public virtual User? UpdatedByNavigation { get; set; }
 }

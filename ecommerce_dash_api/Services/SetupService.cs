@@ -2,7 +2,6 @@
 using ecommerce_dash_api.Interfaces;
 using ecommerce_dash_api.Models;
 using ecommerce_dash_api.QRYS;
-using ecommerce_dash_api.Utils;
 using Microsoft.EntityFrameworkCore;
 using System.Data;
 using System.Xml.Linq;
@@ -19,6 +18,7 @@ namespace ecommerce_dash_api.Services
         {
             _setupRepository = setupRepository;
             _context = context;
+
         }
 
         //+------------------------------------------------------------------+
@@ -37,34 +37,38 @@ namespace ecommerce_dash_api.Services
                 UpdatedBy = username,
             };
             await _setupRepository.CreateAttributeAsync(attribute);
+            List<AttributeOption> attributeoptions = new List<AttributeOption>();
             foreach (var option in attributeDTO.Options)
             {
-                AttributeOption attributeOption = new AttributeOption
+                attributeoptions.Add (new AttributeOption
                 {
                     Attribute = attribute,
                     Option = option
-                };
-                await _setupRepository.CreateAttributeOptionAsync(attributeOption);
+                });
             }
+            await _setupRepository.CreateAttributeOptionRangeAsync(attributeoptions);
             await _context.SaveChangesAsync();
             return true;
         }
         public async Task<bool> UpdateAttributeAsync(AttributeUpdateDTO attributeDTO, string? username)
         {
-            await _setupRepository.DeleteAttributeOptionsByAttributeIdAsync(attributeDTO.Id);
-            Attribute attribute = await _setupRepository.GetAttributeByIdAsync(attributeDTO.Id);
+            var deleteTask = _setupRepository.DeleteAttributeOptionsByAttributeIdAsync(attributeDTO.Id);
+            var getTask = _setupRepository.GetAttributeByIdAsync(attributeDTO.Id);
+            await Task.WhenAll(deleteTask, getTask);
+            Attribute attribute = getTask.Result;
             attribute.Name = attributeDTO.Name;
             attribute.UpdatedBy = username;
             await _setupRepository.UpdateAttributeAsync(attribute);
+            List<AttributeOption> attributeoptions = new List<AttributeOption>();
             foreach (var option in attributeDTO.Options)
             {
-                AttributeOption attributeOption = new AttributeOption
+                attributeoptions.Add( new AttributeOption
                 {
                     Attribute = attribute,
                     Option = option
-                };
-                await _setupRepository.CreateAttributeOptionAsync(attributeOption);
+                });
             }
+            await _setupRepository.CreateAttributeOptionRangeAsync(attributeoptions);
             await _context.SaveChangesAsync();
             return true;
         }
@@ -92,47 +96,57 @@ namespace ecommerce_dash_api.Services
             var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", "brands", uniqueFileName);
             using(Stream stream = new FileStream(filePath, FileMode.Create))
             {
-                brandDTO.LogoFile.CopyTo(stream);
+                brandDTO.LogoFile.CopyToAsync(stream);
             }
 
             var country = await _context.Countries.FirstOrDefaultAsync(c => c.Name == brandDTO.Country);
-            Brand brand = new Brand();
-            brand.Name = brandDTO.Name;
-            brand.Website = brandDTO.Website ?? "";
-            brand.LogoUrl = filePath;
-            brand.CountryId = country.Id;
-            brand.UpdatedBy = username;
+            Brand brand = new Brand
+            {
+                Name = brandDTO.Name,
+                Website = brandDTO.Website,
+                LogoUrl = filePath,
+                CountryId = country.Id,
+                UpdatedBy = username,
+            };
+
             await _setupRepository.CreateBrandAsync(brand);
             await _context.SaveChangesAsync();
             return true;
         }
         public async Task<bool> UpdateBrandAsync(BrandUpdateDTO brandDTO, string? username)
         {
-            Brand brand = await _setupRepository.GetBrandByIdAsync(brandDTO.Id);
-            var country = await _context.Countries.FirstOrDefaultAsync(c => c.Name == brandDTO.Country);
-            var filePath = brand.LogoUrl;
-            if (brandDTO.LogoFile != null) {
-                if (!string.IsNullOrEmpty(brand.LogoUrl) && File.Exists(brand.LogoUrl))
+            using(var _context2 = new EcommerceContext())
+            {
+                var getBrandTask = _setupRepository.GetBrandByIdAsync(brandDTO.Id);
+                var getCountryTask = _context2.Countries.FirstOrDefaultAsync(c => c.Name == brandDTO.Country);
+                Task.WhenAll(getBrandTask, getCountryTask);
+                Brand brand = getBrandTask.Result;
+                Country country = getCountryTask.Result;
+                var filePath = brand.LogoUrl;
+                if (brandDTO.LogoFile != null)
                 {
-                    File.Delete(brand.LogoUrl); // Deletes the old file
+                    if (!string.IsNullOrEmpty(brand.LogoUrl) && File.Exists(brand.LogoUrl))
+                    {
+                        File.Delete(brand.LogoUrl);
+                    }
+                    var fileExtension = Path.GetExtension(brandDTO.LogoFile.FileName);
+                    var uniqueFileName = $"{Guid.NewGuid()}{fileExtension}";
+                    filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", "brands", uniqueFileName);
+                    using (Stream stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        brandDTO.LogoFile.CopyToAsync(stream);
+                    }
                 }
-                var fileExtension = Path.GetExtension(brandDTO.LogoFile.FileName);
-                var uniqueFileName = $"{Guid.NewGuid()}{fileExtension}";
-                filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", "brands", uniqueFileName);
-                using (Stream stream = new FileStream(filePath, FileMode.Create))
-                {
-                    brandDTO.LogoFile.CopyTo(stream);
-                }
+
+                brand.Name = brandDTO.Name;
+                brand.Website = brandDTO.Website ?? "";
+                brand.LogoUrl = filePath;
+                brand.CountryId = country.Id;
+                brand.UpdatedBy = username;
+                await _setupRepository.UpdateBrandAsync(brand);
+                await _context.SaveChangesAsync();
+                return true;
             }
-        
-            brand.Name = brandDTO.Name;
-            brand.Website = brandDTO.Website ?? "";
-            brand.LogoUrl = filePath;
-            brand.CountryId = country.Id;
-            brand.UpdatedBy = username;
-            await _setupRepository.UpdateBrandAsync(brand);
-            await _context.SaveChangesAsync();
-            return true;
         }
         public async Task<bool> DeleteBrandAsync(int id)
         {
@@ -153,9 +167,12 @@ namespace ecommerce_dash_api.Services
         }
         public async Task<bool> CreateCategoryAsync(CategoryCreateDTO categoryDTO, string? username)
         {
-            Category category = new Category();
-            category.Name = categoryDTO.Name;
-            category.UpdatedBy = username;
+            Category category = new Category
+            {
+                Name = categoryDTO.Name,
+                UpdatedBy = username,
+            };
+
             await _setupRepository.CreateCategoryAsync(category);
             await _context.SaveChangesAsync();
             return true;
@@ -188,10 +205,13 @@ namespace ecommerce_dash_api.Services
         }
         public async Task<bool> CreateCountryAsync(CountryCreateDTO countryDTO, string? username)
         {
-            Country country = new Country();
-            country.Name = countryDTO.Name;
-            country.Code = countryDTO.Code;
-            country.UpdatedBy = username;
+            Country country = new Country
+            {
+                Name = countryDTO.Name,
+                Code = countryDTO.Code,
+                UpdatedBy = username,
+            };
+
             await _setupRepository.CreateCountryAsync(country);
             await _context.SaveChangesAsync();
             return true;
@@ -206,14 +226,6 @@ namespace ecommerce_dash_api.Services
             await _context.SaveChangesAsync();
             return true;
         }
-        public async Task<bool> DeleteCountryAsync(int id)
-        {
-            var country = await _context.Countries
-            .Where(i => i.Id == id).FirstOrDefaultAsync();
-            await _setupRepository.DeleteCountryAsync(country);
-            await _context.SaveChangesAsync();
-            return true;
-        }
 
         //+------------------------------------------------------------------+
         //| Currency                                            
@@ -225,29 +237,41 @@ namespace ecommerce_dash_api.Services
         }
         public async Task<bool> CreateCurrencyAsync(CurrencyCreateDTO currencyDTO, string? username)
         {
-            var country = await _context.Countries.FirstOrDefaultAsync(c => c.Name == currencyDTO.Country);
-            Currency currency = new Currency();
-            currency.Name = currencyDTO.Name;
-            currency.Symbol = currencyDTO.Symbol;
-            currency.ExchangeRateUsd = currencyDTO.ExchangeRateUsd;
-            currency.CountryId = country.Id;
-            currency.UpdatedBy = username;
+            Country country = await _context.Countries.FirstOrDefaultAsync(c => c.Name == currencyDTO.Country);
+            Currency currency = new Currency
+            {
+                Name = currencyDTO.Name,
+                Symbol = currencyDTO.Symbol,
+                ExchangeRateUsd = currencyDTO.ExchangeRateUsd,
+                CountryId = country.Id,
+                IsActive = currencyDTO.IsActive,
+                UpdatedBy = username,
+            };
+
             await _setupRepository.CreateCurrencyAsync(currency);
             await _context.SaveChangesAsync();
             return true;
         }
         public async Task<bool> UpdateCurrencyAsync(CurrencyUpdateDTO currencyDTO, string? username)
         {
-            Currency currency = await _setupRepository.GetCurrencyByIdAsync(currencyDTO.Id);
-            var country = await _context.Countries.FirstOrDefaultAsync(c => c.Name == currencyDTO.Country);
-            currency.Name = currencyDTO.Name;
-            currency.Symbol = currencyDTO.Symbol;
-            currency.ExchangeRateUsd = currencyDTO.ExchangeRateUsd;
-            currency.CountryId = country.Id;
-            currency.UpdatedBy = username;
-            await _setupRepository.UpdateCurrencyAsync(currency);
-            await _context.SaveChangesAsync();
-            return true;
+            using (var _context2 = new EcommerceContext()) 
+            {
+                var getCurrencyTask = _setupRepository.GetCurrencyByIdAsync(currencyDTO.Id);
+                var getCountryTask = _context2.Countries.FirstOrDefaultAsync(i => i.Name == currencyDTO.Country);
+                Task.WhenAll(getCurrencyTask, getCountryTask);
+                Currency currency = getCurrencyTask.Result;
+                Country country = getCountryTask.Result;
+                currency.Name = currencyDTO.Name;
+                currency.Symbol = currencyDTO.Symbol;
+                currency.ExchangeRateUsd = currencyDTO.ExchangeRateUsd;
+                currency.CountryId = country.Id;
+                currency.IsActive = currencyDTO.IsActive;
+                currency.UpdatedBy = username;
+                await _setupRepository.UpdateCurrencyAsync(currency);
+                await _context.SaveChangesAsync();
+                return true;
+            }
+
         }
         public async Task<bool> DeleteCurrencyAsync(int id)
         {
@@ -281,7 +305,7 @@ namespace ecommerce_dash_api.Services
                 filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", "shipping-methods", uniqueFileName);
                 using (Stream stream = new FileStream(filePath, FileMode.Create))
                 {
-                    paymentMDTO.IconFile.CopyTo(stream);
+                    paymentMDTO.IconFile.CopyToAsync(stream);
                 }
             }
 
@@ -304,9 +328,12 @@ namespace ecommerce_dash_api.Services
         }
         public async Task<bool> CreateSeasonAsync(SeasonCreateDTO seasonDTO, string? username)
         {
-            Season season = new Season();
-            season.Name = seasonDTO.Name;
-            season.UpdatedBy = username;
+            Season season = new Season
+            {
+                Name = seasonDTO.Name,
+                UpdatedBy = username,
+            };
+
             await _setupRepository.CreateSeasonAsync(season);
             await _context.SaveChangesAsync();
             return true;
@@ -349,15 +376,18 @@ namespace ecommerce_dash_api.Services
                 CategoryId = categoryId,
                 UpdatedBy = username
             }).ToList();
+
             section.SectionCategories = sectionCategories;
             await _setupRepository.CreateSectionAsync(section);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
             return true;
         }
         public async Task<bool> UpdateSectionAsync(SectionUpdateDTO sectionDTO, string? username)
         {
-            await _setupRepository.DeleteSectionCategoriesBySectionIdAsync(sectionDTO.Id);
-            Section section = await _setupRepository.GetSectionByIdAsync(sectionDTO.Id);
+            var deleteSectionCategoriesTask = _setupRepository.DeleteSectionCategoriesBySectionIdAsync(sectionDTO.Id);
+            var getSectionTask = _setupRepository.GetSectionByIdAsync(sectionDTO.Id);
+            Task.WhenAll(deleteSectionCategoriesTask, getSectionTask);
+            Section section = getSectionTask.Result;
             section.Name = sectionDTO.Name;
             section.UpdatedBy = username;
             var sectionCategories = sectionDTO.Categories.Select(categoryId => new SectionCategory
@@ -388,6 +418,29 @@ namespace ecommerce_dash_api.Services
             var result = await _setupRepository.GetAllShippingMAsync();
             return result;
         }
+        public async Task<bool> CreateShippingMAsync(ShippingMCreateDTO shippingMDTO, string? username)
+        {
+            var fileExtension = Path.GetExtension(shippingMDTO.IconFile.FileName);
+            var uniqueFileName = $"{Guid.NewGuid()}{fileExtension}";
+            var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", "shipping-methods", uniqueFileName);
+            using (Stream stream = new FileStream(filePath, FileMode.Create))
+            {
+                shippingMDTO.IconFile.CopyToAsync(stream);
+            }
+
+            ShippingMethod shippingM = new ShippingMethod
+            {
+                Name = shippingMDTO.Name,
+                IconUrl = filePath,
+                Overseas = shippingMDTO.Overseas,
+                IsActive = shippingMDTO.IsActive,
+                UpdatedBy = username,
+            };
+
+            await _setupRepository.CreateShippingMAsync(shippingM);
+            await _context.SaveChangesAsync();
+            return true;
+        }
         public async Task<bool> UpdateShippingMAsync(ShippingMUpdateDTO shippingMDTO, string? username)
         {
             ShippingMethod shippingM = await _setupRepository.GetShippingMByIdAsync(shippingMDTO.Id);
@@ -403,12 +456,13 @@ namespace ecommerce_dash_api.Services
                 filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", "shipping-methods", uniqueFileName);
                 using (Stream stream = new FileStream(filePath, FileMode.Create))
                 {
-                    shippingMDTO.IconFile.CopyTo(stream);
+                    shippingMDTO.IconFile.CopyToAsync(stream);
                 }
             }
 
             shippingM.Name = shippingMDTO.Name;
             shippingM.IconUrl = filePath;
+            shippingM.Overseas = shippingMDTO.Overseas;
             shippingM.IsActive = shippingMDTO.IsActive;
             shippingM.UpdatedBy = username;
             await _setupRepository.UpdateShippingMAsync(shippingM);
@@ -427,34 +481,43 @@ namespace ecommerce_dash_api.Services
         public async Task<bool> CreateSupplierAsync(SupplierCreateDTO supplierDTO, string? username)
         {
             var country = await _context.Countries.FirstOrDefaultAsync(c => c.Name == supplierDTO.Country);
-            Supplier supplier = new Supplier();
-            supplier.Name = supplierDTO.Name;
-            supplier.Phone = supplierDTO.Phone;
-            supplier.Address = supplierDTO.Address;
-            supplier.City = supplierDTO.City;
-            supplier.Email = supplierDTO.Email;
-            supplier.Website = supplierDTO.Website;
-            supplier.CountryId = country.Id;
-            supplier.UpdatedBy = username;
+            Supplier supplier = new Supplier
+            {
+                Name = supplierDTO.Name,
+                Phone = supplierDTO.Phone,
+                Address = supplierDTO.Address,
+                City = supplierDTO.City,
+                Email = supplierDTO.Email,
+                Website = supplierDTO.Website,
+                CountryId = country.Id,
+                UpdatedBy = username,
+            };
+
             await _setupRepository.CreateSupplierAsync(supplier);
             await _context.SaveChangesAsync();
             return true;
         }
         public async Task<bool> UpdateSupplierAsync(SupplierUpdateDTO supplierDTO, string? username)
         {
-            Supplier supplier = await _setupRepository.GetSupplierByIdAsync(supplierDTO.Id);
-            var country = await _context.Countries.FirstOrDefaultAsync(c => c.Name == supplierDTO.Country);
-            supplier.Name = supplierDTO.Name;
-            supplier.Phone = supplierDTO.Phone;
-            supplier.Address = supplierDTO.Address;
-            supplier.City = supplierDTO.City;
-            supplier.Email = supplierDTO.Email;
-            supplier.Website = supplierDTO.Website;
-            supplier.CountryId = country.Id;
-            supplier.UpdatedBy = username;
-            await _setupRepository.UpdateSupplierAsync(supplier);
-            await _context.SaveChangesAsync();
-            return true;
+            using(var _context2 = new EcommerceContext())
+            {
+                var getSupplierTask = _setupRepository.GetSupplierByIdAsync(supplierDTO.Id);
+                var getCountryTask = _context2.Countries.FirstOrDefaultAsync(c => c.Name == supplierDTO.Country);
+                Task.WhenAll(getSupplierTask, getCountryTask);
+                Supplier supplier = getSupplierTask.Result;
+                Country country = getCountryTask.Result;
+                supplier.Name = supplierDTO.Name;
+                supplier.Phone = supplierDTO.Phone;
+                supplier.Address = supplierDTO.Address;
+                supplier.City = supplierDTO.City;
+                supplier.Email = supplierDTO.Email;
+                supplier.Website = supplierDTO.Website;
+                supplier.CountryId = country.Id;
+                supplier.UpdatedBy = username;
+                await _setupRepository.UpdateSupplierAsync(supplier);
+                await _context.SaveChangesAsync();
+                return true;
+            }
         }
         public async Task<bool> DeleteSupplierAsync(int id)
         {
@@ -475,9 +538,12 @@ namespace ecommerce_dash_api.Services
         }
         public async Task<bool> CreateTagAsync(TagCreateDTO tagDTO, string? username)
         {
-            Tag tag = new Tag();
-            tag.Name = tagDTO.Name;
-            tag.UpdatedBy = username;
+            Tag tag = new Tag
+            {
+                Name = tagDTO.Name,
+                UpdatedBy = username,
+            };
+
             await _setupRepository.CreateTagAsync(tag);
             await _context.SaveChangesAsync();
             return true;
@@ -496,41 +562,6 @@ namespace ecommerce_dash_api.Services
             var tag = await _context.Tags
             .Where(i => i.Id == id).FirstOrDefaultAsync();
             await _setupRepository.DeleteTagAsync(tag);
-            await _context.SaveChangesAsync();
-            return true;
-        }
-
-        //+------------------------------------------------------------------+
-        //| Year                                            
-        //+------------------------------------------------------------------+
-        public async Task<List<YearQRY>> GetAllYearsAsync()
-        {
-            var result = await _setupRepository.GetAllYearsAsync();
-            return result;
-        }
-        public async Task<bool> CreateYearAsync(YearCreateDTO yearDTO, string? username)
-        {
-            Year year = new Year();
-            year.Name = yearDTO.Name;
-            year.UpdatedBy = username;
-            await _setupRepository.CreateYearAsync(year);
-            await _context.SaveChangesAsync();
-            return true;
-        }
-        public async Task<bool> UpdateYearAsync(YearUpdateDTO yearDTO, string? username)
-        {
-            Year year = await _setupRepository.GetYearByIdAsync(yearDTO.Id);
-            year.Name = yearDTO.Name;
-            year.UpdatedBy = username;
-            await _setupRepository.UpdateYearAsync(year);
-            await _context.SaveChangesAsync();
-            return true;
-        }
-        public async Task<bool> DeleteYearAsync(int id)
-        {
-            var year = await _context.Years
-            .Where(i => i.Id == id).FirstOrDefaultAsync();
-            await _setupRepository.DeleteYearAsync(year);
             await _context.SaveChangesAsync();
             return true;
         }

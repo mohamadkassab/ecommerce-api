@@ -123,6 +123,397 @@
         }
       }
     },
+    "/Product/GetAllProducts": {
+      "get": {
+        "tags": [
+          "Product"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/Product/CreateProduct": {
+      "post": {
+        "tags": [
+          "Product"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProductCreateDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProductCreateDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProductCreateDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/Product/UpdateProduct": {
+      "put": {
+        "tags": [
+          "Product"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProductUpdateDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProductUpdateDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProductUpdateDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/Product/GetAllProductContents": {
+      "get": {
+        "tags": [
+          "Product"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/Product/GetProductMedia/{productId}": {
+      "get": {
+        "tags": [
+          "Product"
+        ],
+        "parameters": [
+          {
+            "name": "productId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/Product/CreateProductContent": {
+      "post": {
+        "tags": [
+          "Product"
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "required": [
+                  "Categories",
+                  "LongDescription",
+                  "MaxOrder",
+                  "Media",
+                  "MinOrder",
+                  "ProductId",
+                  "ShippingWeight",
+                  "ShortDescription",
+                  "Tags",
+                  "Weight"
+                ],
+                "type": "object",
+                "properties": {
+                  "ProductId": {
+                    "type": "integer",
+                    "format": "int32"
+                  },
+                  "ShortDescription": {
+                    "maxLength": 255,
+                    "minLength": 1,
+                    "type": "string"
+                  },
+                  "LongDescription": {
+                    "maxLength": 16380,
+                    "minLength": 1,
+                    "type": "string"
+                  },
+                  "Weight": {
+                    "type": "number",
+                    "format": "double"
+                  },
+                  "ShippingWeight": {
+                    "type": "number",
+                    "format": "double"
+                  },
+                  "MinOrder": {
+                    "type": "integer",
+                    "format": "int32"
+                  },
+                  "MaxOrder": {
+                    "type": "integer",
+                    "format": "int32"
+                  },
+                  "Categories": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "Media": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "format": "binary"
+                    }
+                  },
+                  "Tags": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                }
+              },
+              "encoding": {
+                "ProductId": {
+                  "style": "form"
+                },
+                "ShortDescription": {
+                  "style": "form"
+                },
+                "LongDescription": {
+                  "style": "form"
+                },
+                "Weight": {
+                  "style": "form"
+                },
+                "ShippingWeight": {
+                  "style": "form"
+                },
+                "MinOrder": {
+                  "style": "form"
+                },
+                "MaxOrder": {
+                  "style": "form"
+                },
+                "Categories": {
+                  "style": "form"
+                },
+                "Media": {
+                  "style": "form"
+                },
+                "Tags": {
+                  "style": "form"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/Product/UpdateProductContent": {
+      "put": {
+        "tags": [
+          "Product"
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "required": [
+                  "Categories",
+                  "Id",
+                  "LongDescription",
+                  "MaxOrder",
+                  "MinOrder",
+                  "ProductId",
+                  "ShippingWeight",
+                  "ShortDescription",
+                  "Tags",
+                  "Weight"
+                ],
+                "type": "object",
+                "properties": {
+                  "Id": {
+                    "type": "integer",
+                    "format": "int32"
+                  },
+                  "ProductId": {
+                    "type": "integer",
+                    "format": "int32"
+                  },
+                  "ShortDescription": {
+                    "maxLength": 255,
+                    "minLength": 1,
+                    "type": "string"
+                  },
+                  "LongDescription": {
+                    "maxLength": 16380,
+                    "minLength": 1,
+                    "type": "string"
+                  },
+                  "Weight": {
+                    "type": "number",
+                    "format": "double"
+                  },
+                  "ShippingWeight": {
+                    "type": "number",
+                    "format": "double"
+                  },
+                  "MinOrder": {
+                    "type": "integer",
+                    "format": "int32"
+                  },
+                  "MaxOrder": {
+                    "type": "integer",
+                    "format": "int32"
+                  },
+                  "Categories": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "Media": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "format": "binary"
+                    }
+                  },
+                  "Tags": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                }
+              },
+              "encoding": {
+                "Id": {
+                  "style": "form"
+                },
+                "ProductId": {
+                  "style": "form"
+                },
+                "ShortDescription": {
+                  "style": "form"
+                },
+                "LongDescription": {
+                  "style": "form"
+                },
+                "Weight": {
+                  "style": "form"
+                },
+                "ShippingWeight": {
+                  "style": "form"
+                },
+                "MinOrder": {
+                  "style": "form"
+                },
+                "MaxOrder": {
+                  "style": "form"
+                },
+                "Categories": {
+                  "style": "form"
+                },
+                "Media": {
+                  "style": "form"
+                },
+                "Tags": {
+                  "style": "form"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/Product/GetAllTransactions": {
+      "get": {
+        "tags": [
+          "Product"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/Product/CreateTransaction": {
+      "post": {
+        "tags": [
+          "Product"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TransactionCreateDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TransactionCreateDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/TransactionCreateDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
     "/Service/createLog": {
       "post": {
         "tags": [
@@ -154,7 +545,7 @@
         }
       }
     },
-    "/Setup/GetAllCountries": {
+    "/Setup/GetAllAttributesWithOptions": {
       "get": {
         "tags": [
           "Setup"
@@ -166,7 +557,7 @@
         }
       }
     },
-    "/Setup/CreateCountry": {
+    "/Setup/CreateAttribute": {
       "post": {
         "tags": [
           "Setup"
@@ -175,17 +566,17 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CountryCreateDTO"
+                "$ref": "#/components/schemas/AttributeCreateDTO"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/CountryCreateDTO"
+                "$ref": "#/components/schemas/AttributeCreateDTO"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/CountryCreateDTO"
+                "$ref": "#/components/schemas/AttributeCreateDTO"
               }
             }
           }
@@ -197,7 +588,7 @@
         }
       }
     },
-    "/Setup/UpdateCountry": {
+    "/Setup/UpdateAttribute": {
       "put": {
         "tags": [
           "Setup"
@@ -206,17 +597,17 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CountryUpdateDTO"
+                "$ref": "#/components/schemas/AttributeUpdateDTO"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/CountryUpdateDTO"
+                "$ref": "#/components/schemas/AttributeUpdateDTO"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/CountryUpdateDTO"
+                "$ref": "#/components/schemas/AttributeUpdateDTO"
               }
             }
           }
@@ -228,7 +619,7 @@
         }
       }
     },
-    "/Setup/DeleteCountry/{id}": {
+    "/Setup/DeleteAttribute/{id}": {
       "delete": {
         "tags": [
           "Setup"
@@ -331,6 +722,7 @@
               "schema": {
                 "required": [
                   "Country",
+                  "Id",
                   "Name"
                 ],
                 "type": "object",
@@ -503,6 +895,80 @@
         }
       }
     },
+    "/Setup/GetAllCountries": {
+      "get": {
+        "tags": [
+          "Setup"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/Setup/CreateCountry": {
+      "post": {
+        "tags": [
+          "Setup"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CountryCreateDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CountryCreateDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CountryCreateDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/Setup/UpdateCountry": {
+      "put": {
+        "tags": [
+          "Setup"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CountryUpdateDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CountryUpdateDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CountryUpdateDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
     "/Setup/GetAllCurrencies": {
       "get": {
         "tags": [
@@ -600,7 +1066,7 @@
         }
       }
     },
-    "/Setup/GetAllYears": {
+    "/Setup/GetAllPaymentM": {
       "get": {
         "tags": [
           "Setup"
@@ -612,84 +1078,57 @@
         }
       }
     },
-    "/Setup/CreateYear": {
-      "post": {
-        "tags": [
-          "Setup"
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/YearCreateDTO"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/YearCreateDTO"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/YearCreateDTO"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Success"
-          }
-        }
-      }
-    },
-    "/Setup/UpdateYear": {
+    "/Setup/UpdatePaymentM": {
       "put": {
         "tags": [
           "Setup"
         ],
         "requestBody": {
           "content": {
-            "application/json": {
+            "multipart/form-data": {
               "schema": {
-                "$ref": "#/components/schemas/YearUpdateDTO"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/YearUpdateDTO"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/YearUpdateDTO"
+                "required": [
+                  "Id",
+                  "IsActive",
+                  "Name"
+                ],
+                "type": "object",
+                "properties": {
+                  "Id": {
+                    "type": "integer",
+                    "format": "int32"
+                  },
+                  "Name": {
+                    "maxLength": 255,
+                    "minLength": 1,
+                    "type": "string"
+                  },
+                  "IconFile": {
+                    "type": "string",
+                    "format": "binary"
+                  },
+                  "IsActive": {
+                    "type": "boolean"
+                  }
+                }
+              },
+              "encoding": {
+                "Id": {
+                  "style": "form"
+                },
+                "Name": {
+                  "style": "form"
+                },
+                "IconFile": {
+                  "style": "form"
+                },
+                "IsActive": {
+                  "style": "form"
+                }
               }
             }
           }
         },
-        "responses": {
-          "200": {
-            "description": "Success"
-          }
-        }
-      }
-    },
-    "/Setup/DeleteYear/{id}": {
-      "delete": {
-        "tags": [
-          "Setup"
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "Success"
@@ -891,6 +1330,141 @@
         }
       }
     },
+    "/Setup/GetAllShippingM": {
+      "get": {
+        "tags": [
+          "Setup"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/Setup/CreateShippingM": {
+      "post": {
+        "tags": [
+          "Setup"
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "required": [
+                  "IconFile",
+                  "IsActive",
+                  "Name",
+                  "Overseas"
+                ],
+                "type": "object",
+                "properties": {
+                  "Name": {
+                    "maxLength": 255,
+                    "minLength": 1,
+                    "type": "string"
+                  },
+                  "IconFile": {
+                    "type": "string",
+                    "format": "binary"
+                  },
+                  "Overseas": {
+                    "type": "boolean"
+                  },
+                  "IsActive": {
+                    "type": "boolean"
+                  }
+                }
+              },
+              "encoding": {
+                "Name": {
+                  "style": "form"
+                },
+                "IconFile": {
+                  "style": "form"
+                },
+                "Overseas": {
+                  "style": "form"
+                },
+                "IsActive": {
+                  "style": "form"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/Setup/UpdateShippingM": {
+      "put": {
+        "tags": [
+          "Setup"
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "required": [
+                  "Id",
+                  "IsActive",
+                  "Name",
+                  "Overseas"
+                ],
+                "type": "object",
+                "properties": {
+                  "Id": {
+                    "type": "integer",
+                    "format": "int32"
+                  },
+                  "Name": {
+                    "maxLength": 255,
+                    "minLength": 1,
+                    "type": "string"
+                  },
+                  "IconFile": {
+                    "type": "string",
+                    "format": "binary"
+                  },
+                  "Overseas": {
+                    "type": "boolean"
+                  },
+                  "IsActive": {
+                    "type": "boolean"
+                  }
+                }
+              },
+              "encoding": {
+                "Id": {
+                  "style": "form"
+                },
+                "Name": {
+                  "style": "form"
+                },
+                "IconFile": {
+                  "style": "form"
+                },
+                "Overseas": {
+                  "style": "form"
+                },
+                "IsActive": {
+                  "style": "form"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
     "/Setup/GetAllSuppliers": {
       "get": {
         "tags": [
@@ -1085,10 +1659,10 @@
         }
       }
     },
-    "/Setup/GetAllAttributesWithOptions": {
+    "/User/GetAllPermissions": {
       "get": {
         "tags": [
-          "Setup"
+          "User"
         ],
         "responses": {
           "200": {
@@ -1097,26 +1671,38 @@
         }
       }
     },
-    "/Setup/CreateAttribute": {
+    "/User/GetAllRolesAndPermissions": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/User/CreateRole": {
       "post": {
         "tags": [
-          "Setup"
+          "User"
         ],
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/AttributeCreateDTO"
+                "$ref": "#/components/schemas/RoleCreateDTO"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/AttributeCreateDTO"
+                "$ref": "#/components/schemas/RoleCreateDTO"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/AttributeCreateDTO"
+                "$ref": "#/components/schemas/RoleCreateDTO"
               }
             }
           }
@@ -1128,26 +1714,26 @@
         }
       }
     },
-    "/Setup/UpdateAttribute": {
+    "/User/UpdateRole": {
       "put": {
         "tags": [
-          "Setup"
+          "User"
         ],
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/AttributeUpdateDTO"
+                "$ref": "#/components/schemas/RoleUpdateDTO"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/AttributeUpdateDTO"
+                "$ref": "#/components/schemas/RoleUpdateDTO"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/AttributeUpdateDTO"
+                "$ref": "#/components/schemas/RoleUpdateDTO"
               }
             }
           }
@@ -1159,10 +1745,10 @@
         }
       }
     },
-    "/Setup/DeleteAttribute/{id}": {
+    "/User/DeleteRole/{id}": {
       "delete": {
         "tags": [
-          "Setup"
+          "User"
         ],
         "parameters": [
           {
@@ -1175,144 +1761,6 @@
             }
           }
         ],
-        "responses": {
-          "200": {
-            "description": "Success"
-          }
-        }
-      }
-    },
-    "/Setup/GetAllShippingM": {
-      "get": {
-        "tags": [
-          "Setup"
-        ],
-        "responses": {
-          "200": {
-            "description": "Success"
-          }
-        }
-      }
-    },
-    "/Setup/UpdateShippingM": {
-      "put": {
-        "tags": [
-          "Setup"
-        ],
-        "requestBody": {
-          "content": {
-            "multipart/form-data": {
-              "schema": {
-                "required": [
-                  "IsActive",
-                  "Name"
-                ],
-                "type": "object",
-                "properties": {
-                  "Id": {
-                    "type": "integer",
-                    "format": "int32"
-                  },
-                  "Name": {
-                    "maxLength": 255,
-                    "minLength": 1,
-                    "type": "string"
-                  },
-                  "IconFile": {
-                    "type": "string",
-                    "format": "binary"
-                  },
-                  "IsActive": {
-                    "type": "boolean"
-                  }
-                }
-              },
-              "encoding": {
-                "Id": {
-                  "style": "form"
-                },
-                "Name": {
-                  "style": "form"
-                },
-                "IconFile": {
-                  "style": "form"
-                },
-                "IsActive": {
-                  "style": "form"
-                }
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Success"
-          }
-        }
-      }
-    },
-    "/Setup/GetAllPaymentM": {
-      "get": {
-        "tags": [
-          "Setup"
-        ],
-        "responses": {
-          "200": {
-            "description": "Success"
-          }
-        }
-      }
-    },
-    "/Setup/UpdatePaymentM": {
-      "put": {
-        "tags": [
-          "Setup"
-        ],
-        "requestBody": {
-          "content": {
-            "multipart/form-data": {
-              "schema": {
-                "required": [
-                  "IsActive",
-                  "Name"
-                ],
-                "type": "object",
-                "properties": {
-                  "Id": {
-                    "type": "integer",
-                    "format": "int32"
-                  },
-                  "Name": {
-                    "maxLength": 255,
-                    "minLength": 1,
-                    "type": "string"
-                  },
-                  "IconFile": {
-                    "type": "string",
-                    "format": "binary"
-                  },
-                  "IsActive": {
-                    "type": "boolean"
-                  }
-                }
-              },
-              "encoding": {
-                "Id": {
-                  "style": "form"
-                },
-                "Name": {
-                  "style": "form"
-                },
-                "IconFile": {
-                  "style": "form"
-                },
-                "IsActive": {
-                  "style": "form"
-                }
-              }
-            }
-          }
-        },
         "responses": {
           "200": {
             "description": "Success"
@@ -1490,115 +1938,6 @@
           }
         }
       }
-    },
-    "/User/GetAllRolesAndPermissions": {
-      "get": {
-        "tags": [
-          "User"
-        ],
-        "responses": {
-          "200": {
-            "description": "Success"
-          }
-        }
-      }
-    },
-    "/User/CreateRole": {
-      "post": {
-        "tags": [
-          "User"
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/RoleCreateDTO"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/RoleCreateDTO"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/RoleCreateDTO"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Success"
-          }
-        }
-      }
-    },
-    "/User/UpdateRole": {
-      "put": {
-        "tags": [
-          "User"
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/RoleUpdateDTO"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/RoleUpdateDTO"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/RoleUpdateDTO"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Success"
-          }
-        }
-      }
-    },
-    "/User/DeleteRole/{id}": {
-      "delete": {
-        "tags": [
-          "User"
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Success"
-          }
-        }
-      }
-    },
-    "/User/GetAllPermissions": {
-      "get": {
-        "tags": [
-          "User"
-        ],
-        "responses": {
-          "200": {
-            "description": "Success"
-          }
-        }
-      }
     }
   },
   "components": {
@@ -1669,6 +2008,7 @@
       },
       "AttributeUpdateDTO": {
         "required": [
+          "id",
           "name"
         ],
         "type": "object",
@@ -1708,6 +2048,7 @@
       },
       "CategoryUpdateDTO": {
         "required": [
+          "id",
           "name"
         ],
         "type": "object",
@@ -1803,6 +2144,8 @@
       },
       "ChartUpdateDTO": {
         "required": [
+          "chartProperties",
+          "id",
           "label"
         ],
         "type": "object",
@@ -1824,8 +2167,7 @@
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/ChartPropertyDTO"
-            },
-            "nullable": true
+            }
           }
         },
         "additionalProperties": false
@@ -1853,6 +2195,7 @@
       "CountryUpdateDTO": {
         "required": [
           "code",
+          "id",
           "name"
         ],
         "type": "object",
@@ -1878,6 +2221,7 @@
         "required": [
           "country",
           "exchangeRateUsd",
+          "isActive",
           "name",
           "symbol"
         ],
@@ -1900,6 +2244,9 @@
           "country": {
             "minLength": 1,
             "type": "string"
+          },
+          "isActive": {
+            "type": "boolean"
           }
         },
         "additionalProperties": false
@@ -1908,6 +2255,8 @@
         "required": [
           "country",
           "exchangeRateUsd",
+          "id",
+          "isActive",
           "name",
           "symbol"
         ],
@@ -1934,6 +2283,9 @@
           "country": {
             "minLength": 1,
             "type": "string"
+          },
+          "isActive": {
+            "type": "boolean"
           }
         },
         "additionalProperties": false
@@ -1982,6 +2334,141 @@
         "type": "integer",
         "format": "int32"
       },
+      "ProductCreateDTO": {
+        "required": [
+          "brand",
+          "code",
+          "cost",
+          "discount",
+          "isActive",
+          "name",
+          "price",
+          "season",
+          "supplier",
+          "year"
+        ],
+        "type": "object",
+        "properties": {
+          "code": {
+            "maxLength": 255,
+            "minLength": 1,
+            "type": "string"
+          },
+          "name": {
+            "maxLength": 255,
+            "minLength": 1,
+            "type": "string"
+          },
+          "cost": {
+            "type": "number",
+            "format": "double"
+          },
+          "price": {
+            "type": "number",
+            "format": "double"
+          },
+          "discount": {
+            "type": "number",
+            "format": "double"
+          },
+          "supplier": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "brand": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "year": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "season": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "note": {
+            "maxLength": 255,
+            "minLength": 0,
+            "type": "string",
+            "nullable": true
+          },
+          "isActive": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ProductUpdateDTO": {
+        "required": [
+          "brand",
+          "code",
+          "cost",
+          "discount",
+          "id",
+          "isActive",
+          "name",
+          "price",
+          "season",
+          "supplier",
+          "year"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "code": {
+            "maxLength": 255,
+            "minLength": 1,
+            "type": "string"
+          },
+          "name": {
+            "maxLength": 255,
+            "minLength": 1,
+            "type": "string"
+          },
+          "cost": {
+            "type": "number",
+            "format": "double"
+          },
+          "price": {
+            "type": "number",
+            "format": "double"
+          },
+          "discount": {
+            "type": "number",
+            "format": "double"
+          },
+          "supplier": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "brand": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "year": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "season": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "note": {
+            "maxLength": 255,
+            "minLength": 0,
+            "type": "string",
+            "nullable": true
+          },
+          "isActive": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
       "RoleCreateDTO": {
         "required": [
           "name"
@@ -2006,6 +2493,7 @@
       },
       "RoleUpdateDTO": {
         "required": [
+          "id",
           "name"
         ],
         "type": "object",
@@ -2046,6 +2534,7 @@
       },
       "SeasonUpdateDTO": {
         "required": [
+          "id",
           "name"
         ],
         "type": "object",
@@ -2086,6 +2575,7 @@
       },
       "SectionUpdateDTO": {
         "required": [
+          "id",
           "name"
         ],
         "type": "object",
@@ -2180,6 +2670,7 @@
       "SupplierUpdateDTO": {
         "required": [
           "country",
+          "id",
           "name"
         ],
         "type": "object",
@@ -2243,6 +2734,7 @@
       },
       "TagUpdateDTO": {
         "required": [
+          "id",
           "name"
         ],
         "type": "object",
@@ -2259,17 +2751,74 @@
         },
         "additionalProperties": false
       },
-      "UserCreateDTO": {
+      "TransactionAttributeDTO": {
+        "type": "object",
+        "properties": {
+          "attribute": {
+            "type": "string",
+            "nullable": true
+          },
+          "attributeOption": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "TransactionCreateDTO": {
         "required": [
-          "firstName",
-          "lastName",
-          "password",
-          "phone",
-          "username"
+          "productId",
+          "quantity",
+          "transactionType"
         ],
         "type": "object",
         "properties": {
-          "username": {
+          "productId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "quantity": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "transactionType": {
+            "$ref": "#/components/schemas/TransactionTypeEnum"
+          },
+          "note": {
+            "type": "string",
+            "nullable": true
+          },
+          "transactionAttributes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TransactionAttributeDTO"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "TransactionTypeEnum": {
+        "enum": [
+          0,
+          1,
+          2
+        ],
+        "type": "integer",
+        "format": "int32"
+      },
+      "UserCreateDTO": {
+        "required": [
+          "firstName",
+          "isActive",
+          "lastName",
+          "password",
+          "phone",
+          "userName"
+        ],
+        "type": "object",
+        "properties": {
+          "userName": {
             "maxLength": 255,
             "minLength": 4,
             "type": "string",
@@ -2312,6 +2861,9 @@
               "format": "int32"
             },
             "nullable": true
+          },
+          "isActive": {
+            "type": "boolean"
           }
         },
         "additionalProperties": false
@@ -2319,6 +2871,7 @@
       "UserUpdateDTO": {
         "required": [
           "firstName",
+          "isActive",
           "lastName",
           "phone",
           "username"
@@ -2373,36 +2926,9 @@
               "format": "int32"
             },
             "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "YearCreateDTO": {
-        "required": [
-          "name"
-        ],
-        "type": "object",
-        "properties": {
-          "name": {
-            "type": "integer",
-            "format": "int32"
-          }
-        },
-        "additionalProperties": false
-      },
-      "YearUpdateDTO": {
-        "required": [
-          "name"
-        ],
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int32"
           },
-          "name": {
-            "type": "integer",
-            "format": "int32"
+          "isActive": {
+            "type": "boolean"
           }
         },
         "additionalProperties": false

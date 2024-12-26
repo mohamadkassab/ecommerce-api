@@ -7,7 +7,7 @@ namespace ecommerce_dash_api.DTOS
     {
         private string _username = null!;
         [Required(AllowEmptyStrings = false), EmailAddress, StringLength(255, MinimumLength = 4, ErrorMessage = "Username must be between 4 and 255 characters.")]
-        public string Username
+        public string UserName
         {
             get => _username;
             set => _username = value.Trim().ToLower();
@@ -35,11 +35,15 @@ namespace ecommerce_dash_api.DTOS
         public string Phone { get; set; } = null!;
 
         [MaxLength(255, ErrorMessage = "maximum length is 255")]
-        public string? Address { get; set; }
+        public string Address { get; set; } = string.Empty;
 
         [Required(AllowEmptyStrings = false), StringLength(255, MinimumLength = 6, ErrorMessage = "Password must be between 6 and 255 characters.")]
         [DataType(DataType.Password)]
         public string Password { get; set; } = null!;
-        public List<int> Roles { get; set; }
+
+        public List<int> Roles { get; set; } = new List<int>();
+
+        [Required]
+        public Boolean IsActive { get; set; }
     }
 }

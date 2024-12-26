@@ -7,7 +7,7 @@ public partial class Year
 {
     public int Id { get; set; }
 
-    public int? Name { get; set; }
+    public int Name { get; set; }
 
     public DateTime UpdatedAt { get; set; }
 

@@ -3,20 +3,12 @@
   "WorkspaceRootPath": "C:\\Users\\mhmdk\\Desktop\\Projects\\ecommerce-api\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{F4D8F940-4D4C-4580-BCFA-60CD7A3F0379}|ecommerce_dash_api\\ecommerce_dash_api.csproj|c:\\users\\mhmdk\\desktop\\projects\\ecommerce-api\\ecommerce_dash_api\\services\\setupservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F4D8F940-4D4C-4580-BCFA-60CD7A3F0379}|ecommerce_dash_api\\ecommerce_dash_api.csproj|solutionrelative:ecommerce_dash_api\\services\\setupservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{F4D8F940-4D4C-4580-BCFA-60CD7A3F0379}|ecommerce_dash_api\\ecommerce_dash_api.csproj|c:\\users\\mhmdk\\desktop\\projects\\ecommerce-api\\ecommerce_dash_api\\services\\productservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F4D8F940-4D4C-4580-BCFA-60CD7A3F0379}|ecommerce_dash_api\\ecommerce_dash_api.csproj|solutionrelative:ecommerce_dash_api\\services\\productservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{F4D8F940-4D4C-4580-BCFA-60CD7A3F0379}|ecommerce_dash_api\\ecommerce_dash_api.csproj|c:\\users\\mhmdk\\desktop\\projects\\ecommerce-api\\ecommerce_dash_api\\services\\userservice .cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F4D8F940-4D4C-4580-BCFA-60CD7A3F0379}|ecommerce_dash_api\\ecommerce_dash_api.csproj|solutionrelative:ecommerce_dash_api\\services\\userservice .cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F4D8F940-4D4C-4580-BCFA-60CD7A3F0379}|ecommerce_dash_api\\ecommerce_dash_api.csproj|c:\\users\\mhmdk\\desktop\\projects\\ecommerce-api\\ecommerce_dash_api\\utils\\passwordhasher.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F4D8F940-4D4C-4580-BCFA-60CD7A3F0379}|ecommerce_dash_api\\ecommerce_dash_api.csproj|solutionrelative:ecommerce_dash_api\\utils\\passwordhasher.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F4D8F940-4D4C-4580-BCFA-60CD7A3F0379}|ecommerce_dash_api\\ecommerce_dash_api.csproj|c:\\users\\mhmdk\\desktop\\projects\\ecommerce-api\\ecommerce_dash_api\\utils\\constants.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F4D8F940-4D4C-4580-BCFA-60CD7A3F0379}|ecommerce_dash_api\\ecommerce_dash_api.csproj|solutionrelative:ecommerce_dash_api\\utils\\constants.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{F4D8F940-4D4C-4580-BCFA-60CD7A3F0379}|ecommerce_dash_api\\ecommerce_dash_api.csproj|c:\\users\\mhmdk\\desktop\\projects\\ecommerce-api\\ecommerce_dash_api\\controllers\\productcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F4D8F940-4D4C-4580-BCFA-60CD7A3F0379}|ecommerce_dash_api\\ecommerce_dash_api.csproj|solutionrelative:ecommerce_dash_api\\controllers\\productcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -26,58 +18,32 @@
       "DocumentGroups": [
         {
           "DockedWidth": 225,
-          "SelectedChildIndex": 3,
+          "SelectedChildIndex": 1,
           "Children": [
             {
               "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "UserService .cs",
-              "DocumentMoniker": "C:\\Users\\mhmdk\\Desktop\\Projects\\ecommerce-api\\ecommerce_dash_api\\Services\\UserService .cs",
-              "RelativeDocumentMoniker": "ecommerce_dash_api\\Services\\UserService .cs",
-              "ToolTip": "C:\\Users\\mhmdk\\Desktop\\Projects\\ecommerce-api\\ecommerce_dash_api\\Services\\UserService .cs",
-              "RelativeToolTip": "ecommerce_dash_api\\Services\\UserService .cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Title": "ProductController.cs",
+              "DocumentMoniker": "C:\\Users\\mhmdk\\Desktop\\Projects\\ecommerce-api\\ecommerce_dash_api\\Controllers\\ProductController.cs",
+              "RelativeDocumentMoniker": "ecommerce_dash_api\\Controllers\\ProductController.cs",
+              "ToolTip": "C:\\Users\\mhmdk\\Desktop\\Projects\\ecommerce-api\\ecommerce_dash_api\\Controllers\\ProductController.cs",
+              "RelativeToolTip": "ecommerce_dash_api\\Controllers\\ProductController.cs",
+              "ViewState": "AgIAADkAAAAAAAAAAAAYwGMAAABbAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-12-13T14:33:06.373Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "PasswordHasher.cs",
-              "DocumentMoniker": "C:\\Users\\mhmdk\\Desktop\\Projects\\ecommerce-api\\ecommerce_dash_api\\Utils\\PasswordHasher.cs",
-              "RelativeDocumentMoniker": "ecommerce_dash_api\\Utils\\PasswordHasher.cs",
-              "ToolTip": "C:\\Users\\mhmdk\\Desktop\\Projects\\ecommerce-api\\ecommerce_dash_api\\Utils\\PasswordHasher.cs",
-              "RelativeToolTip": "ecommerce_dash_api\\Utils\\PasswordHasher.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-12-13T14:31:44.72Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "Constants.cs",
-              "DocumentMoniker": "C:\\Users\\mhmdk\\Desktop\\Projects\\ecommerce-api\\ecommerce_dash_api\\Utils\\Constants.cs",
-              "RelativeDocumentMoniker": "ecommerce_dash_api\\Utils\\Constants.cs",
-              "ToolTip": "C:\\Users\\mhmdk\\Desktop\\Projects\\ecommerce-api\\ecommerce_dash_api\\Utils\\Constants.cs",
-              "RelativeToolTip": "ecommerce_dash_api\\Utils\\Constants.cs",
-              "ViewState": "AgIAAAIAAAAAAAAAAAAxwAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-12-13T14:31:15.765Z",
+              "WhenOpened": "2024-12-26T10:50:32.961Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "SetupService.cs",
-              "DocumentMoniker": "C:\\Users\\mhmdk\\Desktop\\Projects\\ecommerce-api\\ecommerce_dash_api\\Services\\SetupService.cs",
-              "RelativeDocumentMoniker": "ecommerce_dash_api\\Services\\SetupService.cs",
-              "ToolTip": "C:\\Users\\mhmdk\\Desktop\\Projects\\ecommerce-api\\ecommerce_dash_api\\Services\\SetupService.cs",
-              "RelativeToolTip": "ecommerce_dash_api\\Services\\SetupService.cs",
-              "ViewState": "AgIAACoBAAAAAAAAAAAAwBkCAAABAAAAAAAAAA==",
+              "Title": "ProductService.cs",
+              "DocumentMoniker": "C:\\Users\\mhmdk\\Desktop\\Projects\\ecommerce-api\\ecommerce_dash_api\\Services\\ProductService.cs",
+              "RelativeDocumentMoniker": "ecommerce_dash_api\\Services\\ProductService.cs",
+              "ToolTip": "C:\\Users\\mhmdk\\Desktop\\Projects\\ecommerce-api\\ecommerce_dash_api\\Services\\ProductService.cs",
+              "RelativeToolTip": "ecommerce_dash_api\\Services\\ProductService.cs",
+              "ViewState": "AgIAAFMBAAAAAAAAAAAuwFgBAAAsAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-12-13T14:28:24.5Z",
+              "WhenOpened": "2024-12-25T16:06:59.374Z",
               "EditorCaption": ""
             }
           ]

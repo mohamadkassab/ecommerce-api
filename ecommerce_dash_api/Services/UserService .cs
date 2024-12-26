@@ -59,12 +59,13 @@ namespace ecommerce_dash_api.Services
             await _context.Roles.AddAsync(role);
             await _context.SaveChangesAsync();
             return true;
-
         }
         public async Task<bool> UpdateRoleAsync(RoleUpdateDTO updateRoleDto, string? username)
         {
-            await _userRepository.DeleteRolePermissionsAsync(updateRoleDto.Id);
-            Role role = await _userRepository.GetRoleByIdAsync(updateRoleDto.Id);
+            var deleteRolePermissions = _userRepository.DeleteRolePermissionsAsync(updateRoleDto.Id);
+            var getRole = _userRepository.GetRoleByIdAsync(updateRoleDto.Id);
+            Task.WhenAll(deleteRolePermissions, getRole);
+            Role role = getRole.Result;
             role.Name = updateRoleDto.Name;
             role.UpdatedBy = username;
             var rolePermissions = updateRoleDto.Permissions.Select(permissionId => new RolePermission
@@ -111,7 +112,7 @@ namespace ecommerce_dash_api.Services
         }
         public async Task<bool> CreateUserAsync(UserCreateDTO userDto, string? username)
         {
-            if (await _userRepository.UsernameExistsAsync(userDto.Username))
+            if (await _userRepository.UsernameExistsAsync(userDto.UserName))
             {
                 throw new InvalidOperationException("Email is already registered");
             }
@@ -121,10 +122,11 @@ namespace ecommerce_dash_api.Services
                 FirstName = userDto.FirstName,
                 LastName = userDto.LastName,
                 Phone = userDto.Phone,
-                Username = userDto.Username,
+                Username = userDto.UserName,
                 Dob = userDto.Dob,
                 PasswordHash = _passwordHasher.HashPassword(userDto.Password),
                 Address = userDto.Address,
+                IsActive = userDto.IsActive,
                 UpdatedBy = username
             };
             var userRoles = userDto.Roles.Select(roleId => new UserRole
@@ -141,13 +143,16 @@ namespace ecommerce_dash_api.Services
         }
         public async Task<bool> UpdateUserAsync(UserUpdateDTO? userDto, string? username)
         {
-            await _userRepository.DeleteUserRolesByUserIdAsync(userDto.Id);
-            User user = await _userRepository.GetUserAsync(userDto.Id);
+            var deleteUserRolesTask = _userRepository.DeleteUserRolesByUserIdAsync(userDto.Id);
+            var getUserTask = _userRepository.GetUserAsync(userDto.Id);
+            Task.WhenAll(deleteUserRolesTask, getUserTask);
+            User user = getUserTask.Result;
             user.FirstName = userDto.FirstName;
             user.LastName = userDto.LastName;
             user.Dob = userDto.Dob;
             user.Phone = userDto.Phone;
             user.Address = userDto.Address;
+            user.IsActive = userDto.IsActive;
             user.UpdatedBy = username;
             if (!string.IsNullOrEmpty(userDto.Password))
             {

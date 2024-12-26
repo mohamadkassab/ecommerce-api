@@ -7,9 +7,9 @@ public partial class CustomerShippingAddress
 {
     public int Id { get; set; }
 
-    public int? CustomerId { get; set; }
+    public int CustomerId { get; set; }
 
-    public int? CountryId { get; set; }
+    public int CountryId { get; set; }
 
     public string AddressLine { get; set; } = null!;
 
@@ -19,11 +19,9 @@ public partial class CustomerShippingAddress
 
     public short? PostalCode { get; set; }
 
-    public bool? IsPrimary { get; set; }
+    public bool IsPrimary { get; set; }
 
-    public virtual Country? Country { get; set; }
+    public virtual Country Country { get; set; } = null!;
 
-    public virtual Customer? Customer { get; set; }
-
-    public virtual ICollection<Order> Orders { get; set; } = new List<Order>();
+    public virtual Customer Customer { get; set; } = null!;
 }

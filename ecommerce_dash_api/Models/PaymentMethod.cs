@@ -17,8 +17,6 @@ public partial class PaymentMethod
 
     public bool IsActive { get; set; }
 
-    public virtual ICollection<Customer> Customers { get; set; } = new List<Customer>();
-
     public virtual ICollection<OrderPayment> OrderPayments { get; set; } = new List<OrderPayment>();
 
     public virtual User? UpdatedByNavigation { get; set; }

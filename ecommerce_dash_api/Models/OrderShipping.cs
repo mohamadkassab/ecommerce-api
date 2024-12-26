@@ -13,11 +13,13 @@ public partial class OrderShipping
 
     public string? TrackingNumber { get; set; }
 
-    public string ShippingStatus { get; set; } = null!;
-
     public DateTime? EstimatedDeliveryDate { get; set; }
 
     public DateTime? ActualDeliveryDate { get; set; }
+
+    public string Destination { get; set; } = null!;
+
+    public DateTime Timestamp { get; set; }
 
     public virtual Order Order { get; set; } = null!;
 

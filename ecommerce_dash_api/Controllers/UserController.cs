@@ -19,14 +19,12 @@ namespace ecommerce_dash_api.Controllers
         private readonly IUserService _userService;
         private readonly IConfiguration _configuration;
         public readonly IApiService _apiService;
-        private readonly JwtToken _jwtToken;
 
-        public UserController(IUserService userService, IConfiguration configuration, IApiService apiService, JwtToken jwtToken)
+        public UserController(IUserService userService, IConfiguration configuration, IApiService apiService)
         {
             _userService = userService;
             _configuration = configuration;
             _apiService = apiService;
-            _jwtToken = jwtToken;
         }
 
 
@@ -46,7 +44,7 @@ namespace ecommerce_dash_api.Controllers
                 try
                 {
                     var result = await _userService.GetAllPermissionsAsync();
-                    await _apiService.CreateLogAsync(LogLevelEnum.INFO.ToString(), LogMessageTemplates.successful.ToString(), null, username, ipAddress, actionName, null);
+                    await _apiService.CreateLogAsync(LogLevelEnum.INFO.ToString(), LogMessageTemplatesEnum.successful.ToString(), null, username, ipAddress, actionName, null);
                     return Ok(result);
                 }
                 catch (Exception ex)
@@ -79,7 +77,7 @@ namespace ecommerce_dash_api.Controllers
                 try
                 {
                     var result = await _userService.GetAllRolesWithPermissionsAsync();
-                    await _apiService.CreateLogAsync(LogLevelEnum.INFO.ToString(), LogMessageTemplates.successful.ToString(), null, username, ipAddress, actionName, null);
+                    await _apiService.CreateLogAsync(LogLevelEnum.INFO.ToString(), LogMessageTemplatesEnum.successful.ToString(), null, username, ipAddress, actionName, null);
                     return Ok(result);
 
                 }
@@ -110,17 +108,17 @@ namespace ecommerce_dash_api.Controllers
                 {
                     if (!ModelState.IsValid)
                     {
-                        await _apiService.CreateLogAsync(LogLevelEnum.WARNING.ToString(), LogMessageTemplates.invalid_model_state.ToString(), null, username, ipAddress, actionName, role);
+                        await _apiService.CreateLogAsync(LogLevelEnum.WARNING.ToString(), LogMessageTemplatesEnum.invalid_model_state.ToString(), null, username, ipAddress, actionName, role);
                         return BadRequest(ModelState);
                     }
 
                     var response = await _userService.CreateRoleAsync(role, username);
                     if (response)
                     {
-                        await _apiService.CreateLogAsync(LogLevelEnum.INFO.ToString(), LogMessageTemplates.successful.ToString(), null, username, ipAddress, actionName, role);
+                        await _apiService.CreateLogAsync(LogLevelEnum.INFO.ToString(), LogMessageTemplatesEnum.successful.ToString(), null, username, ipAddress, actionName, role);
                         return Ok();
                     }
-                    await _apiService.CreateLogAsync(LogLevelEnum.WARNING.ToString(), LogMessageTemplates.failed.ToString(), null, username, ipAddress, actionName, role);
+                    await _apiService.CreateLogAsync(LogLevelEnum.WARNING.ToString(), LogMessageTemplatesEnum.failed.ToString(), null, username, ipAddress, actionName, role);
                     return BadRequest(new { message = "Create role failed" });
                 }
                 catch (Exception ex)
@@ -150,17 +148,17 @@ namespace ecommerce_dash_api.Controllers
                 {
                     if (!ModelState.IsValid)
                     {
-                        await _apiService.CreateLogAsync(LogLevelEnum.WARNING.ToString(), LogMessageTemplates.invalid_model_state.ToString(), null, username, ipAddress, actionName, role);
+                        await _apiService.CreateLogAsync(LogLevelEnum.WARNING.ToString(), LogMessageTemplatesEnum.invalid_model_state.ToString(), null, username, ipAddress, actionName, role);
                         return BadRequest(ModelState);
                     }
 
                     var response = await _userService.UpdateRoleAsync(role, username);
                     if (response)
                     {
-                        await _apiService.CreateLogAsync(LogLevelEnum.INFO.ToString(), LogMessageTemplates.successful.ToString(), null, username, ipAddress, actionName, role);
+                        await _apiService.CreateLogAsync(LogLevelEnum.INFO.ToString(), LogMessageTemplatesEnum.successful.ToString(), null, username, ipAddress, actionName, role);
                         return Ok();
                     }
-                    await _apiService.CreateLogAsync(LogLevelEnum.WARNING.ToString(), LogMessageTemplates.failed.ToString(), null, username, ipAddress, actionName, role);
+                    await _apiService.CreateLogAsync(LogLevelEnum.WARNING.ToString(), LogMessageTemplatesEnum.failed.ToString(), null, username, ipAddress, actionName, role);
                     return BadRequest(new { message = "Update role failed" });
                 }
                 catch (Exception ex)
@@ -192,17 +190,17 @@ namespace ecommerce_dash_api.Controllers
                 {
                     if (!ModelState.IsValid)
                     {
-                        await _apiService.CreateLogAsync(LogLevelEnum.WARNING.ToString(), LogMessageTemplates.invalid_model_state.ToString(), null, username, ipAddress, actionName, id);
+                        await _apiService.CreateLogAsync(LogLevelEnum.WARNING.ToString(), LogMessageTemplatesEnum.invalid_model_state.ToString(), null, username, ipAddress, actionName, id);
                         return BadRequest(ModelState);
                     }
 
                     var response = await _userService.DeleteRoleAsync(id);
                     if (response)
                     {
-                        await _apiService.CreateLogAsync(LogLevelEnum.INFO.ToString(), LogMessageTemplates.successful.ToString(), null, username, ipAddress, actionName, id);
+                        await _apiService.CreateLogAsync(LogLevelEnum.INFO.ToString(), LogMessageTemplatesEnum.successful.ToString(), null, username, ipAddress, actionName, id);
                         return Ok();
                     }
-                    await _apiService.CreateLogAsync(LogLevelEnum.WARNING.ToString(), LogMessageTemplates.failed.ToString(), null, username, ipAddress, actionName, id);
+                    await _apiService.CreateLogAsync(LogLevelEnum.WARNING.ToString(), LogMessageTemplatesEnum.failed.ToString(), null, username, ipAddress, actionName, id);
                     return BadRequest(new { message = "Delete role failed" });
                 }
                 catch (Exception ex)
@@ -232,7 +230,7 @@ namespace ecommerce_dash_api.Controllers
             {
                 if (!ModelState.IsValid)
                 {
-                    await _apiService.CreateLogAsync(LogLevelEnum.WARNING.ToString(), LogMessageTemplates.invalid_model_state.ToString(), null, null, ipAddress, actionName, credentials);
+                    await _apiService.CreateLogAsync(LogLevelEnum.WARNING.ToString(), LogMessageTemplatesEnum.invalid_model_state.ToString(), null, null, ipAddress, actionName, credentials);
                     return BadRequest(ModelState);
                 }
 
@@ -249,11 +247,11 @@ namespace ecommerce_dash_api.Controllers
                     };
                     Response.Cookies.Append(jwtSettings["TokenName"]!, token, cookieOptions);
 
-                    await _apiService.CreateLogAsync(LogLevelEnum.INFO.ToString(), LogMessageTemplates.successful.ToString(), null, null, ipAddress, actionName, credentials.Username);
+                    await _apiService.CreateLogAsync(LogLevelEnum.INFO.ToString(), LogMessageTemplatesEnum.successful.ToString(), null, null, ipAddress, actionName, credentials.Username);
                     return Ok(new { token });
                 }
-                await _apiService.CreateLogAsync(LogLevelEnum.WARNING.ToString(), LogMessageTemplates.failed.ToString(), null, null, ipAddress, actionName, credentials.Username);
-                return BadRequest(new { message = LogMessageTemplates.failed.ToString() });
+                await _apiService.CreateLogAsync(LogLevelEnum.WARNING.ToString(), LogMessageTemplatesEnum.failed.ToString(), null, null, ipAddress, actionName, credentials.Username);
+                return BadRequest(new { message = LogMessageTemplatesEnum.failed.ToString() });
 
             }
             catch (Exception ex)
@@ -274,9 +272,9 @@ namespace ecommerce_dash_api.Controllers
             {
                 var jwtSettings = _configuration.GetSection("JwtSettings");
                 Response.Cookies.Delete(jwtSettings["TokenName"]!);
-                await _apiService.CreateLogAsync(LogLevelEnum.INFO.ToString(), LogMessageTemplates.successful.ToString(), null, null, ipAddress, actionName, User?.Identity?.Name);
+                await _apiService.CreateLogAsync(LogLevelEnum.INFO.ToString(), LogMessageTemplatesEnum.successful.ToString(), null, null, ipAddress, actionName, User?.Identity?.Name);
 
-                return Ok(new { message = LogMessageTemplates.successful.ToString() });
+                return Ok(new { message = LogMessageTemplatesEnum.successful.ToString() });
             }
             catch (Exception ex)
             {
@@ -299,7 +297,7 @@ namespace ecommerce_dash_api.Controllers
                 try
                 {
                     var result = await _userService.GetAllUsersWithRoles();
-                    await _apiService.CreateLogAsync(LogLevelEnum.INFO.ToString(), LogMessageTemplates.successful.ToString(), null, username, ipAddress, actionName, null);
+                    await _apiService.CreateLogAsync(LogLevelEnum.INFO.ToString(), LogMessageTemplatesEnum.successful.ToString(), null, username, ipAddress, actionName, null);
                     return Ok(result);
 
                 }
@@ -325,14 +323,14 @@ namespace ecommerce_dash_api.Controllers
             var ipAddress = HttpContext?.Connection?.RemoteIpAddress?.ToString() ?? null;
             var actionName = this.ControllerContext?.RouteData?.Values["action"]?.ToString() ?? null;
 
-            if ((userClaims.Any(c => c.Type == "permission" && c.Value == "user_crud") || (username == "root@e.com")) && user.Username != "root@e.com")
+            if ((userClaims.Any(c => c.Type == "permission" && c.Value == "user_crud") || (username == "root@e.com")) && user.UserName != "root@e.com")
 
             {
                 try
                 {
                     if (!ModelState.IsValid)
                     {
-                        await _apiService.CreateLogAsync(LogLevelEnum.WARNING.ToString(), LogMessageTemplates.invalid_model_state.ToString(), null, username, ipAddress, actionName, user);
+                        await _apiService.CreateLogAsync(LogLevelEnum.WARNING.ToString(), LogMessageTemplatesEnum.invalid_model_state.ToString(), null, username, ipAddress, actionName, user);
                         return BadRequest(ModelState);
                     }
 
@@ -340,11 +338,11 @@ namespace ecommerce_dash_api.Controllers
                     user.Password = null;
                     if (result)
                     {
-                        await _apiService.CreateLogAsync(LogLevelEnum.INFO.ToString(), LogMessageTemplates.successful.ToString(), null, username, ipAddress, actionName, user);
-                        return Ok(new { message = LogMessageTemplates.successful.ToString() });
+                        await _apiService.CreateLogAsync(LogLevelEnum.INFO.ToString(), LogMessageTemplatesEnum.successful.ToString(), null, username, ipAddress, actionName, user);
+                        return Ok(new { message = LogMessageTemplatesEnum.successful.ToString() });
                     }
-                    await _apiService.CreateLogAsync(LogLevelEnum.WARNING.ToString(), LogMessageTemplates.failed.ToString(), null, username, ipAddress, actionName, user);
-                    return BadRequest(new { message = LogMessageTemplates.failed.ToString() });
+                    await _apiService.CreateLogAsync(LogLevelEnum.WARNING.ToString(), LogMessageTemplatesEnum.failed.ToString(), null, username, ipAddress, actionName, user);
+                    return BadRequest(new { message = LogMessageTemplatesEnum.failed.ToString() });
                 }
                 catch (Exception ex)
                 {
@@ -371,10 +369,9 @@ namespace ecommerce_dash_api.Controllers
             {
                 try
                 {
-
                     if (!ModelState.IsValid || (user?.Password?.Length < 6 && !string.IsNullOrEmpty(user.Password)))
                     {
-                        await _apiService.CreateLogAsync(LogLevelEnum.WARNING.ToString(), LogMessageTemplates.invalid_model_state.ToString(), null, username, ipAddress, actionName, user);
+                        await _apiService.CreateLogAsync(LogLevelEnum.WARNING.ToString(), LogMessageTemplatesEnum.invalid_model_state.ToString(), null, username, ipAddress, actionName, user);
                         return BadRequest(ModelState);
                     }
 
@@ -382,11 +379,11 @@ namespace ecommerce_dash_api.Controllers
                     user.Password = null;
                     if (result)
                     {
-                        await _apiService.CreateLogAsync(LogLevelEnum.INFO.ToString(), LogMessageTemplates.successful.ToString(), null, username, ipAddress, actionName, user);
-                        return Ok(new { message = LogMessageTemplates.successful.ToString() });
+                        await _apiService.CreateLogAsync(LogLevelEnum.INFO.ToString(), LogMessageTemplatesEnum.successful.ToString(), null, username, ipAddress, actionName, user);
+                        return Ok(new { message = LogMessageTemplatesEnum.successful.ToString() });
                     }
-                    await _apiService.CreateLogAsync(LogLevelEnum.WARNING.ToString(), LogMessageTemplates.failed.ToString(), null, username, ipAddress, actionName, user);
-                    return BadRequest(new { message = LogMessageTemplates.failed.ToString() });
+                    await _apiService.CreateLogAsync(LogLevelEnum.WARNING.ToString(), LogMessageTemplatesEnum.failed.ToString(), null, username, ipAddress, actionName, user);
+                    return BadRequest(new { message = LogMessageTemplatesEnum.failed.ToString() });
                 }
                 catch (Exception ex)
                 {
@@ -415,17 +412,17 @@ namespace ecommerce_dash_api.Controllers
                 {
                     if (!ModelState.IsValid)
                     {
-                        await _apiService.CreateLogAsync(LogLevelEnum.WARNING.ToString(), LogMessageTemplates.invalid_model_state.ToString(), null, username, ipAddress, actionName, id);
+                        await _apiService.CreateLogAsync(LogLevelEnum.WARNING.ToString(), LogMessageTemplatesEnum.invalid_model_state.ToString(), null, username, ipAddress, actionName, id);
                         return BadRequest(ModelState);
                     }
 
                     var response = await _userService.DeleteUserAsync(id);
                     if (response)
                     {
-                        await _apiService.CreateLogAsync(LogLevelEnum.INFO.ToString(), LogMessageTemplates.successful.ToString(), null, username, ipAddress, actionName, id);
+                        await _apiService.CreateLogAsync(LogLevelEnum.INFO.ToString(), LogMessageTemplatesEnum.successful.ToString(), null, username, ipAddress, actionName, id);
                         return Ok();
                     }
-                    await _apiService.CreateLogAsync(LogLevelEnum.WARNING.ToString(), LogMessageTemplates.failed.ToString(), null, username, ipAddress, actionName, id);
+                    await _apiService.CreateLogAsync(LogLevelEnum.WARNING.ToString(), LogMessageTemplatesEnum.failed.ToString(), null, username, ipAddress, actionName, id);
                     return BadRequest(new { message = "Delete user failed" });
                 }
                 catch (Exception ex)
@@ -453,17 +450,17 @@ namespace ecommerce_dash_api.Controllers
             {
                 if (!ModelState.IsValid)
                 {
-                    await _apiService.CreateLogAsync(LogLevelEnum.WARNING.ToString(), LogMessageTemplates.invalid_model_state.ToString(), null, username, ipAddress, actionName, changePassword);
+                    await _apiService.CreateLogAsync(LogLevelEnum.WARNING.ToString(), LogMessageTemplatesEnum.invalid_model_state.ToString(), null, username, ipAddress, actionName, changePassword);
                     return BadRequest(ModelState);
                 }
 
                 var response = await _userService.ChangePasswordAsync(changePassword, username);
                 if (response)
                 {
-                    await _apiService.CreateLogAsync(LogLevelEnum.INFO.ToString(), LogMessageTemplates.successful.ToString(), null, username, ipAddress, actionName, null);
+                    await _apiService.CreateLogAsync(LogLevelEnum.INFO.ToString(), LogMessageTemplatesEnum.successful.ToString(), null, username, ipAddress, actionName, null);
                     return Ok();
                 }
-                await _apiService.CreateLogAsync(LogLevelEnum.WARNING.ToString(), LogMessageTemplates.failed.ToString(), null, username, ipAddress, actionName, changePassword);
+                await _apiService.CreateLogAsync(LogLevelEnum.WARNING.ToString(), LogMessageTemplatesEnum.failed.ToString(), null, username, ipAddress, actionName, changePassword);
                 return BadRequest(new { message = "Change password failed" });
             }
             catch (Exception ex)

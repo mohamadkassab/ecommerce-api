@@ -19,6 +19,8 @@ namespace ecommerce_dash_api.Utils
             services.AddScoped<ISetupRepository, SetupRepository>();
             services.AddScoped<ISetupService, SetupService>();
             services.AddScoped<IHelpersFunctions, HelpersFuntions>();
+            services.AddScoped<IProductRepository, ProductRepository>();
+            services.AddScoped<IProductService, ProductService>();
             services.AddSingleton<IPasswordHasher, PasswordHasher>();
             services.AddSingleton<JwtToken>();
             return services;

@@ -13,11 +13,11 @@ namespace ecommerce_dash_api.DTOS
             set => _label = value.Trim().ToLower();
         }
 
-        public string? Query { get; set; }
+        public string Query { get; set; } = string.Empty;
 
         [Required(AllowEmptyStrings = false), StringLength(255, MinimumLength = 1, ErrorMessage = "Chart type must be between 1 and 255 characters.")]
-        public string ChartType { get; set; }
+        public string ChartType { get; set; } = null!;
 
-        public List<ChartPropertyDTO> ChartProperties { get; set; } = null!;
+        public List<ChartPropertyDTO> ChartProperties { get; set; } = new List<ChartPropertyDTO>();
     }
 }

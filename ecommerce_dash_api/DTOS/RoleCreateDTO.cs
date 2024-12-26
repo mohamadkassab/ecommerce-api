@@ -13,6 +13,6 @@ namespace ecommerce_dash_api.DTOS
             get => _name;
             set => _name = value.Trim().ToLower()!;
         }
-        public required List<int> Permissions { get; set; }
+        public List<int> Permissions { get; set; } = new List<int>();
     }
 }

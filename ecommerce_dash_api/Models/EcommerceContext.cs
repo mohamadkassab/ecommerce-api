@@ -54,8 +54,6 @@ public partial class EcommerceContext : DbContext
 
     public virtual DbSet<Product> Products { get; set; }
 
-    public virtual DbSet<ProductAttributeOption> ProductAttributeOptions { get; set; }
-
     public virtual DbSet<ProductCategory> ProductCategories { get; set; }
 
     public virtual DbSet<ProductInfo> ProductInfos { get; set; }
@@ -84,11 +82,11 @@ public partial class EcommerceContext : DbContext
 
     public virtual DbSet<Transaction> Transactions { get; set; }
 
+    public virtual DbSet<TransactionAttribute> TransactionAttributes { get; set; }
+
     public virtual DbSet<User> Users { get; set; }
 
     public virtual DbSet<UserRole> UserRoles { get; set; }
-
-    public virtual DbSet<Year> Years { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
@@ -219,6 +217,7 @@ public partial class EcommerceContext : DbContext
             entity.Property(e => e.UpdatedBy).HasColumnName("updated_by");
             entity.Property(e => e.Website)
                 .HasMaxLength(255)
+                .HasDefaultValueSql("''")
                 .HasColumnName("website");
 
             entity.HasOne(d => d.Country).WithMany(p => p.Brands)
@@ -315,7 +314,6 @@ public partial class EcommerceContext : DbContext
 
             entity.HasOne(d => d.Chart).WithMany(p => p.ChartProperties)
                 .HasForeignKey(d => d.ChartId)
-                .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("chart_property_ibfk_1");
 
             entity.HasOne(d => d.UpdatedByNavigation).WithMany(p => p.ChartProperties)
@@ -364,6 +362,8 @@ public partial class EcommerceContext : DbContext
 
             entity.HasIndex(e => e.CountryId, "currency_ibfk_2");
 
+            entity.HasIndex(e => e.IsActive, "currency_idx_1");
+
             entity.HasIndex(e => e.Name, "name4").IsUnique();
 
             entity.HasIndex(e => e.Symbol, "symbol").IsUnique();
@@ -373,6 +373,7 @@ public partial class EcommerceContext : DbContext
             entity.Property(e => e.ExchangeRateUsd)
                 .HasPrecision(20, 2)
                 .HasColumnName("exchange_rate_USD");
+            entity.Property(e => e.IsActive).HasColumnName("is_active");
             entity.Property(e => e.Name).HasColumnName("name");
             entity.Property(e => e.Symbol).HasColumnName("symbol");
             entity.Property(e => e.UpdatedAt)
@@ -384,7 +385,6 @@ public partial class EcommerceContext : DbContext
 
             entity.HasOne(d => d.Country).WithMany(p => p.Currencies)
                 .HasForeignKey(d => d.CountryId)
-                .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("currency_ibfk_2");
 
             entity.HasOne(d => d.UpdatedByNavigation).WithMany(p => p.Currencies)
@@ -402,18 +402,11 @@ public partial class EcommerceContext : DbContext
 
             entity.HasIndex(e => e.UpdatedBy, "customer_ibfk_1");
 
-            entity.HasIndex(e => e.PreferredPaymentMethodId, "customer_ibfk_2");
-
-            entity.HasIndex(e => e.PreferredCurrencyId, "customer_ibfk_3");
-
             entity.HasIndex(e => e.IsActive, "customer_idx_1");
 
             entity.HasIndex(e => e.Username, "username").IsUnique();
 
             entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.BillingAddress)
-                .HasMaxLength(255)
-                .HasColumnName("billing_address");
             entity.Property(e => e.FirstName)
                 .HasMaxLength(255)
                 .HasColumnName("first_name");
@@ -427,15 +420,6 @@ public partial class EcommerceContext : DbContext
             entity.Property(e => e.Phone)
                 .HasMaxLength(255)
                 .HasColumnName("phone");
-            entity.Property(e => e.PreferredCurrencyId).HasColumnName("preferred_currency_id");
-            entity.Property(e => e.PreferredPaymentMethodId).HasColumnName("preferred_payment_method_id");
-            entity.Property(e => e.TotalOrders)
-                .HasDefaultValueSql("'0'")
-                .HasColumnName("total_orders");
-            entity.Property(e => e.TotalSpent)
-                .HasPrecision(20, 2)
-                .HasDefaultValueSql("'0.00'")
-                .HasColumnName("total_spent");
             entity.Property(e => e.UpdatedAt)
                 .ValueGeneratedOnAddOrUpdate()
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")
@@ -443,16 +427,6 @@ public partial class EcommerceContext : DbContext
                 .HasColumnName("updated_at");
             entity.Property(e => e.UpdatedBy).HasColumnName("updated_by");
             entity.Property(e => e.Username).HasColumnName("username");
-
-            entity.HasOne(d => d.PreferredCurrency).WithMany(p => p.Customers)
-                .HasForeignKey(d => d.PreferredCurrencyId)
-                .OnDelete(DeleteBehavior.SetNull)
-                .HasConstraintName("customer_ibfk_3");
-
-            entity.HasOne(d => d.PreferredPaymentMethod).WithMany(p => p.Customers)
-                .HasForeignKey(d => d.PreferredPaymentMethodId)
-                .OnDelete(DeleteBehavior.SetNull)
-                .HasConstraintName("customer_ibfk_2");
 
             entity.HasOne(d => d.UpdatedByNavigation).WithMany(p => p.Customers)
                 .HasPrincipalKey(p => p.Username)
@@ -490,12 +464,10 @@ public partial class EcommerceContext : DbContext
 
             entity.HasOne(d => d.Country).WithMany(p => p.CustomerShippingAddresses)
                 .HasForeignKey(d => d.CountryId)
-                .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("customer_shipping_address_ibfk_2");
 
             entity.HasOne(d => d.Customer).WithMany(p => p.CustomerShippingAddresses)
                 .HasForeignKey(d => d.CustomerId)
-                .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("customer_shipping_address_ibfk_1");
         });
 
@@ -515,13 +487,14 @@ public partial class EcommerceContext : DbContext
 
             entity.ToTable("order");
 
-            entity.HasIndex(e => e.OrderCode, "order_code").IsUnique();
-
             entity.HasIndex(e => e.CustomerId, "order_ibfk_1");
 
-            entity.HasIndex(e => e.ShippingAddressId, "order_ibfk_2");
+            entity.HasIndex(e => e.UpdatedBy, "order_ibfk_3");
 
             entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.Amount)
+                .HasPrecision(20, 2)
+                .HasColumnName("amount");
             entity.Property(e => e.CustomerId).HasColumnName("customer_id");
             entity.Property(e => e.Discount)
                 .HasPrecision(20, 2)
@@ -529,27 +502,29 @@ public partial class EcommerceContext : DbContext
             entity.Property(e => e.FinalAmount)
                 .HasPrecision(20, 2)
                 .HasColumnName("final_amount");
-            entity.Property(e => e.OrderCode).HasColumnName("order_code");
-            entity.Property(e => e.OrderDate)
+            entity.Property(e => e.Status)
+                .HasColumnType("enum('pending','processing','dispatched','returned')")
+                .HasColumnName("status");
+            entity.Property(e => e.Timestamp)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
                 .HasColumnType("datetime")
-                .HasColumnName("order_date");
-            entity.Property(e => e.OrderStatus)
-                .HasColumnType("enum('pending','confirmed','shipped','delivered','cancelled')")
-                .HasColumnName("order_status");
-            entity.Property(e => e.ShippingAddressId).HasColumnName("shipping_address_id");
-            entity.Property(e => e.TotalAmount)
-                .HasPrecision(20, 2)
-                .HasColumnName("total_amount");
+                .HasColumnName("timestamp");
+            entity.Property(e => e.UpdatedAt)
+                .ValueGeneratedOnAddOrUpdate()
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .HasColumnType("datetime")
+                .HasColumnName("updated_at");
+            entity.Property(e => e.UpdatedBy).HasColumnName("updated_by");
 
             entity.HasOne(d => d.Customer).WithMany(p => p.Orders)
                 .HasForeignKey(d => d.CustomerId)
-                .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("order_ibfk_1");
 
-            entity.HasOne(d => d.ShippingAddress).WithMany(p => p.Orders)
-                .HasForeignKey(d => d.ShippingAddressId)
+            entity.HasOne(d => d.UpdatedByNavigation).WithMany(p => p.Orders)
+                .HasPrincipalKey(p => p.Username)
+                .HasForeignKey(d => d.UpdatedBy)
                 .OnDelete(DeleteBehavior.SetNull)
-                .HasConstraintName("order_ibfk_2");
+                .HasConstraintName("order_ibfk_3");
         });
 
         modelBuilder.Entity<OrderItem>(entity =>
@@ -563,15 +538,21 @@ public partial class EcommerceContext : DbContext
             entity.HasIndex(e => e.ProductId, "order_item_ibfk_2");
 
             entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.Amount)
+                .HasPrecision(20, 2)
+                .HasColumnName("amount");
+            entity.Property(e => e.Discount)
+                .HasPrecision(20, 2)
+                .HasColumnName("discount");
+            entity.Property(e => e.FinalAmount)
+                .HasPrecision(20, 2)
+                .HasColumnName("final_amount");
             entity.Property(e => e.OrderId).HasColumnName("order_id");
             entity.Property(e => e.Price)
                 .HasPrecision(20, 2)
                 .HasColumnName("price");
             entity.Property(e => e.ProductId).HasColumnName("product_id");
             entity.Property(e => e.Quantity).HasColumnName("quantity");
-            entity.Property(e => e.TotalPrice)
-                .HasPrecision(20, 2)
-                .HasColumnName("total_price");
 
             entity.HasOne(d => d.Order).WithMany(p => p.OrderItems)
                 .HasForeignKey(d => d.OrderId)
@@ -593,17 +574,18 @@ public partial class EcommerceContext : DbContext
             entity.HasIndex(e => e.PaymentMethodId, "order_payment_ibfk_2");
 
             entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.OrderId).HasColumnName("order_id");
-            entity.Property(e => e.PaymentAmount)
+            entity.Property(e => e.Amount)
                 .HasPrecision(20, 2)
-                .HasColumnName("payment_amount");
-            entity.Property(e => e.PaymentDate)
-                .HasColumnType("datetime")
-                .HasColumnName("payment_date");
+                .HasColumnName("amount");
+            entity.Property(e => e.OrderId).HasColumnName("order_id");
             entity.Property(e => e.PaymentMethodId).HasColumnName("payment_method_id");
-            entity.Property(e => e.PaymentStatus)
+            entity.Property(e => e.Status)
                 .HasColumnType("enum('pending','paid','failed')")
-                .HasColumnName("payment_status");
+                .HasColumnName("status");
+            entity.Property(e => e.Timestamp)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .HasColumnType("datetime")
+                .HasColumnName("timestamp");
 
             entity.HasOne(d => d.Order).WithOne(p => p.OrderPayment)
                 .HasForeignKey<OrderPayment>(d => d.OrderId)
@@ -628,14 +610,18 @@ public partial class EcommerceContext : DbContext
             entity.Property(e => e.ActualDeliveryDate)
                 .HasColumnType("datetime")
                 .HasColumnName("actual_delivery_date");
+            entity.Property(e => e.Destination)
+                .HasMaxLength(255)
+                .HasColumnName("destination");
             entity.Property(e => e.EstimatedDeliveryDate)
                 .HasColumnType("datetime")
                 .HasColumnName("estimated_delivery_date");
             entity.Property(e => e.OrderId).HasColumnName("order_id");
             entity.Property(e => e.ShippingMethodId).HasColumnName("shipping_method_id");
-            entity.Property(e => e.ShippingStatus)
-                .HasColumnType("enum('pending','shipped','in_transit','delivered')")
-                .HasColumnName("shipping_status");
+            entity.Property(e => e.Timestamp)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .HasColumnType("datetime")
+                .HasColumnName("timestamp");
             entity.Property(e => e.TrackingNumber)
                 .HasMaxLength(255)
                 .HasColumnName("tracking_number");
@@ -709,7 +695,7 @@ public partial class EcommerceContext : DbContext
 
             entity.HasIndex(e => e.BrandId, "product_ibfk_3");
 
-            entity.HasIndex(e => e.YearId, "product_ibfk_4");
+            entity.HasIndex(e => e.Year, "product_ibfk_4");
 
             entity.HasIndex(e => e.SeasonId, "product_ibfk_5");
 
@@ -718,24 +704,20 @@ public partial class EcommerceContext : DbContext
             entity.Property(e => e.Code).HasColumnName("code");
             entity.Property(e => e.Cost)
                 .HasPrecision(20, 2)
-                .HasDefaultValueSql("'0.00'")
                 .HasColumnName("cost");
             entity.Property(e => e.Discount)
                 .HasPrecision(5, 2)
-                .HasDefaultValueSql("'0.00'")
                 .HasColumnName("discount");
-            entity.Property(e => e.IsActive)
-                .HasDefaultValueSql("'1'")
-                .HasColumnName("is_active");
+            entity.Property(e => e.IsActive).HasColumnName("is_active");
             entity.Property(e => e.Name)
                 .HasMaxLength(255)
                 .HasColumnName("name");
             entity.Property(e => e.Note)
                 .HasMaxLength(255)
+                .HasDefaultValueSql("''")
                 .HasColumnName("note");
             entity.Property(e => e.Price)
                 .HasPrecision(20, 2)
-                .HasDefaultValueSql("'0.00'")
                 .HasColumnName("price");
             entity.Property(e => e.SeasonId).HasColumnName("season_id");
             entity.Property(e => e.SupplierId).HasColumnName("supplier_id");
@@ -745,21 +727,18 @@ public partial class EcommerceContext : DbContext
                 .HasColumnType("datetime")
                 .HasColumnName("updated_at");
             entity.Property(e => e.UpdatedBy).HasColumnName("updated_by");
-            entity.Property(e => e.YearId).HasColumnName("year_id");
+            entity.Property(e => e.Year).HasColumnName("year");
 
             entity.HasOne(d => d.Brand).WithMany(p => p.Products)
                 .HasForeignKey(d => d.BrandId)
-                .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("product_ibfk_3");
 
             entity.HasOne(d => d.Season).WithMany(p => p.Products)
                 .HasForeignKey(d => d.SeasonId)
-                .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("product_ibfk_5");
 
             entity.HasOne(d => d.Supplier).WithMany(p => p.Products)
                 .HasForeignKey(d => d.SupplierId)
-                .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("product_ibfk_2");
 
             entity.HasOne(d => d.UpdatedByNavigation).WithMany(p => p.Products)
@@ -767,48 +746,6 @@ public partial class EcommerceContext : DbContext
                 .HasForeignKey(d => d.UpdatedBy)
                 .OnDelete(DeleteBehavior.SetNull)
                 .HasConstraintName("product_ibfk_1");
-
-            entity.HasOne(d => d.Year).WithMany(p => p.Products)
-                .HasForeignKey(d => d.YearId)
-                .OnDelete(DeleteBehavior.Cascade)
-                .HasConstraintName("product_ibfk_4");
-        });
-
-        modelBuilder.Entity<ProductAttributeOption>(entity =>
-        {
-            entity.HasKey(e => e.Id).HasName("PRIMARY");
-
-            entity.ToTable("product_attribute_option");
-
-            entity.HasIndex(e => e.UpdatedBy, "product_attribute_option_ibfk_1");
-
-            entity.HasIndex(e => e.AttributeOptionId, "product_attribute_option_ibfk_3");
-
-            entity.HasIndex(e => new { e.ProductId, e.AttributeOptionId }, "product_id").IsUnique();
-
-            entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.AttributeOptionId).HasColumnName("attribute_option_id");
-            entity.Property(e => e.ProductId).HasColumnName("product_id");
-            entity.Property(e => e.UpdatedAt)
-                .ValueGeneratedOnAddOrUpdate()
-                .HasDefaultValueSql("CURRENT_TIMESTAMP")
-                .HasColumnType("datetime")
-                .HasColumnName("updated_at");
-            entity.Property(e => e.UpdatedBy).HasColumnName("updated_by");
-
-            entity.HasOne(d => d.AttributeOption).WithMany(p => p.ProductAttributeOptions)
-                .HasForeignKey(d => d.AttributeOptionId)
-                .HasConstraintName("product_attribute_option_ibfk_3");
-
-            entity.HasOne(d => d.Product).WithMany(p => p.ProductAttributeOptions)
-                .HasForeignKey(d => d.ProductId)
-                .HasConstraintName("product_attribute_option_ibfk_2");
-
-            entity.HasOne(d => d.UpdatedByNavigation).WithMany(p => p.ProductAttributeOptions)
-                .HasPrincipalKey(p => p.Username)
-                .HasForeignKey(d => d.UpdatedBy)
-                .OnDelete(DeleteBehavior.SetNull)
-                .HasConstraintName("product_attribute_option_ibfk_1");
         });
 
         modelBuilder.Entity<ProductCategory>(entity =>
@@ -856,16 +793,14 @@ public partial class EcommerceContext : DbContext
 
             entity.HasIndex(e => e.ProductId, "product_id2").IsUnique();
 
+            entity.HasIndex(e => e.UpdatedBy, "product_info_ibfk_2");
+
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.LongDescription)
                 .HasColumnType("text")
                 .HasColumnName("long_description");
-            entity.Property(e => e.MaxOrder)
-                .HasDefaultValueSql("'9999'")
-                .HasColumnName("max_order");
-            entity.Property(e => e.MinOrder)
-                .HasDefaultValueSql("'1'")
-                .HasColumnName("min_order");
+            entity.Property(e => e.MaxOrder).HasColumnName("max_order");
+            entity.Property(e => e.MinOrder).HasColumnName("min_order");
             entity.Property(e => e.ProductId).HasColumnName("product_id");
             entity.Property(e => e.ShippingWeight)
                 .HasPrecision(6, 3)
@@ -873,6 +808,12 @@ public partial class EcommerceContext : DbContext
             entity.Property(e => e.ShortDescription)
                 .HasMaxLength(255)
                 .HasColumnName("short_description");
+            entity.Property(e => e.UpdatedAt)
+                .ValueGeneratedOnAddOrUpdate()
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .HasColumnType("datetime")
+                .HasColumnName("updated_at");
+            entity.Property(e => e.UpdatedBy).HasColumnName("updated_by");
             entity.Property(e => e.Weight)
                 .HasPrecision(6, 3)
                 .HasColumnName("weight");
@@ -880,6 +821,12 @@ public partial class EcommerceContext : DbContext
             entity.HasOne(d => d.Product).WithOne(p => p.ProductInfo)
                 .HasForeignKey<ProductInfo>(d => d.ProductId)
                 .HasConstraintName("product_info_ibfk_1");
+
+            entity.HasOne(d => d.UpdatedByNavigation).WithMany(p => p.ProductInfos)
+                .HasPrincipalKey(p => p.Username)
+                .HasForeignKey(d => d.UpdatedBy)
+                .OnDelete(DeleteBehavior.SetNull)
+                .HasConstraintName("product_info_ibfk_2");
         });
 
         modelBuilder.Entity<ProductMedium>(entity =>
@@ -898,9 +845,8 @@ public partial class EcommerceContext : DbContext
             entity.Property(e => e.AltText)
                 .HasMaxLength(255)
                 .HasColumnName("alt_text");
-            entity.Property(e => e.IsPrimary).HasColumnName("is_primary");
             entity.Property(e => e.MediaType)
-                .HasColumnType("enum('image','video')")
+                .HasColumnType("enum('Image','Video','Unknown')")
                 .HasColumnName("media_type");
             entity.Property(e => e.ProductId).HasColumnName("product_id");
             entity.Property(e => e.UpdatedAt)
@@ -930,7 +876,11 @@ public partial class EcommerceContext : DbContext
 
             entity.HasIndex(e => e.ProductId, "product_id3").IsUnique();
 
+            entity.HasIndex(e => new { e.ProductId, e.Attribute, e.AttributeOption }, "product_quantity_key_1").IsUnique();
+
             entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.Attribute).HasColumnName("attribute");
+            entity.Property(e => e.AttributeOption).HasColumnName("attribute_option");
             entity.Property(e => e.ProductId).HasColumnName("product_id");
             entity.Property(e => e.Quantity)
                 .HasDefaultValueSql("'0'")
@@ -1148,6 +1098,7 @@ public partial class EcommerceContext : DbContext
                 .HasColumnName("icon_url");
             entity.Property(e => e.IsActive).HasColumnName("is_active");
             entity.Property(e => e.Name).HasColumnName("name");
+            entity.Property(e => e.Overseas).HasColumnName("overseas");
             entity.Property(e => e.UpdatedAt)
                 .ValueGeneratedOnAddOrUpdate()
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")
@@ -1201,7 +1152,6 @@ public partial class EcommerceContext : DbContext
 
             entity.HasOne(d => d.Country).WithMany(p => p.Suppliers)
                 .HasForeignKey(d => d.CountryId)
-                .OnDelete(DeleteBehavior.SetNull)
                 .HasConstraintName("supplier_ibfk_2");
 
             entity.HasOne(d => d.UpdatedByNavigation).WithMany(p => p.Suppliers)
@@ -1248,10 +1198,14 @@ public partial class EcommerceContext : DbContext
             entity.HasIndex(e => e.ProductId, "inventory_ibfk_2");
 
             entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.Note)
+                .HasMaxLength(255)
+                .HasDefaultValueSql("''")
+                .HasColumnName("note");
             entity.Property(e => e.ProductId).HasColumnName("product_id");
             entity.Property(e => e.Quantity).HasColumnName("quantity");
             entity.Property(e => e.TransactionType)
-                .HasColumnType("enum('sale','return','restock')")
+                .HasColumnType("enum('Sale','Return','Restock')")
                 .HasColumnName("transaction_type");
             entity.Property(e => e.UpdatedAt)
                 .ValueGeneratedOnAddOrUpdate()
@@ -1271,6 +1225,28 @@ public partial class EcommerceContext : DbContext
                 .HasConstraintName("transaction_ibfk_1");
         });
 
+        modelBuilder.Entity<TransactionAttribute>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity.ToTable("transaction_attribute");
+
+            entity.HasIndex(e => e.TanscationId, "transaction_attribute_ibfk_1");
+
+            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.Attribute)
+                .HasMaxLength(255)
+                .HasColumnName("attribute");
+            entity.Property(e => e.AttributeOption)
+                .HasMaxLength(255)
+                .HasColumnName("attribute_option");
+            entity.Property(e => e.TanscationId).HasColumnName("tanscation_id");
+
+            entity.HasOne(d => d.Tanscation).WithMany(p => p.TransactionAttributes)
+                .HasForeignKey(d => d.TanscationId)
+                .HasConstraintName("transaction_attribute_ibfk_1");
+        });
+
         modelBuilder.Entity<User>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PRIMARY");
@@ -1280,6 +1256,8 @@ public partial class EcommerceContext : DbContext
             entity.HasIndex(e => e.Username, "AK_user_username").IsUnique();
 
             entity.HasIndex(e => e.IsActive, "idx_is_active1");
+
+            entity.HasIndex(e => e.UpdatedBy, "user_ibfk_1");
 
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.Address)
@@ -1305,10 +1283,14 @@ public partial class EcommerceContext : DbContext
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")
                 .HasColumnType("datetime")
                 .HasColumnName("updated_at");
-            entity.Property(e => e.UpdatedBy)
-                .HasMaxLength(255)
-                .HasColumnName("updated_by");
+            entity.Property(e => e.UpdatedBy).HasColumnName("updated_by");
             entity.Property(e => e.Username).HasColumnName("username");
+
+            entity.HasOne(d => d.UpdatedByNavigation).WithMany(p => p.InverseUpdatedByNavigation)
+                .HasPrincipalKey(p => p.Username)
+                .HasForeignKey(d => d.UpdatedBy)
+                .OnDelete(DeleteBehavior.SetNull)
+                .HasConstraintName("user_ibfk_1");
         });
 
         modelBuilder.Entity<UserRole>(entity =>
@@ -1346,32 +1328,6 @@ public partial class EcommerceContext : DbContext
             entity.HasOne(d => d.User).WithMany(p => p.UserRoleUsers)
                 .HasForeignKey(d => d.UserId)
                 .HasConstraintName("user_role_ibfk_1");
-        });
-
-        modelBuilder.Entity<Year>(entity =>
-        {
-            entity.HasKey(e => e.Id).HasName("PRIMARY");
-
-            entity.ToTable("year");
-
-            entity.HasIndex(e => e.Name, "name13").IsUnique();
-
-            entity.HasIndex(e => e.UpdatedBy, "year_ibfk_1");
-
-            entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.Name).HasColumnName("name");
-            entity.Property(e => e.UpdatedAt)
-                .ValueGeneratedOnAddOrUpdate()
-                .HasDefaultValueSql("CURRENT_TIMESTAMP")
-                .HasColumnType("datetime")
-                .HasColumnName("updated_at");
-            entity.Property(e => e.UpdatedBy).HasColumnName("updated_by");
-
-            entity.HasOne(d => d.UpdatedByNavigation).WithMany(p => p.Years)
-                .HasPrincipalKey(p => p.Username)
-                .HasForeignKey(d => d.UpdatedBy)
-                .OnDelete(DeleteBehavior.SetNull)
-                .HasConstraintName("year_ibfk_1");
         });
 
         OnModelCreatingPartial(modelBuilder);

@@ -11,6 +11,6 @@ namespace ecommerce_dash_api.DTOS
             get => _name;
             set => _name = value.Trim().ToUpper();
         }
-        public List<int> Categories { get; set; }
+        public List<int> Categories { get; set; } = new List<int>();
     }
 }

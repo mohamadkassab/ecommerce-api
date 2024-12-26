@@ -11,6 +11,6 @@ namespace ecommerce_dash_api.DTOS
             get => _name;
             set => _name = value.Trim().ToUpper();
         }
-        public List<string> Options { get; set; }
+        public List<string> Options { get; set; } = new List<string>();
     }
 }

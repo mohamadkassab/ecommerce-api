@@ -20,6 +20,7 @@ public class UserRepository : IUserRepository
     public async Task<List<PermissionQRY>> GetAllPermissionsAsync()
     {
         var result = await _context.Permissions
+        .AsNoTracking()
        .Select(i => new PermissionQRY
        {
            Id = i.Id,
@@ -40,6 +41,7 @@ public class UserRepository : IUserRepository
     public async Task<List<RoleQRY>> GetAllRolesWithPermissionsAsync()
     {
         var result = await _context.Roles
+        .AsNoTracking()
         .Select(i => new RoleQRY
         {
             Id = i.Id,
@@ -100,6 +102,7 @@ public class UserRepository : IUserRepository
     public async Task<List<UserWithRolesQRY>> GetAllUsersWithRoles()
     {
         var result = await _context.Users
+            .AsNoTracking()
              .Where(u => u.Id != 1)
             .Select(u => new UserWithRolesQRY
             {

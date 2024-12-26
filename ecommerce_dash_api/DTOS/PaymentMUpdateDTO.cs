@@ -4,6 +4,7 @@ namespace ecommerce_dash_api.DTOS
 {
     public class PaymentMUpdateDTO
     {
+        [Required]
         public int Id { get; set; }
 
         private string _name = null!;

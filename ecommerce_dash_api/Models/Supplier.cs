@@ -19,13 +19,13 @@ public partial class Supplier
 
     public string? Website { get; set; }
 
-    public int? CountryId { get; set; }
+    public int CountryId { get; set; }
 
     public DateTime UpdatedAt { get; set; }
 
     public string? UpdatedBy { get; set; }
 
-    public virtual Country? Country { get; set; }
+    public virtual Country Country { get; set; } = null!;
 
     public virtual ICollection<Product> Products { get; set; } = new List<Product>();
 

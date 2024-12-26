@@ -11,7 +11,7 @@ public partial class ProductTag
 
     public int TagId { get; set; }
 
-    public DateTime? UpdatedAt { get; set; }
+    public DateTime UpdatedAt { get; set; }
 
     public string? UpdatedBy { get; set; }
 

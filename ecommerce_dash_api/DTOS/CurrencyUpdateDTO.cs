@@ -4,6 +4,7 @@ namespace ecommerce_dash_api.DTOS
 {
     public class CurrencyUpdateDTO
     {
+        [Required]
         public int Id { get; set; }
 
         private string _name = null!;
@@ -27,5 +28,8 @@ namespace ecommerce_dash_api.DTOS
 
         [Required]
         public string Country { get; set; } = null!;
+
+        [Required]
+        public Boolean IsActive { get; set; }
     }
 }

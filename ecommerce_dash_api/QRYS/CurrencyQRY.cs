@@ -8,6 +8,7 @@
         public decimal ExchangeRateUsd { get; set; }
         public string Country { get; set; }
         public DateTime UpdatedAt { get; set; }
-        public string? UpdatedBy { get; set; }
+        public string UpdatedBy { get; set; } = string.Empty;
+        public Boolean IsActive { get; set; }
     }
 }

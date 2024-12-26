@@ -11,7 +11,7 @@ public partial class UserRole
 
     public int RoleId { get; set; }
 
-    public DateTime? UpdatedAt { get; set; }
+    public DateTime UpdatedAt { get; set; }
 
     public string? UpdatedBy { get; set; }
 
