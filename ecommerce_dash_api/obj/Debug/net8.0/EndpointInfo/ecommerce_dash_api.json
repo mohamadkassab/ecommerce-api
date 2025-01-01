@@ -775,29 +775,6 @@
         }
       }
     },
-    "/Setup/DeleteBrand/{id}": {
-      "delete": {
-        "tags": [
-          "Setup"
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Success"
-          }
-        }
-      }
-    },
     "/Setup/GetAllCategories": {
       "get": {
         "tags": [
@@ -1066,76 +1043,6 @@
         }
       }
     },
-    "/Setup/GetAllPaymentM": {
-      "get": {
-        "tags": [
-          "Setup"
-        ],
-        "responses": {
-          "200": {
-            "description": "Success"
-          }
-        }
-      }
-    },
-    "/Setup/UpdatePaymentM": {
-      "put": {
-        "tags": [
-          "Setup"
-        ],
-        "requestBody": {
-          "content": {
-            "multipart/form-data": {
-              "schema": {
-                "required": [
-                  "Id",
-                  "IsActive",
-                  "Name"
-                ],
-                "type": "object",
-                "properties": {
-                  "Id": {
-                    "type": "integer",
-                    "format": "int32"
-                  },
-                  "Name": {
-                    "maxLength": 255,
-                    "minLength": 1,
-                    "type": "string"
-                  },
-                  "IconFile": {
-                    "type": "string",
-                    "format": "binary"
-                  },
-                  "IsActive": {
-                    "type": "boolean"
-                  }
-                }
-              },
-              "encoding": {
-                "Id": {
-                  "style": "form"
-                },
-                "Name": {
-                  "style": "form"
-                },
-                "IconFile": {
-                  "style": "form"
-                },
-                "IsActive": {
-                  "style": "form"
-                }
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Success"
-          }
-        }
-      }
-    },
     "/Setup/GetAllSeasons": {
       "get": {
         "tags": [
@@ -1203,29 +1110,6 @@
             }
           }
         },
-        "responses": {
-          "200": {
-            "description": "Success"
-          }
-        }
-      }
-    },
-    "/Setup/DeleteSeason/{id}": {
-      "delete": {
-        "tags": [
-          "Setup"
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "Success"
@@ -1532,29 +1416,6 @@
             }
           }
         },
-        "responses": {
-          "200": {
-            "description": "Success"
-          }
-        }
-      }
-    },
-    "/Setup/DeleteSupplier/{id}": {
-      "delete": {
-        "tags": [
-          "Setup"
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "Success"
@@ -1878,29 +1739,6 @@
             }
           }
         },
-        "responses": {
-          "200": {
-            "description": "Success"
-          }
-        }
-      }
-    },
-    "/User/DeleteUser/{id}": {
-      "delete": {
-        "tags": [
-          "User"
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "Success"
@@ -2754,11 +2592,11 @@
       "TransactionAttributeDTO": {
         "type": "object",
         "properties": {
-          "attribute": {
+          "name": {
             "type": "string",
             "nullable": true
           },
-          "attributeOption": {
+          "option": {
             "type": "string",
             "nullable": true
           }
@@ -2782,7 +2620,8 @@
             "format": "int32"
           },
           "transactionType": {
-            "$ref": "#/components/schemas/TransactionTypeEnum"
+            "minLength": 1,
+            "type": "string"
           },
           "note": {
             "type": "string",
@@ -2797,15 +2636,6 @@
           }
         },
         "additionalProperties": false
-      },
-      "TransactionTypeEnum": {
-        "enum": [
-          0,
-          1,
-          2
-        ],
-        "type": "integer",
-        "format": "int32"
       },
       "UserCreateDTO": {
         "required": [

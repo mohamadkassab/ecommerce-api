@@ -29,7 +29,6 @@ namespace ecommerce_dash_api.Interfaces
         Task<bool> UsernameExistsAsync(string username);
         Task CreateUserAsync(User user);
         Task UpdateUserAsync(User user);
-        Task DeleteUserAsync(User user);
         Task DeleteUserRolesByUserIdAsync(int userId);
     }
 }

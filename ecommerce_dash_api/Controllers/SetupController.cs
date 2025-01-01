@@ -292,45 +292,6 @@ namespace ecommerce_dash_api.Controllers
             }
         }
 
-        [HttpDelete("DeleteBrand/{id}")]
-        public async Task<IActionResult> DeleteBrand(int id)
-        {
-            var userClaims = User.Claims;
-            var username = User.FindFirstValue("username") ?? null;
-            var ipAddress = HttpContext?.Connection?.RemoteIpAddress?.ToString() ?? null;
-            var actionName = this.ControllerContext?.RouteData?.Values["action"]?.ToString() ?? null;
-            if (userClaims.Any(c => c.Type == "permission" && c.Value == "brand") || (username == "root@e.com"))
-            {
-                try
-                {
-                    if (!ModelState.IsValid)
-                    {
-                        await _apiService.CreateLogAsync(LogLevelEnum.WARNING.ToString(), LogMessageTemplatesEnum.invalid_model_state.ToString(), null, username, ipAddress, actionName, id);
-                        return BadRequest(ModelState);
-                    }
-
-                    var response = await _setupService.DeleteBrandAsync(id);
-                    if (response)
-                    {
-                        await _apiService.CreateLogAsync(LogLevelEnum.INFO.ToString(), LogMessageTemplatesEnum.successful.ToString(), null, username, ipAddress, actionName, id);
-                        return Ok();
-                    }
-                    await _apiService.CreateLogAsync(LogLevelEnum.WARNING.ToString(), LogMessageTemplatesEnum.failed.ToString(), null, username, ipAddress, actionName, id);
-                    return BadRequest(new { message = "Delete failed" });
-                }
-                catch (Exception ex)
-                {
-                    string errorMessage = $"Error: {ex.Message}";
-                    string innerMessage = ex.InnerException != null ? $"Inner Exception: {ex?.InnerException?.Message}" : string.Empty;
-                    await _apiService.CreateLogAsync(LogLevelEnum.ERROR.ToString(), $"{errorMessage}\n{innerMessage}", ex.StackTrace, username, ipAddress, actionName, id);
-                    return BadRequest(new { message = innerMessage != string.Empty ? ex.InnerException?.Message : ex.Message });
-                }
-            }
-            else
-            {
-                return Forbid();
-            }
-        }
 
         //+------------------------------------------------------------------+
         //| Category                                            
@@ -753,78 +714,6 @@ namespace ecommerce_dash_api.Controllers
         }
 
         //+------------------------------------------------------------------+
-        //| Payment method                                            
-        //+------------------------------------------------------------------+
-        [HttpGet("GetAllPaymentM")]
-        public async Task<IActionResult> GetAllPaymentM()
-        {
-            var userClaims = User.Claims;
-            var username = User.FindFirstValue("username") ?? null;
-            var ipAddress = HttpContext?.Connection?.RemoteIpAddress?.ToString() ?? null;
-            var actionName = this.ControllerContext?.RouteData?.Values["action"]?.ToString() ?? null;
-            if (userClaims.Any(c => c.Type == "permission" && c.Value == "brand") || (username == "root@e.com"))
-            {
-                try
-                {
-                    var result = await _setupService.GetAllPaymentMAsync();
-                    await _apiService.CreateLogAsync(LogLevelEnum.INFO.ToString(), LogMessageTemplatesEnum.successful.ToString(), null, username, ipAddress, actionName, null);
-                    return Ok(result);
-                }
-                catch (Exception ex)
-                {
-                    string errorMessage = $"Error: {ex.Message}";
-                    string innerMessage = ex.InnerException != null ? $"Inner Exception: {ex?.InnerException?.Message}" : string.Empty;
-                    await _apiService.CreateLogAsync(LogLevelEnum.ERROR.ToString(), $"{errorMessage}\n{innerMessage}", ex?.StackTrace, username, ipAddress, actionName, null);
-                    return BadRequest(new { message = innerMessage != string.Empty ? ex?.InnerException?.Message : ex?.Message });
-                }
-            }
-            else
-            {
-                return Forbid();
-            }
-        }
-
-        [HttpPut("UpdatePaymentM")]
-        public async Task<IActionResult> UpdatePaymentM([FromForm] PaymentMUpdateDTO paymentM)
-        {
-            var userClaims = User.Claims;
-            var username = User.FindFirstValue("username") ?? null;
-            var ipAddress = HttpContext?.Connection?.RemoteIpAddress?.ToString() ?? null;
-            var actionName = this.ControllerContext?.RouteData?.Values["action"]?.ToString() ?? null;
-            if (userClaims.Any(c => c.Type == "permission" && c.Value == "brand") || (username == "root@e.com"))
-            {
-                try
-                {
-                    if (!ModelState.IsValid)
-                    {
-                        await _apiService.CreateLogAsync(LogLevelEnum.WARNING.ToString(), LogMessageTemplatesEnum.invalid_model_state.ToString(), null, username, ipAddress, actionName, paymentM);
-                        return BadRequest(ModelState);
-                    }
-
-                    var response = await _setupService.UpdatePaymentMAsync(paymentM, username);
-                    if (response)
-                    {
-                        await _apiService.CreateLogAsync(LogLevelEnum.INFO.ToString(), LogMessageTemplatesEnum.successful.ToString(), null, username, ipAddress, actionName, paymentM);
-                        return Ok();
-                    }
-                    await _apiService.CreateLogAsync(LogLevelEnum.WARNING.ToString(), LogMessageTemplatesEnum.failed.ToString(), null, username, ipAddress, actionName, paymentM);
-                    return BadRequest(new { message = "Update failed" });
-                }
-                catch (Exception ex)
-                {
-                    string errorMessage = $"Error: {ex.Message}";
-                    string innerMessage = ex.InnerException != null ? $"Inner Exception: {ex?.InnerException?.Message}" : string.Empty;
-                    await _apiService.CreateLogAsync(LogLevelEnum.ERROR.ToString(), $"{errorMessage}\n{innerMessage}", ex?.StackTrace, username, ipAddress, actionName, paymentM);
-                    return BadRequest(new { message = innerMessage != string.Empty ? ex?.InnerException?.Message : ex?.Message });
-                }
-            }
-            else
-            {
-                return Forbid();
-            }
-        }
-
-        //+------------------------------------------------------------------+
         //| Season                                            
         //+------------------------------------------------------------------+
         [HttpGet("GetAllSeasons")]
@@ -937,45 +826,6 @@ namespace ecommerce_dash_api.Controllers
             }
         }
 
-        [HttpDelete("DeleteSeason/{id}")]
-        public async Task<IActionResult> DeleteSeason(int id)
-        {
-            var userClaims = User.Claims;
-            var username = User.FindFirstValue("username") ?? null;
-            var ipAddress = HttpContext?.Connection?.RemoteIpAddress?.ToString() ?? null;
-            var actionName = this.ControllerContext?.RouteData?.Values["action"]?.ToString() ?? null;
-            if (userClaims.Any(c => c.Type == "permission" && c.Value == "season") || (username == "root@e.com"))
-            {
-                try
-                {
-                    if (!ModelState.IsValid)
-                    {
-                        await _apiService.CreateLogAsync(LogLevelEnum.WARNING.ToString(), LogMessageTemplatesEnum.invalid_model_state.ToString(), null, username, ipAddress, actionName, id);
-                        return BadRequest(ModelState);
-                    }
-
-                    var response = await _setupService.DeleteSeasonAsync(id);
-                    if (response)
-                    {
-                        await _apiService.CreateLogAsync(LogLevelEnum.INFO.ToString(), LogMessageTemplatesEnum.successful.ToString(), null, username, ipAddress, actionName, id);
-                        return Ok();
-                    }
-                    await _apiService.CreateLogAsync(LogLevelEnum.WARNING.ToString(), LogMessageTemplatesEnum.failed.ToString(), null, username, ipAddress, actionName, id);
-                    return BadRequest(new { message = "Delete failed" });
-                }
-                catch (Exception ex)
-                {
-                    string errorMessage = $"Error: {ex.Message}";
-                    string innerMessage = ex.InnerException != null ? $"Inner Exception: {ex?.InnerException?.Message}" : string.Empty;
-                    await _apiService.CreateLogAsync(LogLevelEnum.ERROR.ToString(), $"{errorMessage}\n{innerMessage}", ex?.StackTrace, username, ipAddress, actionName, id);
-                    return BadRequest(new { message = innerMessage != string.Empty ? ex.InnerException?.Message : ex?.Message });
-                }
-            }
-            else
-            {
-                return Forbid();
-            }
-        }
 
         //+------------------------------------------------------------------+
         //| Section                                            
@@ -1347,46 +1197,6 @@ namespace ecommerce_dash_api.Controllers
                     string innerMessage = ex.InnerException != null ? $"Inner Exception: {ex?.InnerException?.Message}" : string.Empty;
                     await _apiService.CreateLogAsync(LogLevelEnum.ERROR.ToString(), $"{errorMessage}\n{innerMessage}", ex?.StackTrace, username, ipAddress, actionName, supplier);
                     return BadRequest(new { message = innerMessage != string.Empty ? ex?.InnerException?.Message : ex?.Message });
-                }
-            }
-            else
-            {
-                return Forbid();
-            }
-        }
-
-        [HttpDelete("DeleteSupplier/{id}")]
-        public async Task<IActionResult> DeleteSupplier(int id)
-        {
-            var userClaims = User.Claims;
-            var username = User.FindFirstValue("username") ?? null;
-            var ipAddress = HttpContext?.Connection?.RemoteIpAddress?.ToString() ?? null;
-            var actionName = this.ControllerContext?.RouteData?.Values["action"]?.ToString() ?? null;
-            if (userClaims.Any(c => c.Type == "permission" && c.Value == "supplier") || (username == "root@e.com"))
-            {
-                try
-                {
-                    if (!ModelState.IsValid)
-                    {
-                        await _apiService.CreateLogAsync(LogLevelEnum.WARNING.ToString(), LogMessageTemplatesEnum.invalid_model_state.ToString(), null, username, ipAddress, actionName, id);
-                        return BadRequest(ModelState);
-                    }
-
-                    var response = await _setupService.DeleteSupplierAsync(id);
-                    if (response)
-                    {
-                        await _apiService.CreateLogAsync(LogLevelEnum.INFO.ToString(), LogMessageTemplatesEnum.successful.ToString(), null, username, ipAddress, actionName, id);
-                        return Ok();
-                    }
-                    await _apiService.CreateLogAsync(LogLevelEnum.WARNING.ToString(), LogMessageTemplatesEnum.failed.ToString(), null, username, ipAddress, actionName, id);
-                    return BadRequest(new { message = "Delete failed" });
-                }
-                catch (Exception ex)
-                {
-                    string errorMessage = $"Error: {ex.Message}";
-                    string innerMessage = ex.InnerException != null ? $"Inner Exception: {ex?.InnerException?.Message}" : string.Empty;
-                    await _apiService.CreateLogAsync(LogLevelEnum.ERROR.ToString(), $"{errorMessage}\n{innerMessage}", ex?.StackTrace, username, ipAddress, actionName, id);
-                    return BadRequest(new { message = innerMessage != string.Empty ? ex.InnerException?.Message : ex?.Message });
                 }
             }
             else

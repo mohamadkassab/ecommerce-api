@@ -399,46 +399,6 @@ namespace ecommerce_dash_api.Controllers
             }
         }
 
-        [HttpDelete("DeleteUser/{id}")]
-        public async Task<IActionResult> DeleteUser(int id)
-        {
-            var userClaims = User.Claims;
-            var username = User.FindFirstValue("username") ?? null;
-            var ipAddress = HttpContext?.Connection?.RemoteIpAddress?.ToString() ?? null;
-            var actionName = this.ControllerContext?.RouteData?.Values["action"]?.ToString() ?? null;
-            if ((userClaims.Any(c => c.Type == "permission" && c.Value == "user_crud") || (username == "root@e.com")) && id != 1)
-            {
-                try
-                {
-                    if (!ModelState.IsValid)
-                    {
-                        await _apiService.CreateLogAsync(LogLevelEnum.WARNING.ToString(), LogMessageTemplatesEnum.invalid_model_state.ToString(), null, username, ipAddress, actionName, id);
-                        return BadRequest(ModelState);
-                    }
-
-                    var response = await _userService.DeleteUserAsync(id);
-                    if (response)
-                    {
-                        await _apiService.CreateLogAsync(LogLevelEnum.INFO.ToString(), LogMessageTemplatesEnum.successful.ToString(), null, username, ipAddress, actionName, id);
-                        return Ok();
-                    }
-                    await _apiService.CreateLogAsync(LogLevelEnum.WARNING.ToString(), LogMessageTemplatesEnum.failed.ToString(), null, username, ipAddress, actionName, id);
-                    return BadRequest(new { message = "Delete user failed" });
-                }
-                catch (Exception ex)
-                {
-                    string errorMessage = $"Error: {ex.Message}";
-                    string innerMessage = ex.InnerException != null ? $"Inner Exception: {ex?.InnerException?.Message}" : string.Empty;
-                    await _apiService.CreateLogAsync(LogLevelEnum.ERROR.ToString(), $"{errorMessage}\n{innerMessage}", ex?.StackTrace, username, ipAddress, actionName, id);
-                    return BadRequest(new { message = innerMessage != string.Empty ? ex?.InnerException?.Message : ex?.Message });
-                }
-            }
-            else
-            {
-                return Forbid();
-            }
-        }
-
         [HttpPost("ChangePassword")]
         public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordDTO changePassword)
         {

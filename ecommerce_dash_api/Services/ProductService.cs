@@ -7,8 +7,6 @@ using ecommerce_dash_api.QRYS;
 using ecommerce_dash_api.Repositories;
 using ecommerce_dash_api.Utils;
 using Microsoft.EntityFrameworkCore;
-using static Org.BouncyCastle.Asn1.Cmp.Challenge;
-
 namespace ecommerce_dash_api.Services
 {
     public class ProductService : IProductService
@@ -385,8 +383,8 @@ namespace ecommerce_dash_api.Services
             {
                 transaction.TransactionAttributes.Add(new TransactionAttribute
                 {
-                    Attribute = item.Attribute,
-                    AttributeOption = item.AttributeOption,
+                    Attribute = item.Name,
+                    AttributeOption = item.Option,
                 });
             }
 

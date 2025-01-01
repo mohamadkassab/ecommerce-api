@@ -20,7 +20,6 @@ namespace ecommerce_dash_api.Interfaces
         Task<List<BrandQRY>> GetAllBrandsAsync();
         Task<bool> CreateBrandAsync(BrandCreateDTO brandDTO, string? username);
         Task<bool> UpdateBrandAsync(BrandUpdateDTO brandDTO, string? username);
-        Task<bool> DeleteBrandAsync(int id);
 
         //+------------------------------------------------------------------+
         //| Category                                            
@@ -46,18 +45,11 @@ namespace ecommerce_dash_api.Interfaces
         Task<bool> DeleteCurrencyAsync(int id);
 
         //+------------------------------------------------------------------+
-        //| Payment method                                            
-        //+------------------------------------------------------------------+
-        Task<List<PaymentMQRY>> GetAllPaymentMAsync();
-        Task<bool> UpdatePaymentMAsync(PaymentMUpdateDTO paymentMDTO, string? username);
-
-        //+------------------------------------------------------------------+
         //| Season                                            
         //+------------------------------------------------------------------+
         Task<List<SeasonQRY>> GetAllSeasonsAsync();
         Task<bool> CreateSeasonAsync(SeasonCreateDTO seasonDTO, string? username);
         Task<bool> UpdateSeasonAsync(SeasonUpdateDTO seasonDTO, string? username);
-        Task<bool> DeleteSeasonAsync(int id);
 
         //+------------------------------------------------------------------+
         //| Section                                            
@@ -80,7 +72,6 @@ namespace ecommerce_dash_api.Interfaces
         Task<List<SupplierQRY>> GetAllSuppliersAsync();
         Task<bool> CreateSupplierAsync(SupplierCreateDTO supplierDTO, string? username);
         Task<bool> UpdateSupplierAsync(SupplierUpdateDTO supplierDTO, string? username);
-        Task<bool> DeleteSupplierAsync(int id);
 
         //+------------------------------------------------------------------+
         //| Tag                                            

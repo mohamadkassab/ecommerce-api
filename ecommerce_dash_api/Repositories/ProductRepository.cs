@@ -222,6 +222,7 @@ namespace ecommerce_dash_api.Repositories
                 .AsNoTracking()
                 .Select(i => new TransactionQRY
                 {
+                    Id = i.Id,
                     ProductId = i.ProductId,
                     Quantity = i.Quantity,
                     TransactionType = i.TransactionType,
@@ -230,8 +231,8 @@ namespace ecommerce_dash_api.Repositories
                     UpdatedBy = i.UpdatedBy ?? "",
                     transactionAttributes = i.TransactionAttributes.Select(ta => new TransactionAttributeDTO
                     {
-                        Attribute = ta.Attribute,
-                        AttributeOption = ta.AttributeOption
+                        Name = ta.Attribute,
+                        Option = ta.AttributeOption
                     }).ToList(),
                 })
                 .ToListAsync();

@@ -29,7 +29,6 @@ namespace ecommerce_dash_api.Interfaces
         Task<string> SigninAsync(SigninDTO loginDto);
         Task<bool> CreateUserAsync(UserCreateDTO userDto, string? username);
         Task<bool> UpdateUserAsync(UserUpdateDTO userDto, string? username);
-        Task<bool> DeleteUserAsync(int userId);
         Task<bool> ChangePasswordAsync(ChangePasswordDTO changePassword, string? username);
     }
 }

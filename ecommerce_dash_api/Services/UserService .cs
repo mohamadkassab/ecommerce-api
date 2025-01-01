@@ -169,15 +169,6 @@ namespace ecommerce_dash_api.Services
             await _context.SaveChangesAsync();
             return true;
         }
-        public async Task<bool> DeleteUserAsync(int userId)
-        {
-            var user = await _context.Users
-              .Where(c => c.Id == userId)
-              .FirstOrDefaultAsync();
-            await _userRepository.DeleteUserAsync(user);
-            await _context.SaveChangesAsync();
-            return true;
-        }
         public async Task<bool> ChangePasswordAsync(ChangePasswordDTO changePassword, string? username)
         {
             if (changePassword.NewPassword != changePassword.ConfirmNewPassword)

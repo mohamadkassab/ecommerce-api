@@ -148,14 +148,6 @@ namespace ecommerce_dash_api.Services
                 return true;
             }
         }
-        public async Task<bool> DeleteBrandAsync(int id)
-        {
-            var brand = await _context.Brands
-            .Where(c => c.Id == id).FirstOrDefaultAsync();
-            await _setupRepository.DeleteBrandAsync(brand);
-            await _context.SaveChangesAsync();
-            return true;
-        }
 
         //+------------------------------------------------------------------+
         //| Category                                            
@@ -283,42 +275,6 @@ namespace ecommerce_dash_api.Services
         }
 
         //+------------------------------------------------------------------+
-        //| Payment method                                            
-        //+------------------------------------------------------------------+
-        public async Task<List<PaymentMQRY>> GetAllPaymentMAsync()
-        {
-            var result = await _setupRepository.GetAllPaymentMAsync();
-            return result;
-        }
-        public async Task<bool> UpdatePaymentMAsync(PaymentMUpdateDTO paymentMDTO, string? username)
-        {
-            PaymentMethod paymentM = await _setupRepository.GetPaymentMByIdAsync(paymentMDTO.Id);
-            var filePath = paymentM.IconUrl;
-            if (paymentMDTO.IconFile != null)
-            {
-                if (!string.IsNullOrEmpty(paymentM.IconUrl) && File.Exists(paymentM.IconUrl))
-                {
-                    File.Delete(paymentM.IconUrl); // Deletes the old file
-                }
-                var fileExtension = Path.GetExtension(paymentMDTO.IconFile.FileName);
-                var uniqueFileName = $"{Guid.NewGuid()}{fileExtension}";
-                filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", "shipping-methods", uniqueFileName);
-                using (Stream stream = new FileStream(filePath, FileMode.Create))
-                {
-                    paymentMDTO.IconFile.CopyToAsync(stream);
-                }
-            }
-
-            paymentM.Name = paymentMDTO.Name;
-            paymentM.IconUrl = filePath;
-            paymentM.IsActive = paymentMDTO.IsActive;
-            paymentM.UpdatedBy = username;
-            await _setupRepository.UpdatePaymentMAsync(paymentM);
-            await _context.SaveChangesAsync();
-            return true;
-        }
-
-        //+------------------------------------------------------------------+
         //| Season                                            
         //+------------------------------------------------------------------+
         public async Task<List<SeasonQRY>> GetAllSeasonsAsync()
@@ -344,14 +300,6 @@ namespace ecommerce_dash_api.Services
             season.Name = seasonDTO.Name;
             season.UpdatedBy = username;
             await _setupRepository.UpdateSeasonAsync(season);
-            await _context.SaveChangesAsync();
-            return true;
-        }
-        public async Task<bool> DeleteSeasonAsync(int id)
-        {
-            var season = await _context.Seasons
-            .Where(i => i.Id == id).FirstOrDefaultAsync();
-            await _setupRepository.DeleteSeasonAsync(season);
             await _context.SaveChangesAsync();
             return true;
         }
@@ -518,14 +466,6 @@ namespace ecommerce_dash_api.Services
                 await _context.SaveChangesAsync();
                 return true;
             }
-        }
-        public async Task<bool> DeleteSupplierAsync(int id)
-        {
-            var supplier = await _context.Suppliers
-            .Where(i => i.Id == id).FirstOrDefaultAsync();
-            await _setupRepository.DeleteSupplierAsync(supplier);
-            await _context.SaveChangesAsync();
-            return true;
         }
 
         //+------------------------------------------------------------------+

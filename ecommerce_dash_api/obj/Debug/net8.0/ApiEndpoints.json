@@ -518,22 +518,6 @@
   },
   {
     "ContainingType": "ecommerce_dash_api.Controllers.SetupController",
-    "Method": "DeleteBrand",
-    "RelativePath": "Setup/DeleteBrand/{id}",
-    "HttpMethod": "DELETE",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "id",
-        "Type": "System.Int32",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "ecommerce_dash_api.Controllers.SetupController",
     "Method": "DeleteCategory",
     "RelativePath": "Setup/DeleteCategory/{id}",
     "HttpMethod": "DELETE",
@@ -566,40 +550,8 @@
   },
   {
     "ContainingType": "ecommerce_dash_api.Controllers.SetupController",
-    "Method": "DeleteSeason",
-    "RelativePath": "Setup/DeleteSeason/{id}",
-    "HttpMethod": "DELETE",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "id",
-        "Type": "System.Int32",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "ecommerce_dash_api.Controllers.SetupController",
     "Method": "DeleteSection",
     "RelativePath": "Setup/DeleteSection/{id}",
-    "HttpMethod": "DELETE",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "id",
-        "Type": "System.Int32",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "ecommerce_dash_api.Controllers.SetupController",
-    "Method": "DeleteSupplier",
-    "RelativePath": "Setup/DeleteSupplier/{id}",
     "HttpMethod": "DELETE",
     "IsController": true,
     "Order": 0,
@@ -672,16 +624,6 @@
     "ContainingType": "ecommerce_dash_api.Controllers.SetupController",
     "Method": "GetAllCurrencies",
     "RelativePath": "Setup/GetAllCurrencies",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "ecommerce_dash_api.Controllers.SetupController",
-    "Method": "GetAllPaymentM",
-    "RelativePath": "Setup/GetAllPaymentM",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
@@ -840,37 +782,6 @@
   },
   {
     "ContainingType": "ecommerce_dash_api.Controllers.SetupController",
-    "Method": "UpdatePaymentM",
-    "RelativePath": "Setup/UpdatePaymentM",
-    "HttpMethod": "PUT",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "Id",
-        "Type": "System.Int32",
-        "IsRequired": false
-      },
-      {
-        "Name": "Name",
-        "Type": "System.String",
-        "IsRequired": false
-      },
-      {
-        "Name": "IconFile",
-        "Type": "Microsoft.AspNetCore.Http.IFormFile",
-        "IsRequired": false
-      },
-      {
-        "Name": "IsActive",
-        "Type": "System.Boolean",
-        "IsRequired": false
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "ecommerce_dash_api.Controllers.SetupController",
     "Method": "UpdateSeason",
     "RelativePath": "Setup/UpdateSeason",
     "HttpMethod": "PUT",
@@ -1021,22 +932,6 @@
     "ContainingType": "ecommerce_dash_api.Controllers.UserController",
     "Method": "DeleteRole",
     "RelativePath": "User/DeleteRole/{id}",
-    "HttpMethod": "DELETE",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "id",
-        "Type": "System.Int32",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "ecommerce_dash_api.Controllers.UserController",
-    "Method": "DeleteUser",
-    "RelativePath": "User/DeleteUser/{id}",
     "HttpMethod": "DELETE",
     "IsController": true,
     "Order": 0,

@@ -26,7 +26,6 @@ namespace ecommerce_dash_api.Interfaces
         Task<List<BrandQRY>> GetAllBrandsAsync();
         Task CreateBrandAsync(Brand brand);
         Task UpdateBrandAsync(Brand brand);
-        Task DeleteBrandAsync(Brand brand);
 
         //+------------------------------------------------------------------+
         //| Category                                            
@@ -56,13 +55,6 @@ namespace ecommerce_dash_api.Interfaces
         Task DeleteCurrencyAsync(Currency currency);
 
         //+------------------------------------------------------------------+
-        //| Payment method                                            
-        //+------------------------------------------------------------------+
-        Task<List<PaymentMQRY>> GetAllPaymentMAsync();
-        Task<PaymentMethod?> GetPaymentMByIdAsync(int id);
-        Task UpdatePaymentMAsync(PaymentMethod paymentM);
-
-        //+------------------------------------------------------------------+
         //| Season                                            
         //+------------------------------------------------------------------+
         Task<Season?> GetSeasonByIdAsync(int id);
@@ -70,7 +62,6 @@ namespace ecommerce_dash_api.Interfaces
         Task<List<SeasonQRY>> GetAllSeasonsAsync();
         Task CreateSeasonAsync(Season season);
         Task UpdateSeasonAsync(Season season);
-        Task DeleteSeasonAsync(Season season);
 
         //+------------------------------------------------------------------+
         //| Section                                            
@@ -98,7 +89,6 @@ namespace ecommerce_dash_api.Interfaces
         Task<List<SupplierQRY>> GetAllSuppliersAsync();
         Task CreateSupplierAsync(Supplier supplier);
         Task UpdateSupplierAsync(Supplier supplier);
-        Task DeleteSupplierAsync(Supplier supplier);
 
         //+------------------------------------------------------------------+
         //| Tag                                            

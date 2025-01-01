@@ -12,7 +12,7 @@ namespace ecommerce_dash_api.DTOS
         public int Quantity { get; set; }
 
         [Required]
-        public TransactionTypeEnum TransactionType { get; set; }
+        public string TransactionType { get; set; } = null!;
 
         public string Note { get; set; } = string.Empty;
 

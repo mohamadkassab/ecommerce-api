@@ -2,7 +2,7 @@
 {
     public class TransactionAttributeDTO
     {
-        public string Attribute { get; set; } = null!;
-        public string AttributeOption { get; set; } = null!;
+        public string Name { get; set; } = null!;
+        public string Option { get; set; } = null!;
     }
 }

@@ -113,11 +113,6 @@ namespace ecommerce_dash_api.Repositories
             _context.Brands.Update(brand);
             return Task.CompletedTask;
         }
-        public Task DeleteBrandAsync(Brand brand)
-        {
-            _context.Brands.Remove(brand);
-            return Task.CompletedTask;
-        }
 
         //+------------------------------------------------------------------+
         //| Category                                            
@@ -235,35 +230,6 @@ namespace ecommerce_dash_api.Repositories
         }
 
         //+------------------------------------------------------------------+
-        //| Payment method                                            
-        //+------------------------------------------------------------------+
-        public async Task<List<PaymentMQRY>> GetAllPaymentMAsync()
-        {
-            var result = await _context.PaymentMethods
-            .Select(i => new PaymentMQRY
-            {
-                Id = i.Id,
-                Name = i.Name,
-                IconFile = _helpersFunctions.GetFileByUrl(i.IconUrl),
-                UpdatedAt = i.UpdatedAt,
-                UpdatedBy = i.UpdatedBy,
-                IsActive = i.IsActive
-            })
-            .ToListAsync();
-
-            return result;
-        }
-        public async Task<PaymentMethod?> GetPaymentMByIdAsync(int id)
-        {
-            return await _context.PaymentMethods.FirstOrDefaultAsync(i => i.Id == id);
-        }
-        public Task UpdatePaymentMAsync(PaymentMethod paymentM)
-        {
-            _context.PaymentMethods.Update(paymentM);
-            return Task.CompletedTask;
-        }
-
-        //+------------------------------------------------------------------+
         //| Season                                            
         //+------------------------------------------------------------------+
         public async Task<Season?> GetSeasonByIdAsync(int id)
@@ -296,11 +262,6 @@ namespace ecommerce_dash_api.Repositories
         public Task UpdateSeasonAsync(Season season)
         {
             _context.Seasons.Update(season);
-            return Task.CompletedTask;
-        }
-        public Task DeleteSeasonAsync(Season season)
-        {
-            _context.Seasons.Remove(season);
             return Task.CompletedTask;
         }
 
@@ -432,11 +393,6 @@ namespace ecommerce_dash_api.Repositories
         public Task UpdateSupplierAsync(Supplier supplier)
         {
             _context.Suppliers.Update(supplier);
-            return Task.CompletedTask;
-        }
-        public Task DeleteSupplierAsync(Supplier supplier)
-        {
-            _context.Suppliers.Remove(supplier);
             return Task.CompletedTask;
         }
 

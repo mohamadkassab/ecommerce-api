@@ -139,11 +139,6 @@ public class UserRepository : IUserRepository
         _context.Users.Update(user);
         return Task.CompletedTask;
     }
-    public Task DeleteUserAsync(User user)
-    {
-        _context.Users.Remove(user);
-        return Task.CompletedTask;
-    }
     public Task DeleteUserRolesByUserIdAsync(int userId)
     {
         var records = _context.UserRoles.Where(i => i.UserId == userId).ToList();
