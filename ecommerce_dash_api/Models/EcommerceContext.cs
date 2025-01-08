@@ -62,6 +62,8 @@ public partial class EcommerceContext : DbContext
 
     public virtual DbSet<ProductQuantity> ProductQuantities { get; set; }
 
+    public virtual DbSet<ProductQuantityAttribute> ProductQuantityAttributes { get; set; }
+
     public virtual DbSet<ProductTag> ProductTags { get; set; }
 
     public virtual DbSet<Role> Roles { get; set; }
@@ -874,21 +876,40 @@ public partial class EcommerceContext : DbContext
 
             entity.ToTable("product_quantity");
 
-            entity.HasIndex(e => e.ProductId, "product_id3").IsUnique();
+            entity.HasIndex(e => e.ProductId, "product_quantity_ibfk_1");
 
-            entity.HasIndex(e => new { e.ProductId, e.Attribute, e.AttributeOption }, "product_quantity_key_1").IsUnique();
+            entity.HasIndex(e => e.ProductAttributeKey, "product_quantity_ibx_1");
 
             entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.Attribute).HasColumnName("attribute");
-            entity.Property(e => e.AttributeOption).HasColumnName("attribute_option");
+            entity.Property(e => e.ProductAttributeKey).HasColumnName("product_attribute_key");
             entity.Property(e => e.ProductId).HasColumnName("product_id");
             entity.Property(e => e.Quantity)
                 .HasDefaultValueSql("'0'")
                 .HasColumnName("quantity");
 
-            entity.HasOne(d => d.Product).WithOne(p => p.ProductQuantity)
-                .HasForeignKey<ProductQuantity>(d => d.ProductId)
+            entity.HasOne(d => d.Product).WithMany(p => p.ProductQuantities)
+                .HasForeignKey(d => d.ProductId)
                 .HasConstraintName("product_quantity_ibfk_1");
+        });
+
+        modelBuilder.Entity<ProductQuantityAttribute>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity.ToTable("product_quantity_attribute");
+
+            entity.HasIndex(e => new { e.ProductQuantityId, e.Attribute }, "product_quantity_attribute_ibfk_2").IsUnique();
+
+            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.Attribute).HasColumnName("attribute");
+            entity.Property(e => e.AttributeOption)
+                .HasMaxLength(255)
+                .HasColumnName("attribute_option");
+            entity.Property(e => e.ProductQuantityId).HasColumnName("product_quantity_id");
+
+            entity.HasOne(d => d.ProductQuantity).WithMany(p => p.ProductQuantityAttributes)
+                .HasForeignKey(d => d.ProductQuantityId)
+                .HasConstraintName("product_quantity_attribute_ibfk_1");
         });
 
         modelBuilder.Entity<ProductTag>(entity =>
@@ -1197,11 +1218,14 @@ public partial class EcommerceContext : DbContext
 
             entity.HasIndex(e => e.ProductId, "inventory_ibfk_2");
 
+            entity.HasIndex(e => e.ProductAttributeKey, "transaction_ibx_1");
+
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.Note)
                 .HasMaxLength(255)
                 .HasDefaultValueSql("''")
                 .HasColumnName("note");
+            entity.Property(e => e.ProductAttributeKey).HasColumnName("product_attribute_key");
             entity.Property(e => e.ProductId).HasColumnName("product_id");
             entity.Property(e => e.Quantity).HasColumnName("quantity");
             entity.Property(e => e.TransactionType)
@@ -1231,19 +1255,17 @@ public partial class EcommerceContext : DbContext
 
             entity.ToTable("transaction_attribute");
 
-            entity.HasIndex(e => e.TanscationId, "transaction_attribute_ibfk_1");
+            entity.HasIndex(e => new { e.TransactionId, e.Attribute }, "transaction_attribute_ibfk_2").IsUnique();
 
             entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.Attribute)
-                .HasMaxLength(255)
-                .HasColumnName("attribute");
+            entity.Property(e => e.Attribute).HasColumnName("attribute");
             entity.Property(e => e.AttributeOption)
                 .HasMaxLength(255)
                 .HasColumnName("attribute_option");
-            entity.Property(e => e.TanscationId).HasColumnName("tanscation_id");
+            entity.Property(e => e.TransactionId).HasColumnName("transaction_id");
 
-            entity.HasOne(d => d.Tanscation).WithMany(p => p.TransactionAttributes)
-                .HasForeignKey(d => d.TanscationId)
+            entity.HasOne(d => d.Transaction).WithMany(p => p.TransactionAttributes)
+                .HasForeignKey(d => d.TransactionId)
                 .HasConstraintName("transaction_attribute_ibfk_1");
         });
 

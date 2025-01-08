@@ -5,7 +5,7 @@
     "version": "1.0"
   },
   "paths": {
-    "/Kpi/GetAllACharts": {
+    "/Dashboard/Kpi/GetAllACharts": {
       "get": {
         "tags": [
           "Kpi"
@@ -17,7 +17,7 @@
         }
       }
     },
-    "/Kpi/GetChartDataByQuery": {
+    "/Dashboard/Kpi/GetChartDataByQuery": {
       "get": {
         "tags": [
           "Kpi"
@@ -38,7 +38,7 @@
         }
       }
     },
-    "/Kpi/CreateChart": {
+    "/Dashboard/Kpi/CreateChart": {
       "post": {
         "tags": [
           "Kpi"
@@ -69,7 +69,7 @@
         }
       }
     },
-    "/Kpi/UpdateChart": {
+    "/Dashboard/Kpi/UpdateChart": {
       "put": {
         "tags": [
           "Kpi"
@@ -100,7 +100,7 @@
         }
       }
     },
-    "/Kpi/DeleteChart/{id}": {
+    "/Dashboard/Kpi/DeleteChart/{id}": {
       "delete": {
         "tags": [
           "Kpi"
@@ -123,7 +123,19 @@
         }
       }
     },
-    "/Product/GetAllProducts": {
+    "/Shop/Page/GetHomePage": {
+      "get": {
+        "tags": [
+          "Page"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/Dashboard/Product/GetAllProducts": {
       "get": {
         "tags": [
           "Product"
@@ -135,7 +147,7 @@
         }
       }
     },
-    "/Product/CreateProduct": {
+    "/Dashboard/Product/CreateProduct": {
       "post": {
         "tags": [
           "Product"
@@ -166,7 +178,7 @@
         }
       }
     },
-    "/Product/UpdateProduct": {
+    "/Dashboard/Product/UpdateProduct": {
       "put": {
         "tags": [
           "Product"
@@ -197,7 +209,7 @@
         }
       }
     },
-    "/Product/GetAllProductContents": {
+    "/Dashboard/Product/GetAllProductContents": {
       "get": {
         "tags": [
           "Product"
@@ -209,7 +221,7 @@
         }
       }
     },
-    "/Product/GetProductMedia/{productId}": {
+    "/Dashboard/Product/GetProductMedia/{productId}": {
       "get": {
         "tags": [
           "Product"
@@ -232,7 +244,7 @@
         }
       }
     },
-    "/Product/CreateProductContent": {
+    "/Dashboard/Product/CreateProductContent": {
       "post": {
         "tags": [
           "Product"
@@ -348,7 +360,7 @@
         }
       }
     },
-    "/Product/UpdateProductContent": {
+    "/Dashboard/Product/UpdateProductContent": {
       "put": {
         "tags": [
           "Product"
@@ -471,7 +483,7 @@
         }
       }
     },
-    "/Product/GetAllTransactions": {
+    "/Dashboard/Product/GetAllTransactions": {
       "get": {
         "tags": [
           "Product"
@@ -483,7 +495,7 @@
         }
       }
     },
-    "/Product/CreateTransaction": {
+    "/Dashboard/Product/CreateTransaction": {
       "post": {
         "tags": [
           "Product"
@@ -514,7 +526,7 @@
         }
       }
     },
-    "/Service/createLog": {
+    "/Dashboard/Service/CreateLog": {
       "post": {
         "tags": [
           "Service"
@@ -545,7 +557,7 @@
         }
       }
     },
-    "/Setup/GetAllAttributesWithOptions": {
+    "/Dashboard/Setup/GetAllAttributesWithOptions": {
       "get": {
         "tags": [
           "Setup"
@@ -557,7 +569,7 @@
         }
       }
     },
-    "/Setup/CreateAttribute": {
+    "/Dashboard/Setup/CreateAttribute": {
       "post": {
         "tags": [
           "Setup"
@@ -588,7 +600,7 @@
         }
       }
     },
-    "/Setup/UpdateAttribute": {
+    "/Dashboard/Setup/UpdateAttribute": {
       "put": {
         "tags": [
           "Setup"
@@ -619,7 +631,7 @@
         }
       }
     },
-    "/Setup/DeleteAttribute/{id}": {
+    "/Dashboard/Setup/DeleteAttribute/{id}": {
       "delete": {
         "tags": [
           "Setup"
@@ -642,7 +654,7 @@
         }
       }
     },
-    "/Setup/GetAllBrands": {
+    "/Dashboard/Setup/GetAllBrands": {
       "get": {
         "tags": [
           "Setup"
@@ -654,7 +666,7 @@
         }
       }
     },
-    "/Setup/CreateBrand": {
+    "/Dashboard/Setup/CreateBrand": {
       "post": {
         "tags": [
           "Setup"
@@ -711,7 +723,7 @@
         }
       }
     },
-    "/Setup/UpdateBrand": {
+    "/Dashboard/Setup/UpdateBrand": {
       "put": {
         "tags": [
           "Setup"
@@ -775,7 +787,7 @@
         }
       }
     },
-    "/Setup/GetAllCategories": {
+    "/Dashboard/Setup/GetAllCategories": {
       "get": {
         "tags": [
           "Setup"
@@ -787,7 +799,7 @@
         }
       }
     },
-    "/Setup/CreateCategory": {
+    "/Dashboard/Setup/CreateCategory": {
       "post": {
         "tags": [
           "Setup"
@@ -818,7 +830,7 @@
         }
       }
     },
-    "/Setup/UpdateCategory": {
+    "/Dashboard/Setup/UpdateCategory": {
       "put": {
         "tags": [
           "Setup"
@@ -849,7 +861,7 @@
         }
       }
     },
-    "/Setup/DeleteCategory/{id}": {
+    "/Dashboard/Setup/DeleteCategory/{id}": {
       "delete": {
         "tags": [
           "Setup"
@@ -872,7 +884,7 @@
         }
       }
     },
-    "/Setup/GetAllCountries": {
+    "/Dashboard/Setup/GetAllCountries": {
       "get": {
         "tags": [
           "Setup"
@@ -884,7 +896,7 @@
         }
       }
     },
-    "/Setup/CreateCountry": {
+    "/Dashboard/Setup/CreateCountry": {
       "post": {
         "tags": [
           "Setup"
@@ -915,7 +927,7 @@
         }
       }
     },
-    "/Setup/UpdateCountry": {
+    "/Dashboard/Setup/UpdateCountry": {
       "put": {
         "tags": [
           "Setup"
@@ -946,7 +958,7 @@
         }
       }
     },
-    "/Setup/GetAllCurrencies": {
+    "/Dashboard/Setup/GetAllCurrencies": {
       "get": {
         "tags": [
           "Setup"
@@ -958,7 +970,7 @@
         }
       }
     },
-    "/Setup/CreateCurrency": {
+    "/Dashboard/Setup/CreateCurrency": {
       "post": {
         "tags": [
           "Setup"
@@ -989,7 +1001,7 @@
         }
       }
     },
-    "/Setup/UpdateCurrency": {
+    "/Dashboard/Setup/UpdateCurrency": {
       "put": {
         "tags": [
           "Setup"
@@ -1020,7 +1032,7 @@
         }
       }
     },
-    "/Setup/DeleteCurrency/{id}": {
+    "/Dashboard/Setup/DeleteCurrency/{id}": {
       "delete": {
         "tags": [
           "Setup"
@@ -1043,7 +1055,7 @@
         }
       }
     },
-    "/Setup/GetAllSeasons": {
+    "/Dashboard/Setup/GetAllSeasons": {
       "get": {
         "tags": [
           "Setup"
@@ -1055,7 +1067,7 @@
         }
       }
     },
-    "/Setup/CreateSeason": {
+    "/Dashboard/Setup/CreateSeason": {
       "post": {
         "tags": [
           "Setup"
@@ -1086,7 +1098,7 @@
         }
       }
     },
-    "/Setup/UpdateSeason": {
+    "/Dashboard/Setup/UpdateSeason": {
       "put": {
         "tags": [
           "Setup"
@@ -1117,7 +1129,7 @@
         }
       }
     },
-    "/Setup/GetAllSections": {
+    "/Dashboard/Setup/GetAllSections": {
       "get": {
         "tags": [
           "Setup"
@@ -1129,7 +1141,7 @@
         }
       }
     },
-    "/Setup/CreateSection": {
+    "/Dashboard/Setup/CreateSection": {
       "post": {
         "tags": [
           "Setup"
@@ -1160,7 +1172,7 @@
         }
       }
     },
-    "/Setup/UpdateSection": {
+    "/Dashboard/Setup/UpdateSection": {
       "put": {
         "tags": [
           "Setup"
@@ -1191,7 +1203,7 @@
         }
       }
     },
-    "/Setup/DeleteSection/{id}": {
+    "/Dashboard/Setup/DeleteSection/{id}": {
       "delete": {
         "tags": [
           "Setup"
@@ -1214,7 +1226,7 @@
         }
       }
     },
-    "/Setup/GetAllShippingM": {
+    "/Dashboard/Setup/GetAllShippingM": {
       "get": {
         "tags": [
           "Setup"
@@ -1226,7 +1238,7 @@
         }
       }
     },
-    "/Setup/CreateShippingM": {
+    "/Dashboard/Setup/CreateShippingM": {
       "post": {
         "tags": [
           "Setup"
@@ -1284,7 +1296,7 @@
         }
       }
     },
-    "/Setup/UpdateShippingM": {
+    "/Dashboard/Setup/UpdateShippingM": {
       "put": {
         "tags": [
           "Setup"
@@ -1349,7 +1361,7 @@
         }
       }
     },
-    "/Setup/GetAllSuppliers": {
+    "/Dashboard/Setup/GetAllSuppliers": {
       "get": {
         "tags": [
           "Setup"
@@ -1361,7 +1373,7 @@
         }
       }
     },
-    "/Setup/CreateSupplier": {
+    "/Dashboard/Setup/CreateSupplier": {
       "post": {
         "tags": [
           "Setup"
@@ -1392,7 +1404,7 @@
         }
       }
     },
-    "/Setup/UpdateSupplier": {
+    "/Dashboard/Setup/UpdateSupplier": {
       "put": {
         "tags": [
           "Setup"
@@ -1423,7 +1435,7 @@
         }
       }
     },
-    "/Setup/GetAllTags": {
+    "/Dashboard/Setup/GetAllTags": {
       "get": {
         "tags": [
           "Setup"
@@ -1435,7 +1447,7 @@
         }
       }
     },
-    "/Setup/CreateTag": {
+    "/Dashboard/Setup/CreateTag": {
       "post": {
         "tags": [
           "Setup"
@@ -1466,7 +1478,7 @@
         }
       }
     },
-    "/Setup/UpdateTag": {
+    "/Dashboard/Setup/UpdateTag": {
       "put": {
         "tags": [
           "Setup"
@@ -1497,7 +1509,7 @@
         }
       }
     },
-    "/Setup/DeleteTag/{id}": {
+    "/Dashboard/Setup/DeleteTag/{id}": {
       "delete": {
         "tags": [
           "Setup"
@@ -1520,7 +1532,7 @@
         }
       }
     },
-    "/User/GetAllPermissions": {
+    "/Dashboard/User/GetAllPermissions": {
       "get": {
         "tags": [
           "User"
@@ -1532,7 +1544,7 @@
         }
       }
     },
-    "/User/GetAllRolesAndPermissions": {
+    "/Dashboard/User/GetAllRolesAndPermissions": {
       "get": {
         "tags": [
           "User"
@@ -1544,7 +1556,7 @@
         }
       }
     },
-    "/User/CreateRole": {
+    "/Dashboard/User/CreateRole": {
       "post": {
         "tags": [
           "User"
@@ -1575,7 +1587,7 @@
         }
       }
     },
-    "/User/UpdateRole": {
+    "/Dashboard/User/UpdateRole": {
       "put": {
         "tags": [
           "User"
@@ -1606,7 +1618,7 @@
         }
       }
     },
-    "/User/DeleteRole/{id}": {
+    "/Dashboard/User/DeleteRole/{id}": {
       "delete": {
         "tags": [
           "User"
@@ -1629,7 +1641,7 @@
         }
       }
     },
-    "/User/Signin": {
+    "/Dashboard/User/Signin": {
       "post": {
         "tags": [
           "User"
@@ -1660,7 +1672,7 @@
         }
       }
     },
-    "/User/Signout": {
+    "/Dashboard/User/Signout": {
       "post": {
         "tags": [
           "User"
@@ -1672,7 +1684,7 @@
         }
       }
     },
-    "/User/GetAllUsersWithRoles": {
+    "/Dashboard/User/GetAllUsersWithRoles": {
       "get": {
         "tags": [
           "User"
@@ -1684,7 +1696,7 @@
         }
       }
     },
-    "/User/CreateUser": {
+    "/Dashboard/User/CreateUser": {
       "post": {
         "tags": [
           "User"
@@ -1715,7 +1727,7 @@
         }
       }
     },
-    "/User/UpdateUser": {
+    "/Dashboard/User/UpdateUser": {
       "put": {
         "tags": [
           "User"
@@ -1746,7 +1758,7 @@
         }
       }
     },
-    "/User/ChangePassword": {
+    "/Dashboard/User/ChangePassword": {
       "post": {
         "tags": [
           "User"

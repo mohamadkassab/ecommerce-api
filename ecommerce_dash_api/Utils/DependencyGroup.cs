@@ -1,8 +1,9 @@
-﻿using ecommerce_dash_api.Interfaces;
-using ecommerce_dash_api.Repositories;
-using ecommerce_dash_api.Services;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.OpenApi.Models;
+﻿using ecommerce_dash_api.Areas.Dashboard.Interfaces;
+using ecommerce_dash_api.Areas.Dashboard.Repositories;
+using ecommerce_dash_api.Areas.Dashboard.Services;
+using ecommerce_dash_api.Areas.Shop.Interfaces;
+using ecommerce_dash_api.Areas.Shop.Repositories;
+using ecommerce_dash_api.Areas.Shop.Services;
 
 namespace ecommerce_dash_api.Utils
 {
@@ -18,10 +19,10 @@ namespace ecommerce_dash_api.Utils
             services.AddScoped<IApiService, ApiService>();
             services.AddScoped<ISetupRepository, SetupRepository>();
             services.AddScoped<ISetupService, SetupService>();
-            services.AddScoped<IHelpersFunctions, HelpersFuntions>();
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<IProductService, ProductService>();
-            services.AddSingleton<IPasswordHasher, PasswordHasher>();
+            services.AddScoped<IShopProductRepository, ShopProductRepository>();
+            services.AddScoped<IPageService, PageService>();
             services.AddSingleton<JwtToken>();
             return services;
         }

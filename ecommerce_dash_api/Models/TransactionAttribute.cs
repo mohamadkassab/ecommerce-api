@@ -7,11 +7,11 @@ public partial class TransactionAttribute
 {
     public int Id { get; set; }
 
-    public int TanscationId { get; set; }
+    public int TransactionId { get; set; }
 
     public string Attribute { get; set; } = null!;
 
     public string AttributeOption { get; set; } = null!;
 
-    public virtual Transaction Tanscation { get; set; } = null!;
+    public virtual Transaction Transaction { get; set; } = null!;
 }

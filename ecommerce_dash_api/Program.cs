@@ -43,6 +43,10 @@ builder.Services.AddDbContext<EcommerceContext>(options =>
 
 var app = builder.Build();
 
+app.MapControllerRoute(
+    name: "areas",
+    pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+
 if (app.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage(); 

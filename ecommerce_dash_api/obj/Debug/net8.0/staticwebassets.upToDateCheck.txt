@@ -11,10 +11,13 @@ wwwroot\images\brands\cb2e2801-9e89-4fba-ae7c-1f0ae5a49a58.png
 wwwroot\images\brands\d95e0813-eacb-4f3a-85de-dd7155b2d4c2.png
 wwwroot\images\brands\e13a5276-42d7-4c66-99bf-52414fee9a45.jpg
 wwwroot\images\brands\e5257766-41d3-4c54-a3f7-d0238328ca74.png
-wwwroot\images\payment-methods\9a7b793e-272f-498a-a8e5-0edebf06989d.png
+wwwroot\images\product-media\0b9a4c73-d207-43b9-b935-9c7b67b3daba_unknown.jpg
+wwwroot\images\product-media\1efa9aa5-1c05-49dd-a57d-3e9c3947b24f_blue.jpg
+wwwroot\images\product-media\53952726-04e1-41c9-9473-c32bbbfd3b9a_red.jpg
 wwwroot\images\product-media\8b87eda6-8436-42d2-a0f6-942235b03727.jpg
 wwwroot\images\product-media\970fdc74-0601-4dc1-98bc-f7c5bad18ec1.jpg
 wwwroot\images\product-media\bcf2f268-f830-44f2-859b-464c25de4f05.jpg
 wwwroot\images\product-media\f6153927-ad1d-4a21-957c-30e06972d5a5.jpg
+wwwroot\images\section-main-images\home\home.jpg
 wwwroot\images\shipping-methods\431dc03d-76bd-49ed-b3c3-309aaa479ca4.jpg
 wwwroot\images\shipping-methods\9a7b793e-272f-498a-a8e5-0edebf06989d.png

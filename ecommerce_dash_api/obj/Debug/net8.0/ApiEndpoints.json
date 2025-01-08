@@ -1,24 +1,24 @@
 [
   {
-    "ContainingType": "ecommerce_dash_api.Controllers.KpiController",
+    "ContainingType": "ecommerce_dash_api.Areas.Dashboard.Controllers.KpiController",
     "Method": "CreateChart",
-    "RelativePath": "Kpi/CreateChart",
+    "RelativePath": "Dashboard/Kpi/CreateChart",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
         "Name": "chart",
-        "Type": "ecommerce_dash_api.DTOS.ChartCreateDTO",
+        "Type": "ecommerce_dash_api.Areas.Dashboard.DTOS.ChartCreateDTO",
         "IsRequired": true
       }
     ],
     "ReturnTypes": []
   },
   {
-    "ContainingType": "ecommerce_dash_api.Controllers.KpiController",
+    "ContainingType": "ecommerce_dash_api.Areas.Dashboard.Controllers.KpiController",
     "Method": "DeleteChart",
-    "RelativePath": "Kpi/DeleteChart/{id}",
+    "RelativePath": "Dashboard/Kpi/DeleteChart/{id}",
     "HttpMethod": "DELETE",
     "IsController": true,
     "Order": 0,
@@ -32,9 +32,9 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "ecommerce_dash_api.Controllers.KpiController",
+    "ContainingType": "ecommerce_dash_api.Areas.Dashboard.Controllers.KpiController",
     "Method": "GetAllACharts",
-    "RelativePath": "Kpi/GetAllACharts",
+    "RelativePath": "Dashboard/Kpi/GetAllACharts",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
@@ -42,9 +42,9 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "ecommerce_dash_api.Controllers.KpiController",
+    "ContainingType": "ecommerce_dash_api.Areas.Dashboard.Controllers.KpiController",
     "Method": "GetChartDataByQuery",
-    "RelativePath": "Kpi/GetChartDataByQuery",
+    "RelativePath": "Dashboard/Kpi/GetChartDataByQuery",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
@@ -58,41 +58,41 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "ecommerce_dash_api.Controllers.KpiController",
+    "ContainingType": "ecommerce_dash_api.Areas.Dashboard.Controllers.KpiController",
     "Method": "UpdateChart",
-    "RelativePath": "Kpi/UpdateChart",
+    "RelativePath": "Dashboard/Kpi/UpdateChart",
     "HttpMethod": "PUT",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
         "Name": "chart",
-        "Type": "ecommerce_dash_api.DTOS.ChartUpdateDTO",
+        "Type": "ecommerce_dash_api.Areas.Dashboard.DTOS.ChartUpdateDTO",
         "IsRequired": true
       }
     ],
     "ReturnTypes": []
   },
   {
-    "ContainingType": "ecommerce_dash_api.Controllers.ProductController",
+    "ContainingType": "ecommerce_dash_api.Areas.Dashboard.Controllers.ProductController",
     "Method": "CreateProduct",
-    "RelativePath": "Product/CreateProduct",
+    "RelativePath": "Dashboard/Product/CreateProduct",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
         "Name": "product",
-        "Type": "ecommerce_dash_api.DTOS.ProductCreateDTO",
+        "Type": "ecommerce_dash_api.Areas.Dashboard.DTOS.ProductCreateDTO",
         "IsRequired": true
       }
     ],
     "ReturnTypes": []
   },
   {
-    "ContainingType": "ecommerce_dash_api.Controllers.ProductController",
+    "ContainingType": "ecommerce_dash_api.Areas.Dashboard.Controllers.ProductController",
     "Method": "CreateProductContent",
-    "RelativePath": "Product/CreateProductContent",
+    "RelativePath": "Dashboard/Product/CreateProductContent",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
@@ -151,25 +151,25 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "ecommerce_dash_api.Controllers.ProductController",
+    "ContainingType": "ecommerce_dash_api.Areas.Dashboard.Controllers.ProductController",
     "Method": "CreateTransaction",
-    "RelativePath": "Product/CreateTransaction",
+    "RelativePath": "Dashboard/Product/CreateTransaction",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
         "Name": "transaction",
-        "Type": "ecommerce_dash_api.DTOS.TransactionCreateDTO",
+        "Type": "ecommerce_dash_api.Areas.Dashboard.DTOS.TransactionCreateDTO",
         "IsRequired": true
       }
     ],
     "ReturnTypes": []
   },
   {
-    "ContainingType": "ecommerce_dash_api.Controllers.ProductController",
+    "ContainingType": "ecommerce_dash_api.Areas.Dashboard.Controllers.ProductController",
     "Method": "GetAllProductContents",
-    "RelativePath": "Product/GetAllProductContents",
+    "RelativePath": "Dashboard/Product/GetAllProductContents",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
@@ -177,9 +177,9 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "ecommerce_dash_api.Controllers.ProductController",
+    "ContainingType": "ecommerce_dash_api.Areas.Dashboard.Controllers.ProductController",
     "Method": "GetAllProducts",
-    "RelativePath": "Product/GetAllProducts",
+    "RelativePath": "Dashboard/Product/GetAllProducts",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
@@ -187,9 +187,9 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "ecommerce_dash_api.Controllers.ProductController",
+    "ContainingType": "ecommerce_dash_api.Areas.Dashboard.Controllers.ProductController",
     "Method": "GetAllTransactions",
-    "RelativePath": "Product/GetAllTransactions",
+    "RelativePath": "Dashboard/Product/GetAllTransactions",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
@@ -197,9 +197,9 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "ecommerce_dash_api.Controllers.ProductController",
+    "ContainingType": "ecommerce_dash_api.Areas.Dashboard.Controllers.ProductController",
     "Method": "GetProductMedia",
-    "RelativePath": "Product/GetProductMedia/{productId}",
+    "RelativePath": "Dashboard/Product/GetProductMedia/{productId}",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
@@ -213,25 +213,25 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "ecommerce_dash_api.Controllers.ProductController",
+    "ContainingType": "ecommerce_dash_api.Areas.Dashboard.Controllers.ProductController",
     "Method": "UpdateProduct",
-    "RelativePath": "Product/UpdateProduct",
+    "RelativePath": "Dashboard/Product/UpdateProduct",
     "HttpMethod": "PUT",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
         "Name": "product",
-        "Type": "ecommerce_dash_api.DTOS.ProductUpdateDTO",
+        "Type": "ecommerce_dash_api.Areas.Dashboard.DTOS.ProductUpdateDTO",
         "IsRequired": true
       }
     ],
     "ReturnTypes": []
   },
   {
-    "ContainingType": "ecommerce_dash_api.Controllers.ProductController",
+    "ContainingType": "ecommerce_dash_api.Areas.Dashboard.Controllers.ProductController",
     "Method": "UpdateProductContent",
-    "RelativePath": "Product/UpdateProductContent",
+    "RelativePath": "Dashboard/Product/UpdateProductContent",
     "HttpMethod": "PUT",
     "IsController": true,
     "Order": 0,
@@ -295,9 +295,9 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "ecommerce_dash_api.Controllers.ServiceController",
+    "ContainingType": "ecommerce_dash_api.Areas.Dashboard.Controllers.ServiceController",
     "Method": "CreateLog",
-    "RelativePath": "Service/createLog",
+    "RelativePath": "Dashboard/Service/CreateLog",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
@@ -313,14 +313,14 @@
   {
     "ContainingType": "ecommerce_dash_api.Controllers.SetupController",
     "Method": "CreateAttribute",
-    "RelativePath": "Setup/CreateAttribute",
+    "RelativePath": "Dashboard/Setup/CreateAttribute",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
         "Name": "attribute",
-        "Type": "ecommerce_dash_api.DTOS.AttributeCreateDTO",
+        "Type": "ecommerce_dash_api.Areas.Dashboard.DTOS.AttributeCreateDTO",
         "IsRequired": true
       }
     ],
@@ -329,7 +329,7 @@
   {
     "ContainingType": "ecommerce_dash_api.Controllers.SetupController",
     "Method": "CreateBrand",
-    "RelativePath": "Setup/CreateBrand",
+    "RelativePath": "Dashboard/Setup/CreateBrand",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
@@ -360,14 +360,14 @@
   {
     "ContainingType": "ecommerce_dash_api.Controllers.SetupController",
     "Method": "CreateCategory",
-    "RelativePath": "Setup/CreateCategory",
+    "RelativePath": "Dashboard/Setup/CreateCategory",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
         "Name": "category",
-        "Type": "ecommerce_dash_api.DTOS.CategoryCreateDTO",
+        "Type": "ecommerce_dash_api.Areas.Dashboard.DTOS.CategoryCreateDTO",
         "IsRequired": true
       }
     ],
@@ -376,14 +376,14 @@
   {
     "ContainingType": "ecommerce_dash_api.Controllers.SetupController",
     "Method": "CreateCountry",
-    "RelativePath": "Setup/CreateCountry",
+    "RelativePath": "Dashboard/Setup/CreateCountry",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
         "Name": "country",
-        "Type": "ecommerce_dash_api.DTOS.CountryCreateDTO",
+        "Type": "ecommerce_dash_api.Areas.Dashboard.DTOS.CountryCreateDTO",
         "IsRequired": true
       }
     ],
@@ -392,14 +392,14 @@
   {
     "ContainingType": "ecommerce_dash_api.Controllers.SetupController",
     "Method": "CreateCurrency",
-    "RelativePath": "Setup/CreateCurrency",
+    "RelativePath": "Dashboard/Setup/CreateCurrency",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
         "Name": "currency",
-        "Type": "ecommerce_dash_api.DTOS.CurrencyCreateDTO",
+        "Type": "ecommerce_dash_api.Areas.Dashboard.DTOS.CurrencyCreateDTO",
         "IsRequired": true
       }
     ],
@@ -408,14 +408,14 @@
   {
     "ContainingType": "ecommerce_dash_api.Controllers.SetupController",
     "Method": "CreateSeason",
-    "RelativePath": "Setup/CreateSeason",
+    "RelativePath": "Dashboard/Setup/CreateSeason",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
         "Name": "season",
-        "Type": "ecommerce_dash_api.DTOS.SeasonCreateDTO",
+        "Type": "ecommerce_dash_api.Areas.Dashboard.DTOS.SeasonCreateDTO",
         "IsRequired": true
       }
     ],
@@ -424,14 +424,14 @@
   {
     "ContainingType": "ecommerce_dash_api.Controllers.SetupController",
     "Method": "CreateSection",
-    "RelativePath": "Setup/CreateSection",
+    "RelativePath": "Dashboard/Setup/CreateSection",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
         "Name": "section",
-        "Type": "ecommerce_dash_api.DTOS.SectionCreateDTO",
+        "Type": "ecommerce_dash_api.Areas.Dashboard.DTOS.SectionCreateDTO",
         "IsRequired": true
       }
     ],
@@ -440,7 +440,7 @@
   {
     "ContainingType": "ecommerce_dash_api.Controllers.SetupController",
     "Method": "CreateShippingM",
-    "RelativePath": "Setup/CreateShippingM",
+    "RelativePath": "Dashboard/Setup/CreateShippingM",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
@@ -471,14 +471,14 @@
   {
     "ContainingType": "ecommerce_dash_api.Controllers.SetupController",
     "Method": "CreateSupplier",
-    "RelativePath": "Setup/CreateSupplier",
+    "RelativePath": "Dashboard/Setup/CreateSupplier",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
         "Name": "supplier",
-        "Type": "ecommerce_dash_api.DTOS.SupplierCreateDTO",
+        "Type": "ecommerce_dash_api.Areas.Dashboard.DTOS.SupplierCreateDTO",
         "IsRequired": true
       }
     ],
@@ -487,14 +487,14 @@
   {
     "ContainingType": "ecommerce_dash_api.Controllers.SetupController",
     "Method": "CreateTag",
-    "RelativePath": "Setup/CreateTag",
+    "RelativePath": "Dashboard/Setup/CreateTag",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
         "Name": "tag",
-        "Type": "ecommerce_dash_api.DTOS.TagCreateDTO",
+        "Type": "ecommerce_dash_api.Areas.Dashboard.DTOS.TagCreateDTO",
         "IsRequired": true
       }
     ],
@@ -503,7 +503,7 @@
   {
     "ContainingType": "ecommerce_dash_api.Controllers.SetupController",
     "Method": "DeleteAttribute",
-    "RelativePath": "Setup/DeleteAttribute/{id}",
+    "RelativePath": "Dashboard/Setup/DeleteAttribute/{id}",
     "HttpMethod": "DELETE",
     "IsController": true,
     "Order": 0,
@@ -519,7 +519,7 @@
   {
     "ContainingType": "ecommerce_dash_api.Controllers.SetupController",
     "Method": "DeleteCategory",
-    "RelativePath": "Setup/DeleteCategory/{id}",
+    "RelativePath": "Dashboard/Setup/DeleteCategory/{id}",
     "HttpMethod": "DELETE",
     "IsController": true,
     "Order": 0,
@@ -535,7 +535,7 @@
   {
     "ContainingType": "ecommerce_dash_api.Controllers.SetupController",
     "Method": "DeleteCurrency",
-    "RelativePath": "Setup/DeleteCurrency/{id}",
+    "RelativePath": "Dashboard/Setup/DeleteCurrency/{id}",
     "HttpMethod": "DELETE",
     "IsController": true,
     "Order": 0,
@@ -551,7 +551,7 @@
   {
     "ContainingType": "ecommerce_dash_api.Controllers.SetupController",
     "Method": "DeleteSection",
-    "RelativePath": "Setup/DeleteSection/{id}",
+    "RelativePath": "Dashboard/Setup/DeleteSection/{id}",
     "HttpMethod": "DELETE",
     "IsController": true,
     "Order": 0,
@@ -567,7 +567,7 @@
   {
     "ContainingType": "ecommerce_dash_api.Controllers.SetupController",
     "Method": "DeleteTag",
-    "RelativePath": "Setup/DeleteTag/{id}",
+    "RelativePath": "Dashboard/Setup/DeleteTag/{id}",
     "HttpMethod": "DELETE",
     "IsController": true,
     "Order": 0,
@@ -583,7 +583,7 @@
   {
     "ContainingType": "ecommerce_dash_api.Controllers.SetupController",
     "Method": "GetAllAttributesWithOptions",
-    "RelativePath": "Setup/GetAllAttributesWithOptions",
+    "RelativePath": "Dashboard/Setup/GetAllAttributesWithOptions",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
@@ -593,7 +593,7 @@
   {
     "ContainingType": "ecommerce_dash_api.Controllers.SetupController",
     "Method": "GetAllBrands",
-    "RelativePath": "Setup/GetAllBrands",
+    "RelativePath": "Dashboard/Setup/GetAllBrands",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
@@ -603,7 +603,7 @@
   {
     "ContainingType": "ecommerce_dash_api.Controllers.SetupController",
     "Method": "GetAllCategories",
-    "RelativePath": "Setup/GetAllCategories",
+    "RelativePath": "Dashboard/Setup/GetAllCategories",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
@@ -613,7 +613,7 @@
   {
     "ContainingType": "ecommerce_dash_api.Controllers.SetupController",
     "Method": "GetAllCountries",
-    "RelativePath": "Setup/GetAllCountries",
+    "RelativePath": "Dashboard/Setup/GetAllCountries",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
@@ -623,7 +623,7 @@
   {
     "ContainingType": "ecommerce_dash_api.Controllers.SetupController",
     "Method": "GetAllCurrencies",
-    "RelativePath": "Setup/GetAllCurrencies",
+    "RelativePath": "Dashboard/Setup/GetAllCurrencies",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
@@ -633,7 +633,7 @@
   {
     "ContainingType": "ecommerce_dash_api.Controllers.SetupController",
     "Method": "GetAllSeasons",
-    "RelativePath": "Setup/GetAllSeasons",
+    "RelativePath": "Dashboard/Setup/GetAllSeasons",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
@@ -643,7 +643,7 @@
   {
     "ContainingType": "ecommerce_dash_api.Controllers.SetupController",
     "Method": "GetAllSections",
-    "RelativePath": "Setup/GetAllSections",
+    "RelativePath": "Dashboard/Setup/GetAllSections",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
@@ -653,7 +653,7 @@
   {
     "ContainingType": "ecommerce_dash_api.Controllers.SetupController",
     "Method": "GetAllShippingM",
-    "RelativePath": "Setup/GetAllShippingM",
+    "RelativePath": "Dashboard/Setup/GetAllShippingM",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
@@ -663,7 +663,7 @@
   {
     "ContainingType": "ecommerce_dash_api.Controllers.SetupController",
     "Method": "GetAllSuppliers",
-    "RelativePath": "Setup/GetAllSuppliers",
+    "RelativePath": "Dashboard/Setup/GetAllSuppliers",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
@@ -673,7 +673,7 @@
   {
     "ContainingType": "ecommerce_dash_api.Controllers.SetupController",
     "Method": "GetAllTags",
-    "RelativePath": "Setup/GetAllTags",
+    "RelativePath": "Dashboard/Setup/GetAllTags",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
@@ -683,14 +683,14 @@
   {
     "ContainingType": "ecommerce_dash_api.Controllers.SetupController",
     "Method": "UpdateAttribute",
-    "RelativePath": "Setup/UpdateAttribute",
+    "RelativePath": "Dashboard/Setup/UpdateAttribute",
     "HttpMethod": "PUT",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
         "Name": "attribute",
-        "Type": "ecommerce_dash_api.DTOS.AttributeUpdateDTO",
+        "Type": "ecommerce_dash_api.Areas.Dashboard.DTOS.AttributeUpdateDTO",
         "IsRequired": true
       }
     ],
@@ -699,7 +699,7 @@
   {
     "ContainingType": "ecommerce_dash_api.Controllers.SetupController",
     "Method": "UpdateBrand",
-    "RelativePath": "Setup/UpdateBrand",
+    "RelativePath": "Dashboard/Setup/UpdateBrand",
     "HttpMethod": "PUT",
     "IsController": true,
     "Order": 0,
@@ -735,14 +735,14 @@
   {
     "ContainingType": "ecommerce_dash_api.Controllers.SetupController",
     "Method": "UpdateCategory",
-    "RelativePath": "Setup/UpdateCategory",
+    "RelativePath": "Dashboard/Setup/UpdateCategory",
     "HttpMethod": "PUT",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
         "Name": "category",
-        "Type": "ecommerce_dash_api.DTOS.CategoryUpdateDTO",
+        "Type": "ecommerce_dash_api.Areas.Dashboard.DTOS.CategoryUpdateDTO",
         "IsRequired": true
       }
     ],
@@ -751,14 +751,14 @@
   {
     "ContainingType": "ecommerce_dash_api.Controllers.SetupController",
     "Method": "UpdateCountry",
-    "RelativePath": "Setup/UpdateCountry",
+    "RelativePath": "Dashboard/Setup/UpdateCountry",
     "HttpMethod": "PUT",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
         "Name": "country",
-        "Type": "ecommerce_dash_api.DTOS.CountryUpdateDTO",
+        "Type": "ecommerce_dash_api.Areas.Dashboard.DTOS.CountryUpdateDTO",
         "IsRequired": true
       }
     ],
@@ -767,14 +767,14 @@
   {
     "ContainingType": "ecommerce_dash_api.Controllers.SetupController",
     "Method": "UpdateCurrency",
-    "RelativePath": "Setup/UpdateCurrency",
+    "RelativePath": "Dashboard/Setup/UpdateCurrency",
     "HttpMethod": "PUT",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
         "Name": "currency",
-        "Type": "ecommerce_dash_api.DTOS.CurrencyUpdateDTO",
+        "Type": "ecommerce_dash_api.Areas.Dashboard.DTOS.CurrencyUpdateDTO",
         "IsRequired": true
       }
     ],
@@ -783,14 +783,14 @@
   {
     "ContainingType": "ecommerce_dash_api.Controllers.SetupController",
     "Method": "UpdateSeason",
-    "RelativePath": "Setup/UpdateSeason",
+    "RelativePath": "Dashboard/Setup/UpdateSeason",
     "HttpMethod": "PUT",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
         "Name": "season",
-        "Type": "ecommerce_dash_api.DTOS.SeasonUpdateDTO",
+        "Type": "ecommerce_dash_api.Areas.Dashboard.DTOS.SeasonUpdateDTO",
         "IsRequired": true
       }
     ],
@@ -799,14 +799,14 @@
   {
     "ContainingType": "ecommerce_dash_api.Controllers.SetupController",
     "Method": "UpdateSection",
-    "RelativePath": "Setup/UpdateSection",
+    "RelativePath": "Dashboard/Setup/UpdateSection",
     "HttpMethod": "PUT",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
         "Name": "section",
-        "Type": "ecommerce_dash_api.DTOS.SectionUpdateDTO",
+        "Type": "ecommerce_dash_api.Areas.Dashboard.DTOS.SectionUpdateDTO",
         "IsRequired": true
       }
     ],
@@ -815,7 +815,7 @@
   {
     "ContainingType": "ecommerce_dash_api.Controllers.SetupController",
     "Method": "UpdateShippingM",
-    "RelativePath": "Setup/UpdateShippingM",
+    "RelativePath": "Dashboard/Setup/UpdateShippingM",
     "HttpMethod": "PUT",
     "IsController": true,
     "Order": 0,
@@ -851,14 +851,14 @@
   {
     "ContainingType": "ecommerce_dash_api.Controllers.SetupController",
     "Method": "UpdateSupplier",
-    "RelativePath": "Setup/UpdateSupplier",
+    "RelativePath": "Dashboard/Setup/UpdateSupplier",
     "HttpMethod": "PUT",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
         "Name": "supplier",
-        "Type": "ecommerce_dash_api.DTOS.SupplierUpdateDTO",
+        "Type": "ecommerce_dash_api.Areas.Dashboard.DTOS.SupplierUpdateDTO",
         "IsRequired": true
       }
     ],
@@ -867,71 +867,71 @@
   {
     "ContainingType": "ecommerce_dash_api.Controllers.SetupController",
     "Method": "UpdateTag",
-    "RelativePath": "Setup/UpdateTag",
+    "RelativePath": "Dashboard/Setup/UpdateTag",
     "HttpMethod": "PUT",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
         "Name": "tag",
-        "Type": "ecommerce_dash_api.DTOS.TagUpdateDTO",
+        "Type": "ecommerce_dash_api.Areas.Dashboard.DTOS.TagUpdateDTO",
         "IsRequired": true
       }
     ],
     "ReturnTypes": []
   },
   {
-    "ContainingType": "ecommerce_dash_api.Controllers.UserController",
+    "ContainingType": "ecommerce_dash_api.Areas.Dashboard.Controllers.UserController",
     "Method": "ChangePassword",
-    "RelativePath": "User/ChangePassword",
+    "RelativePath": "Dashboard/User/ChangePassword",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
         "Name": "changePassword",
-        "Type": "ecommerce_dash_api.DTOS.ChangePasswordDTO",
+        "Type": "ecommerce_dash_api.Areas.Dashboard.DTOS.ChangePasswordDTO",
         "IsRequired": true
       }
     ],
     "ReturnTypes": []
   },
   {
-    "ContainingType": "ecommerce_dash_api.Controllers.UserController",
+    "ContainingType": "ecommerce_dash_api.Areas.Dashboard.Controllers.UserController",
     "Method": "CreateRole",
-    "RelativePath": "User/CreateRole",
+    "RelativePath": "Dashboard/User/CreateRole",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
         "Name": "role",
-        "Type": "ecommerce_dash_api.DTOS.RoleCreateDTO",
+        "Type": "ecommerce_dash_api.Areas.Dashboard.DTOS.RoleCreateDTO",
         "IsRequired": true
       }
     ],
     "ReturnTypes": []
   },
   {
-    "ContainingType": "ecommerce_dash_api.Controllers.UserController",
+    "ContainingType": "ecommerce_dash_api.Areas.Dashboard.Controllers.UserController",
     "Method": "CreateUser",
-    "RelativePath": "User/CreateUser",
+    "RelativePath": "Dashboard/User/CreateUser",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
         "Name": "user",
-        "Type": "ecommerce_dash_api.DTOS.UserCreateDTO",
+        "Type": "ecommerce_dash_api.Areas.Dashboard.DTOS.UserCreateDTO",
         "IsRequired": true
       }
     ],
     "ReturnTypes": []
   },
   {
-    "ContainingType": "ecommerce_dash_api.Controllers.UserController",
+    "ContainingType": "ecommerce_dash_api.Areas.Dashboard.Controllers.UserController",
     "Method": "DeleteRole",
-    "RelativePath": "User/DeleteRole/{id}",
+    "RelativePath": "Dashboard/User/DeleteRole/{id}",
     "HttpMethod": "DELETE",
     "IsController": true,
     "Order": 0,
@@ -945,9 +945,9 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "ecommerce_dash_api.Controllers.UserController",
+    "ContainingType": "ecommerce_dash_api.Areas.Dashboard.Controllers.UserController",
     "Method": "GetAllPermissions",
-    "RelativePath": "User/GetAllPermissions",
+    "RelativePath": "Dashboard/User/GetAllPermissions",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
@@ -955,9 +955,9 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "ecommerce_dash_api.Controllers.UserController",
+    "ContainingType": "ecommerce_dash_api.Areas.Dashboard.Controllers.UserController",
     "Method": "GetAllRolesAndPermissions",
-    "RelativePath": "User/GetAllRolesAndPermissions",
+    "RelativePath": "Dashboard/User/GetAllRolesAndPermissions",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
@@ -965,9 +965,9 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "ecommerce_dash_api.Controllers.UserController",
+    "ContainingType": "ecommerce_dash_api.Areas.Dashboard.Controllers.UserController",
     "Method": "GetAllUsersWithRoles",
-    "RelativePath": "User/GetAllUsersWithRoles",
+    "RelativePath": "Dashboard/User/GetAllUsersWithRoles",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
@@ -975,25 +975,25 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "ecommerce_dash_api.Controllers.UserController",
+    "ContainingType": "ecommerce_dash_api.Areas.Dashboard.Controllers.UserController",
     "Method": "Signin",
-    "RelativePath": "User/Signin",
+    "RelativePath": "Dashboard/User/Signin",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
         "Name": "credentials",
-        "Type": "ecommerce_dash_api.DTOS.SigninDTO",
+        "Type": "ecommerce_dash_api.Areas.Dashboard.DTOS.SigninDTO",
         "IsRequired": true
       }
     ],
     "ReturnTypes": []
   },
   {
-    "ContainingType": "ecommerce_dash_api.Controllers.UserController",
+    "ContainingType": "ecommerce_dash_api.Areas.Dashboard.Controllers.UserController",
     "Method": "Signout",
-    "RelativePath": "User/Signout",
+    "RelativePath": "Dashboard/User/Signout",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
@@ -1001,35 +1001,45 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "ecommerce_dash_api.Controllers.UserController",
+    "ContainingType": "ecommerce_dash_api.Areas.Dashboard.Controllers.UserController",
     "Method": "UpdateRole",
-    "RelativePath": "User/UpdateRole",
+    "RelativePath": "Dashboard/User/UpdateRole",
     "HttpMethod": "PUT",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
         "Name": "role",
-        "Type": "ecommerce_dash_api.DTOS.RoleUpdateDTO",
+        "Type": "ecommerce_dash_api.Areas.Dashboard.DTOS.RoleUpdateDTO",
         "IsRequired": true
       }
     ],
     "ReturnTypes": []
   },
   {
-    "ContainingType": "ecommerce_dash_api.Controllers.UserController",
+    "ContainingType": "ecommerce_dash_api.Areas.Dashboard.Controllers.UserController",
     "Method": "UpdateUser",
-    "RelativePath": "User/UpdateUser",
+    "RelativePath": "Dashboard/User/UpdateUser",
     "HttpMethod": "PUT",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
         "Name": "user",
-        "Type": "ecommerce_dash_api.DTOS.UserUpdateDTO",
+        "Type": "ecommerce_dash_api.Areas.Dashboard.DTOS.UserUpdateDTO",
         "IsRequired": true
       }
     ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ecommerce_dash_api.Areas.Shop.Controllers.PageController",
+    "Method": "GetHomePage",
+    "RelativePath": "Shop/Page/GetHomePage",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
     "ReturnTypes": []
   }
 ]

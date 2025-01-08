@@ -1,7 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using ecommerce_dash_api.Enum;
 using Microsoft.IdentityModel.Tokens;
-using MySqlX.XDevAPI.Common;
-using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -34,6 +32,8 @@ namespace ecommerce_dash_api.Utils
             {
                 claims.Add(new Claim(ClaimTypes.Role, role));
             }
+
+            claims.Add(new Claim(ClaimTypes.Role, UserTypeEnum.DashboardUser.ToString()));
 
             foreach (var permission in permissions)
             {

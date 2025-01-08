@@ -43,7 +43,7 @@ public partial class Product
 
     public virtual ICollection<ProductMedium> ProductMedia { get; set; } = new List<ProductMedium>();
 
-    public virtual ProductQuantity? ProductQuantity { get; set; }
+    public virtual ICollection<ProductQuantity> ProductQuantities { get; set; } = new List<ProductQuantity>();
 
     public virtual ICollection<ProductTag> ProductTags { get; set; } = new List<ProductTag>();
 
