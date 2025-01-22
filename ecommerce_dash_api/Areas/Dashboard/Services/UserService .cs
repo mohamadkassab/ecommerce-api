@@ -58,7 +58,7 @@ namespace ecommerce_dash_api.Areas.Dashboard.Services
         {
             var deleteRolePermissions = _userRepository.DeleteRolePermissionsAsync(updateRoleDto.Id);
             var getRole = _userRepository.GetRoleByIdAsync(updateRoleDto.Id);
-            Task.WhenAll(deleteRolePermissions, getRole);
+            await Task.WhenAll(deleteRolePermissions, getRole);
             Role role = getRole.Result;
             role.Name = updateRoleDto.Name;
             role.UpdatedBy = username;
@@ -94,7 +94,7 @@ namespace ecommerce_dash_api.Areas.Dashboard.Services
         public async Task<string> SigninAsync(SigninDTO signinDTO)
         {
             var result = await _userRepository.GetUserByUsernameAsync(signinDTO.Username);
-            if (result.user == null || !BCrypt.Net.BCrypt.Verify(signinDTO.Password, result.user.PasswordHash))
+            if (result.user == null || !BCrypt.Net.BCrypt.Verify(signinDTO.Password, result.user.PasswordHash) || !result.user.IsActive)
             {
                 return null;
             }

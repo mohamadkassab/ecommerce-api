@@ -11,13 +11,13 @@ namespace ecommerce_dash_api.Areas.Dashboard.DTOS
         public string Name
         {
             get => _name;
-            set => _name = value.Trim().ToUpper();
+            set => _name = value.Trim();
         }
 
-        public string Website { get; set; } = string.Empty;
+        public string? Website { get; set; } = string.Empty;
 
         [Required]
-        [MaxFileSize(2 * 1024 * 1024)]
+        [MaxFileSize(5 * 1024 * 1024)]
         [FileTypeValidation(FileTypeEnum.Image)]
         public IFormFile LogoFile { get; set; } = null!;
 

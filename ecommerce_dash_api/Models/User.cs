@@ -53,13 +53,13 @@ public partial class User
 
     public virtual ICollection<PaymentMethod> PaymentMethods { get; set; } = new List<PaymentMethod>();
 
+    public virtual ICollection<ProductAttribute> ProductAttributes { get; set; } = new List<ProductAttribute>();
+
     public virtual ICollection<ProductCategory> ProductCategories { get; set; } = new List<ProductCategory>();
 
     public virtual ICollection<ProductInfo> ProductInfos { get; set; } = new List<ProductInfo>();
 
     public virtual ICollection<ProductMedium> ProductMedia { get; set; } = new List<ProductMedium>();
-
-    public virtual ICollection<ProductTag> ProductTags { get; set; } = new List<ProductTag>();
 
     public virtual ICollection<Product> Products { get; set; } = new List<Product>();
 
@@ -69,15 +69,9 @@ public partial class User
 
     public virtual ICollection<Season> Seasons { get; set; } = new List<Season>();
 
-    public virtual ICollection<SectionCategory> SectionCategories { get; set; } = new List<SectionCategory>();
-
-    public virtual ICollection<Section> Sections { get; set; } = new List<Section>();
-
     public virtual ICollection<ShippingMethod> ShippingMethods { get; set; } = new List<ShippingMethod>();
 
     public virtual ICollection<Supplier> Suppliers { get; set; } = new List<Supplier>();
-
-    public virtual ICollection<Tag> Tags { get; set; } = new List<Tag>();
 
     public virtual ICollection<Transaction> Transactions { get; set; } = new List<Transaction>();
 

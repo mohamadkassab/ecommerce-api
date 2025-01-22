@@ -44,11 +44,9 @@ namespace ecommerce_dash_api.Areas.Dashboard.DTOS
         [Required]
         public List<string> Categories { get; set; } = null!;
 
-        [MaxFileSize(2 * 1024 * 1024)]
+        [MaxFileSize(5 * 1024 * 1024)]
         [FileTypeValidation(FileTypeEnum.ImageVideo)]
         public List<IFormFile>? Media { get; set; } 
 
-        [Required]
-        public List<string> Tags { get; set; } = null!;
     }
 }

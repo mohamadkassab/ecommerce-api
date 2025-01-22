@@ -54,6 +54,8 @@ public partial class EcommerceContext : DbContext
 
     public virtual DbSet<Product> Products { get; set; }
 
+    public virtual DbSet<ProductAttribute> ProductAttributes { get; set; }
+
     public virtual DbSet<ProductCategory> ProductCategories { get; set; }
 
     public virtual DbSet<ProductInfo> ProductInfos { get; set; }
@@ -62,9 +64,7 @@ public partial class EcommerceContext : DbContext
 
     public virtual DbSet<ProductQuantity> ProductQuantities { get; set; }
 
-    public virtual DbSet<ProductQuantityAttribute> ProductQuantityAttributes { get; set; }
-
-    public virtual DbSet<ProductTag> ProductTags { get; set; }
+    public virtual DbSet<ProductQuantityAttrbiute> ProductQuantityAttrbiutes { get; set; }
 
     public virtual DbSet<Role> Roles { get; set; }
 
@@ -72,15 +72,9 @@ public partial class EcommerceContext : DbContext
 
     public virtual DbSet<Season> Seasons { get; set; }
 
-    public virtual DbSet<Section> Sections { get; set; }
-
-    public virtual DbSet<SectionCategory> SectionCategories { get; set; }
-
     public virtual DbSet<ShippingMethod> ShippingMethods { get; set; }
 
     public virtual DbSet<Supplier> Suppliers { get; set; }
-
-    public virtual DbSet<Tag> Tags { get; set; }
 
     public virtual DbSet<Transaction> Transactions { get; set; }
 
@@ -750,6 +744,38 @@ public partial class EcommerceContext : DbContext
                 .HasConstraintName("product_ibfk_1");
         });
 
+        modelBuilder.Entity<ProductAttribute>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity.ToTable("product_attribute");
+
+            entity.HasIndex(e => e.UpdatedBy, "product_attribute_ibfk_1");
+
+            entity.HasIndex(e => new { e.ProductId, e.Attribute }, "unique_product_attribute").IsUnique();
+
+            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.Attribute).HasColumnName("attribute");
+            entity.Property(e => e.ProductId).HasColumnName("product_id");
+            entity.Property(e => e.UpdatedAt)
+                .ValueGeneratedOnAddOrUpdate()
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .HasColumnType("datetime")
+                .HasColumnName("updated_at");
+            entity.Property(e => e.UpdatedBy).HasColumnName("updated_by");
+
+            entity.HasOne(d => d.Product).WithMany(p => p.ProductAttributes)
+                .HasForeignKey(d => d.ProductId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("product_attribute_fk");
+
+            entity.HasOne(d => d.UpdatedByNavigation).WithMany(p => p.ProductAttributes)
+                .HasPrincipalKey(p => p.Username)
+                .HasForeignKey(d => d.UpdatedBy)
+                .OnDelete(DeleteBehavior.SetNull)
+                .HasConstraintName("product_attribute_ibfk_1");
+        });
+
         modelBuilder.Entity<ProductCategory>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PRIMARY");
@@ -878,10 +904,7 @@ public partial class EcommerceContext : DbContext
 
             entity.HasIndex(e => e.ProductId, "product_quantity_ibfk_1");
 
-            entity.HasIndex(e => e.ProductAttributeKey, "product_quantity_ibx_1");
-
             entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.ProductAttributeKey).HasColumnName("product_attribute_key");
             entity.Property(e => e.ProductId).HasColumnName("product_id");
             entity.Property(e => e.Quantity)
                 .HasDefaultValueSql("'0'")
@@ -892,13 +915,15 @@ public partial class EcommerceContext : DbContext
                 .HasConstraintName("product_quantity_ibfk_1");
         });
 
-        modelBuilder.Entity<ProductQuantityAttribute>(entity =>
+        modelBuilder.Entity<ProductQuantityAttrbiute>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PRIMARY");
 
-            entity.ToTable("product_quantity_attribute");
+            entity.ToTable("product_quantity_attrbiute");
 
-            entity.HasIndex(e => new { e.ProductQuantityId, e.Attribute }, "product_quantity_attribute_ibfk_2").IsUnique();
+            entity.HasIndex(e => new { e.ProductQuantityId, e.Attribute }, "product_quantity_id").IsUnique();
+
+            entity.HasIndex(e => e.ProductQuantityId, "product_quantity_id_2");
 
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.Attribute).HasColumnName("attribute");
@@ -907,46 +932,10 @@ public partial class EcommerceContext : DbContext
                 .HasColumnName("attribute_option");
             entity.Property(e => e.ProductQuantityId).HasColumnName("product_quantity_id");
 
-            entity.HasOne(d => d.ProductQuantity).WithMany(p => p.ProductQuantityAttributes)
+            entity.HasOne(d => d.ProductQuantity).WithMany(p => p.ProductQuantityAttrbiutes)
                 .HasForeignKey(d => d.ProductQuantityId)
-                .HasConstraintName("product_quantity_attribute_ibfk_1");
-        });
-
-        modelBuilder.Entity<ProductTag>(entity =>
-        {
-            entity.HasKey(e => e.Id).HasName("PRIMARY");
-
-            entity.ToTable("product_tag");
-
-            entity.HasIndex(e => new { e.ProductId, e.TagId }, "product_id4").IsUnique();
-
-            entity.HasIndex(e => e.UpdatedBy, "product_tag_ibfk_1");
-
-            entity.HasIndex(e => e.TagId, "product_tag_ibfk_3");
-
-            entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.ProductId).HasColumnName("product_id");
-            entity.Property(e => e.TagId).HasColumnName("tag_id");
-            entity.Property(e => e.UpdatedAt)
-                .ValueGeneratedOnAddOrUpdate()
-                .HasDefaultValueSql("CURRENT_TIMESTAMP")
-                .HasColumnType("datetime")
-                .HasColumnName("updated_at");
-            entity.Property(e => e.UpdatedBy).HasColumnName("updated_by");
-
-            entity.HasOne(d => d.Product).WithMany(p => p.ProductTags)
-                .HasForeignKey(d => d.ProductId)
-                .HasConstraintName("product_tag_ibfk_2");
-
-            entity.HasOne(d => d.Tag).WithMany(p => p.ProductTags)
-                .HasForeignKey(d => d.TagId)
-                .HasConstraintName("product_tag_ibfk_3");
-
-            entity.HasOne(d => d.UpdatedByNavigation).WithMany(p => p.ProductTags)
-                .HasPrincipalKey(p => p.Username)
-                .HasForeignKey(d => d.UpdatedBy)
-                .OnDelete(DeleteBehavior.SetNull)
-                .HasConstraintName("product_tag_ibfk_1");
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("fk_product_quantity_id");
         });
 
         modelBuilder.Entity<Role>(entity =>
@@ -1038,69 +1027,6 @@ public partial class EcommerceContext : DbContext
                 .HasConstraintName("season_ibfk_1");
         });
 
-        modelBuilder.Entity<Section>(entity =>
-        {
-            entity.HasKey(e => e.Id).HasName("PRIMARY");
-
-            entity.ToTable("section");
-
-            entity.HasIndex(e => e.Name, "name9").IsUnique();
-
-            entity.HasIndex(e => e.UpdatedBy, "section_ibfk_1");
-
-            entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.Name).HasColumnName("name");
-            entity.Property(e => e.UpdatedAt)
-                .ValueGeneratedOnAddOrUpdate()
-                .HasDefaultValueSql("CURRENT_TIMESTAMP")
-                .HasColumnType("datetime")
-                .HasColumnName("updated_at");
-            entity.Property(e => e.UpdatedBy).HasColumnName("updated_by");
-
-            entity.HasOne(d => d.UpdatedByNavigation).WithMany(p => p.Sections)
-                .HasPrincipalKey(p => p.Username)
-                .HasForeignKey(d => d.UpdatedBy)
-                .OnDelete(DeleteBehavior.SetNull)
-                .HasConstraintName("section_ibfk_1");
-        });
-
-        modelBuilder.Entity<SectionCategory>(entity =>
-        {
-            entity.HasKey(e => e.Id).HasName("PRIMARY");
-
-            entity.ToTable("section_category");
-
-            entity.HasIndex(e => e.UpdatedBy, "section_category_ibfk_1");
-
-            entity.HasIndex(e => e.CategoryId, "section_category_ibfk_3");
-
-            entity.HasIndex(e => new { e.SectionId, e.CategoryId }, "section_category_unique").IsUnique();
-
-            entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.CategoryId).HasColumnName("category_id");
-            entity.Property(e => e.SectionId).HasColumnName("section_id");
-            entity.Property(e => e.UpdatedAt)
-                .ValueGeneratedOnAddOrUpdate()
-                .HasDefaultValueSql("CURRENT_TIMESTAMP")
-                .HasColumnType("datetime")
-                .HasColumnName("updated_at");
-            entity.Property(e => e.UpdatedBy).HasColumnName("updated_by");
-
-            entity.HasOne(d => d.Category).WithMany(p => p.SectionCategories)
-                .HasForeignKey(d => d.CategoryId)
-                .HasConstraintName("section_category_ibfk_3");
-
-            entity.HasOne(d => d.Section).WithMany(p => p.SectionCategories)
-                .HasForeignKey(d => d.SectionId)
-                .HasConstraintName("section_category_ibfk_2");
-
-            entity.HasOne(d => d.UpdatedByNavigation).WithMany(p => p.SectionCategories)
-                .HasPrincipalKey(p => p.Username)
-                .HasForeignKey(d => d.UpdatedBy)
-                .OnDelete(DeleteBehavior.SetNull)
-                .HasConstraintName("section_category_ibfk_1");
-        });
-
         modelBuilder.Entity<ShippingMethod>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PRIMARY");
@@ -1182,32 +1108,6 @@ public partial class EcommerceContext : DbContext
                 .HasConstraintName("supplier_ibfk_1");
         });
 
-        modelBuilder.Entity<Tag>(entity =>
-        {
-            entity.HasKey(e => e.Id).HasName("PRIMARY");
-
-            entity.ToTable("tag");
-
-            entity.HasIndex(e => e.Name, "name12").IsUnique();
-
-            entity.HasIndex(e => e.UpdatedBy, "tag_ibfk_1");
-
-            entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.Name).HasColumnName("name");
-            entity.Property(e => e.UpdatedAt)
-                .ValueGeneratedOnAddOrUpdate()
-                .HasDefaultValueSql("CURRENT_TIMESTAMP")
-                .HasColumnType("datetime")
-                .HasColumnName("updated_at");
-            entity.Property(e => e.UpdatedBy).HasColumnName("updated_by");
-
-            entity.HasOne(d => d.UpdatedByNavigation).WithMany(p => p.Tags)
-                .HasPrincipalKey(p => p.Username)
-                .HasForeignKey(d => d.UpdatedBy)
-                .OnDelete(DeleteBehavior.SetNull)
-                .HasConstraintName("tag_ibfk_1");
-        });
-
         modelBuilder.Entity<Transaction>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PRIMARY");
@@ -1218,14 +1118,11 @@ public partial class EcommerceContext : DbContext
 
             entity.HasIndex(e => e.ProductId, "inventory_ibfk_2");
 
-            entity.HasIndex(e => e.ProductAttributeKey, "transaction_ibx_1");
-
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.Note)
                 .HasMaxLength(255)
                 .HasDefaultValueSql("''")
                 .HasColumnName("note");
-            entity.Property(e => e.ProductAttributeKey).HasColumnName("product_attribute_key");
             entity.Property(e => e.ProductId).HasColumnName("product_id");
             entity.Property(e => e.Quantity).HasColumnName("quantity");
             entity.Property(e => e.TransactionType)

@@ -9,8 +9,6 @@ public partial class Transaction
 
     public int ProductId { get; set; }
 
-    public string ProductAttributeKey { get; set; } = null!;
-
     public int Quantity { get; set; }
 
     public string TransactionType { get; set; } = null!;

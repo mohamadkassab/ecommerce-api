@@ -33,7 +33,9 @@ namespace ecommerce_dash_api.Areas.Dashboard.Services
         {
             using(var _context2 = new EcommerceContext())
             using(var _context3 = new EcommerceContext())
+            using(var _context4 = new EcommerceContext())
             {
+                var product_attributes = new List<ProductAttribute>();
                 var supplierTask = _setupRepository.GetSupplierByNameAsync(productDTO.Supplier);
                 var brandTask = _context2.Brands.FirstOrDefaultAsync(i => i.Name == productDTO.Brand);
                 var seasonTask = _context3.Seasons.FirstOrDefaultAsync(i => i.Name == productDTO.Season);
@@ -60,7 +62,18 @@ namespace ecommerce_dash_api.Areas.Dashboard.Services
                     UpdatedBy = username
                 };
 
+                foreach( var attribute in productDTO.attributes)
+                {
+                    product_attributes.Add(new ProductAttribute
+                    {
+                        Product = product,
+                        Attribute = attribute,
+                        UpdatedBy= username,
+
+                    });
+                }
                 await _productRepository.CreateProductAsync(product);
+                await _productRepository.CreateProductAttributeRangeAsync(product_attributes);
                 await _context.SaveChangesAsync();
                 return true;
             }
@@ -71,12 +84,14 @@ namespace ecommerce_dash_api.Areas.Dashboard.Services
             using (var _context3 = new EcommerceContext())
             using (var _context4 = new EcommerceContext())
             {
+                var product_attributes = new List<ProductAttribute>();
                 var productTask = _productRepository.GetProductByIdAsync(productDTO.Id);
                 var supplierTask = _context2.Suppliers.FirstOrDefaultAsync(i => i.Name == productDTO.Supplier); 
                 var brandTask = _context3.Brands.FirstOrDefaultAsync(i => i.Name == productDTO.Brand);
                 var seasonTask = _context4.Seasons.FirstOrDefaultAsync(i => i.Name == productDTO.Season);
 
                 await Task.WhenAll(productTask, supplierTask, brandTask, seasonTask);
+                await _productRepository.DeleteProductAttributeByProductIdAsync(productDTO.Id);
 
                 var product = productTask.Result;
                 var supplier = supplierTask.Result;
@@ -95,7 +110,20 @@ namespace ecommerce_dash_api.Areas.Dashboard.Services
                 product.SeasonId = season.Id;
                 product.IsActive = productDTO.IsActive;
                 product.UpdatedBy = username;
+
+                foreach (var attribute in productDTO.attributes)
+                {
+                    product_attributes.Add(new ProductAttribute
+                    {
+                        Product = product,
+                        Attribute = attribute,
+                        UpdatedBy = username,
+
+                    });
+                }
+
                 await _productRepository.UpdateProductAsync(product);
+                await _productRepository.CreateProductAttributeRangeAsync(product_attributes);
                 await _context.SaveChangesAsync();
                 return true;
             }
@@ -121,20 +149,20 @@ namespace ecommerce_dash_api.Areas.Dashboard.Services
         }
         public async Task<bool> CreateProductContentAsync(ProductContentCreateDTO productDTO, string? username)
         {
-            var product =  _productRepository.GetProductByIdAsync(productDTO.ProductId);
-            var productInfoExist =  _productRepository.GetProductInfoByProductIdAsync(productDTO.ProductId);
-            Task.WhenAll(product, productInfoExist);
-            if (product == null ) 
-            {
-                throw new ArgumentException("Product doesn't exist.");
-            }
-            if(productInfoExist != null)
-            {
-                throw new ArgumentException("Product content already exist you can update it.");
-            }
             using (var _context2 = new EcommerceContext())
-            using (var _context3 = new EcommerceContext())
             {
+                var product =  _productRepository.GetProductByIdAsync(productDTO.ProductId);
+                var productInfoExist = _context2.ProductInfos.FirstOrDefaultAsync(i => i.ProductId == productDTO.ProductId);
+                await Task.WhenAll(product, productInfoExist);
+                if (product.Result == null ) 
+                {
+                    throw new ArgumentException("Product doesn't exist");
+                }
+                if(productInfoExist.Result != null)
+                {
+                    throw new ArgumentException("Product content already exist you can update it");
+                }
+
                 var productInfo = new ProductInfo
                 {
                     ProductId = productDTO.ProductId,
@@ -147,13 +175,7 @@ namespace ecommerce_dash_api.Areas.Dashboard.Services
                     UpdatedBy = username
                 };
 
-                var categoryIdsTask = _context2.Categories
-                    .Where(c => productDTO.Categories.Contains(c.Name))
-                    .ToDictionaryAsync(c => c.Name, c => c.Id);
 
-                var tagIdsTask = _context3.Tags
-                    .Where(c => productDTO.Tags.Contains(c.Name))
-                    .ToDictionaryAsync(c => c.Name, c => c.Id);
 
                 var productMediaTasks = productDTO.Media.Select(file =>
                 {
@@ -196,41 +218,35 @@ namespace ecommerce_dash_api.Areas.Dashboard.Services
                     });
                 }).ToList();
 
-                await Task.WhenAll(categoryIdsTask, tagIdsTask);
-                var categoryIds = await categoryIdsTask;
-                var tagIds = await tagIdsTask;
+                var categoryNames = productDTO.Categories[0]
+                    .Split(',', StringSplitOptions.RemoveEmptyEntries)
+                    .Select(name => name.Trim())
+                    .ToList();
+
+                var categoryIds = await _context2.Categories
+                    .Where(c => categoryNames.Contains(c.Name))
+                    .Select(c => c.Id)
+                    .ToListAsync();
 
                 var productCategoriesTask = Task.Run(() =>
-                    productDTO.Categories
-                    .Where(category => categoryIds.TryGetValue(category, out var categoryId))
-                    .Select(category => new ProductCategory
-                    {
-                        ProductId = productDTO.ProductId,
-                        CategoryId = categoryIds[category],
-                        UpdatedBy = username
-                    })
-                    .ToList()
+                    categoryIds
+                        .Select(categoryId => new ProductCategory
+                        {
+                            ProductId = productDTO.ProductId,
+                            CategoryId = categoryId,
+                            UpdatedBy = username
+                        })
+                        .ToList()
                 );
-                var productTagsTask = Task.Run(() =>
-                    productDTO.Tags
-                    .Where(tag => tagIds.TryGetValue(tag, out var tagId))
-                    .Select(tag => new ProductTag
-                    {
-                        ProductId = productDTO.ProductId,
-                        TagId = tagIds[tag],
-                        UpdatedBy = username
-                    })
-                    .ToList()
-                );
+
+
                 var productCategories = await productCategoriesTask;
-                var productTags = await productTagsTask;
                 var productMedia = await Task.WhenAll(productMediaTasks);
 
                 var productInfoTask = _productRepository.CreateProductInfoAsync(productInfo);
                 var productCategoryTask = _productRepository.CreateProductCategoryRangeAsync(productCategories);
-                var productTagTask = _productRepository.CreateProductTagRangeAsync(productTags);
                 var productMediaDbTask = _productRepository.CreateProductMediaRangeAsync(productMedia);
-                await Task.WhenAll(productInfoTask, productCategoryTask, productTagTask, productMediaDbTask);
+                await Task.WhenAll(productInfoTask, productCategoryTask, productMediaDbTask);
 
                 await _context.SaveChangesAsync();
                 return true;
@@ -246,7 +262,6 @@ namespace ecommerce_dash_api.Areas.Dashboard.Services
                 throw new ArgumentException("Product content doesn't exist create a new one.");
             }
 
-            var deleteTagsTask = _productRepository.DeleteProductTagsByProductIdAsync(productDTO.ProductId);
             var deleteCategoriesTask = _productRepository.DeleteProductCategoriesByProductIdAsync(productDTO.ProductId);
             if (productDTO?.Media != null)
             {
@@ -298,11 +313,10 @@ namespace ecommerce_dash_api.Areas.Dashboard.Services
                     });
                 }).ToList();
 
-                await Task.WhenAll(deleteTagsTask, deleteCategoriesTask, deleteMediaTask);
+                await Task.WhenAll(deleteCategoriesTask, deleteMediaTask);
             }
            
             using (var _context2 = new EcommerceContext())
-            using (var _context3 = new EcommerceContext())
             {
                 productInfo.ProductId = productDTO.ProductId;
                 productInfo.ShortDescription = productDTO.ShortDescription;
@@ -313,50 +327,33 @@ namespace ecommerce_dash_api.Areas.Dashboard.Services
                 productInfo.MaxOrder = productDTO.MaxOrder;
                 productInfo.UpdatedBy = username;
 
-                var categoryIdsTask = _context2.Categories
-                    .Where(c => productDTO.Categories.Contains(c.Name))
-                    .ToDictionaryAsync(c => c.Name, c => c.Id);
+                var categoryNames = productDTO.Categories[0]
+                    .Split(',', StringSplitOptions.RemoveEmptyEntries)
+                    .Select(name => name.Trim()) 
+                    .ToList();
 
-                var tagIdsTask = _context3.Tags
-                    .Where(c => productDTO.Tags.Contains(c.Name))
-                    .ToDictionaryAsync(c => c.Name, c => c.Id);
-
-         
-                await Task.WhenAll(categoryIdsTask, tagIdsTask);
-                var categoryIds = await categoryIdsTask;
-                var tagIds = await tagIdsTask;
+                var categoryIds = await _context2.Categories
+                    .Where(c => categoryNames.Contains(c.Name))
+                    .Select(c => c.Id)
+                    .ToListAsync();
 
                 var productCategoriesTask = Task.Run(() =>
-                    productDTO.Categories
-                    .Where(category => categoryIds.TryGetValue(category, out var categoryId))
-                    .Select(category => new ProductCategory
-                    {
-                        ProductId = productDTO.ProductId,
-                        CategoryId = categoryIds[category],
-                        UpdatedBy = username
-                    })
-                    .ToList()
-                );
-                var productTagsTask = Task.Run(() =>
-                    productDTO.Tags
-                    .Where(tag => tagIds.TryGetValue(tag, out var tagId))
-                    .Select(tag => new ProductTag
-                    {
-                        ProductId = productDTO.ProductId,
-                        TagId = tagIds[tag],
-                        UpdatedBy = username
-                    })
-                    .ToList()
+                    categoryIds
+                        .Select(categoryId => new ProductCategory
+                        {
+                            ProductId = productDTO.ProductId,
+                            CategoryId = categoryId,
+                            UpdatedBy = username
+                        })
+                        .ToList()
                 );
                 var productCategories = await productCategoriesTask;
-                var productTags = await productTagsTask;
                 var productMedia = await Task.WhenAll(productMediaTasks);
 
                 var productInfoTask = _productRepository.UpdateProductInfoAsync(productInfo);
                 var productCategoryTask = _productRepository.CreateProductCategoryRangeAsync(productCategories);
-                var productTagTask = _productRepository.CreateProductTagRangeAsync(productTags);
                 var productMediaDbTask = _productRepository.CreateProductMediaRangeAsync(productMedia);
-                await Task.WhenAll(productInfoTask, productCategoryTask, productTagTask, productMediaDbTask);
+                await Task.WhenAll(productInfoTask, productCategoryTask, productMediaDbTask);
 
                 await _context.SaveChangesAsync();
                 return true;
@@ -373,28 +370,120 @@ namespace ecommerce_dash_api.Areas.Dashboard.Services
         }
         public async Task<bool> CreateTransactionAsync(TransactionCreateDTO transactionDTO, string? username)
         {
-            Transaction transaction = new Transaction
+            using (var _context2 = new EcommerceContext()) 
             {
-                ProductId = transactionDTO.ProductId,
-                Quantity = transactionDTO.Quantity,
-                TransactionType = transactionDTO.TransactionType.ToString(),
-                Note = transactionDTO.Note,
-                UpdatedBy = username,
-                TransactionAttributes = new List<TransactionAttribute>(),
-            };
-            foreach (var item in transactionDTO.transactionAttributes) 
-            {
-                transaction.TransactionAttributes.Add(new TransactionAttribute
-                {
-                    Attribute = item.Name,
-                    AttributeOption = item.Option,
-                });
-            }
-            transaction.ProductAttributeKey = await Helpers.GenerateProductAttributeKeyAsync(transaction.ProductId, transaction.TransactionAttributes);
+                int transactionValue = 0;
+                int matchedProductQuantityId = 0;
+                var attributesBluePrintTask = _context.ProductAttributes.Where(i => i.ProductId == transactionDTO.ProductId).Select(i => i.Attribute).ToListAsync();
+                var productQuantityTask = (from pq in _context2.ProductQuantities
+                                           where pq.ProductId == transactionDTO.ProductId
+                                           join pqa in _context2.ProductQuantityAttrbiutes on pq.Id equals pqa.ProductQuantityId
+                                           group pqa by pq.Id into groupedPqa
+                                           select new
+                                           {
+                                               id = groupedPqa.Key,
+                                               productQuantityAttributes = groupedPqa.ToList()
+                                           }).ToListAsync();
 
-            await _productRepository.CreateTransactionAsync(transaction);
-            await _context.SaveChangesAsync();
-            return true;
+                Transaction transaction = new Transaction
+                {
+                    ProductId = transactionDTO.ProductId,
+                    Quantity = transactionDTO.Quantity,
+                    TransactionType = transactionDTO.TransactionType.ToString(),
+                    Note = transactionDTO.Note,
+                    UpdatedBy = username,
+                    TransactionAttributes = new List<TransactionAttribute>(),
+                };
+
+                await Task.WhenAll(attributesBluePrintTask, productQuantityTask);
+                var attributesBluePrint = attributesBluePrintTask.Result;
+                var productQuantity = productQuantityTask.Result;
+
+                var transactionAttributesTask = transactionDTO.transactionAttributes.Select(async item =>
+                {
+                    if (!attributesBluePrint.Contains(item.Name))
+                    {
+                        throw new InvalidOperationException("Please verify the attributes");
+                    }
+                    transaction.TransactionAttributes.Add(new TransactionAttribute
+                    {
+                        Attribute = item.Name,
+                        AttributeOption = item.Option,
+                    });
+                });
+                var currentTransactionAttributes = transactionDTO.transactionAttributes.Select(i => i).OrderBy(i => i.Name).ToList();
+                foreach (var item in productQuantity)
+                {
+                    int i = 0;
+                    int matchingElements = 0;
+                    var orderedProductQuantityAttributes = item?.productQuantityAttributes.OrderBy(i => i.Attribute).ToList();
+
+                    if (currentTransactionAttributes.Count == 0 && orderedProductQuantityAttributes?.Count == 0)
+                    {
+                        matchedProductQuantityId = item.id;
+                    }
+
+                    if (currentTransactionAttributes.Count == orderedProductQuantityAttributes?.Count)
+                    {
+                        bool allMatch = true;
+
+                        foreach (var productQuantityAttribute in orderedProductQuantityAttributes)
+                        {
+                            if (productQuantityAttribute.Attribute != currentTransactionAttributes[i].Name ||
+                                productQuantityAttribute.AttributeOption != currentTransactionAttributes[i].Option)
+                            {
+                                allMatch = false;
+                                break;
+                            }
+                            matchingElements++;
+                            i++;
+                        }
+
+                        if (allMatch)
+                        {
+                            matchedProductQuantityId = item.id;
+                        }
+                    }
+                }
+
+                if ((transactionDTO.TransactionType.ToString() == TransactionTypeEnum.Return.ToString()) || (transactionDTO.TransactionType.ToString() == TransactionTypeEnum.Restock.ToString()))
+                {
+                    transactionValue = transactionDTO.Quantity;
+                }
+                else
+                {
+                    transactionValue = transactionDTO.Quantity * -1;
+                }
+
+                if (matchedProductQuantityId == 0) 
+                {
+                    var newProductQuantity = new ProductQuantity();
+                    newProductQuantity.ProductId = transactionDTO.ProductId;
+                    newProductQuantity.Quantity = transactionDTO.Quantity;
+                    newProductQuantity.ProductQuantityAttrbiutes = new List<ProductQuantityAttrbiute>();
+
+                    foreach (var transactionAttribute in transactionDTO.transactionAttributes)
+                    {
+                        var productQuantityAttribute = new ProductQuantityAttrbiute
+                        {
+                            Attribute = transactionAttribute.Name,
+                            AttributeOption = transactionAttribute.Option
+                        };
+                        newProductQuantity.ProductQuantityAttrbiutes.Add(productQuantityAttribute);
+                    }
+                    await _productRepository.CreateProductQuantityAsync(newProductQuantity);
+                }
+                else
+                {
+                    var productQuantityExisting = await _context.ProductQuantities.Where(pq => pq.Id == matchedProductQuantityId).FirstOrDefaultAsync();
+                    productQuantityExisting.Quantity += transactionValue;
+                    await _productRepository.UpdateProductQuantityAsync(productQuantityExisting);
+                }
+                await Task.WhenAll(transactionAttributesTask);
+                await _productRepository.CreateTransactionAsync(transaction);
+                await _context.SaveChangesAsync();
+                return true;
+            }
         }
     }
 }

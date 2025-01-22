@@ -9,7 +9,7 @@ namespace ecommerce_dash_api.Areas.Dashboard.DTOS
         public string Name
         {
             get => _name;
-            set => _name = value.Trim().ToUpper();
+            set => _name = value.Trim();
         }
 
         private string _symbol = null!;
@@ -17,7 +17,7 @@ namespace ecommerce_dash_api.Areas.Dashboard.DTOS
         public string Symbol
         {
             get => _symbol;
-            set => _symbol = value.Trim().ToUpper();
+            set => _symbol = value.Trim();
         }
 
         [Required]

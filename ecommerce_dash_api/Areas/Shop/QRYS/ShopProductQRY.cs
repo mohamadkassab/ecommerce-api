@@ -1,10 +1,11 @@
-﻿namespace ecommerce_dash_api.Areas.Shop.QRYS
+﻿using System.Text.Json.Serialization;
+
+namespace ecommerce_dash_api.Areas.Shop.QRYS
 {
     public class ShopProductQRY
     {
         public int Id { get; set; }
         public string Name { get; set; } = null!;
-        public decimal Cost { get; set; }
         public decimal Price { get; set; }
         public decimal Discount { get; set; }
         public string Note { get; set; } = string.Empty;
@@ -19,7 +20,8 @@
         public short MinOrder { get; set; }
         public short MaxOrder { get; set; }
         public byte[]? Media { get; set; }
-        public string MediaUrl { get; set; } = string.Empty;
-        public int Quantity { get; set; }
+
+        [JsonIgnore]
+        public string? MediaUrl { get; set; } = string.Empty;
     }
 }

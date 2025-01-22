@@ -7,18 +7,33 @@ namespace ecommerce_dash_api.Areas.Shop.Services
 {
     public class PageService : IPageService
     {
-        private readonly IShopProductRepository _shopProductRepository;
-        public PageService(IShopProductRepository shopProductRepository) 
+        private readonly IPageRepository _pageRepository;
+        public PageService(IPageRepository pageRepository) 
         {
-            _shopProductRepository = shopProductRepository;
+            _pageRepository = pageRepository;
         }
 
-        public async Task<HomePageQRY> GetHomePageAsync()
+        //+------------------------------------------------------------------+
+        //| Home                                            
+        //+------------------------------------------------------------------+
+        public async Task<ProductsAndBrandsQRY> GetHomePageProductsAndBrandsAsync(int pageNbr, int pageSize)
         {
-            var result = new HomePageQRY();
-            result.SectionImage = await Helpers.GetFileByUrlAsync("C:\\Users\\mhmdk\\Desktop\\Projects\\ecommerce-api\\ecommerce_dash_api\\wwwroot\\images\\section-main-images\\home\\home.jpg");
-            List<CategoryProductQRY> products = await _shopProductRepository.GetProductsByCategoryAndSize();
-            result.categoryProducts = products;
+            var result = new ProductsAndBrandsQRY();
+            var taskGetProductsByCategoryAndSize = _pageRepository.GetAllProductsByCategoryAndSize(pageNbr, pageSize);
+            var taskGetAllBrands = _pageRepository.GetAllBrands();
+            await Task.WhenAll(taskGetProductsByCategoryAndSize, taskGetAllBrands);
+            result.categories = taskGetProductsByCategoryAndSize.Result;
+            result.brands = taskGetAllBrands.Result;
+            return result;
+        }
+
+        //+------------------------------------------------------------------+
+        //| Products Search                                            
+        //+------------------------------------------------------------------+
+        public async Task<List<ShopProductQRY>> GetProductsByCategoryAndPageAsync(int categoryId, int pageNbr, int pageSize)
+        {
+            var result = new List<ShopProductQRY>();
+            result = await _pageRepository.GetProductsByCategoryAndSize(categoryId, pageNbr, pageSize);
             return result;
         }
     }

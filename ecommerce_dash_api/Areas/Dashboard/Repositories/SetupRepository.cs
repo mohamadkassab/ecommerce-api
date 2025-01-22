@@ -40,6 +40,15 @@ namespace ecommerce_dash_api.Areas.Dashboard.Repositories
 
             return result;
         }
+        public async Task<List<string>> GetAllAttributesAsync()
+        {
+            var result = await _context.Attributes
+                .AsNoTracking()
+                .Select(i => i.Name)
+                .ToListAsync();
+
+            return result;
+        }
         public async Task CreateAttributeAsync(Attribute attribute)
         {
             await _context.Attributes.AddAsync(attribute);
@@ -279,59 +288,6 @@ namespace ecommerce_dash_api.Areas.Dashboard.Repositories
         }
 
         //+------------------------------------------------------------------+
-        //| Section                                            
-        //+------------------------------------------------------------------+
-        public async Task<Section?> GetSectionByIdAsync(int id)
-        {
-            return await _context.Sections.FirstOrDefaultAsync(i => i.Id == id);
-        }
-        public async Task<List<SectionQRY>> GetAllSectionsWithCategoriesAsync()
-        {
-            var result = await _context.Sections
-            .AsNoTracking()
-            .Include(i => i.SectionCategories)  
-                .ThenInclude(sc => sc.Category)  
-            .Select(i => new SectionQRY
-            {
-                Id = i.Id,
-                Name = i.Name,
-                UpdatedAt = i.UpdatedAt,
-                UpdatedBy = i.UpdatedBy,
-                Categories = i.SectionCategories.Select(sc => new CategoryQRY
-                {
-                    Id = sc.Category.Id,
-                    Name = sc.Category.Name
-                }).ToList()
-            })
-            .ToListAsync();
-
-            return result;
-        }
-        public async Task CreateSectionAsync(Section section)
-        {
-            await _context.Sections.AddAsync(section);
-        }
-        public Task UpdateSectionAsync(Section section)
-        {
-            _context.Sections.Update(section);
-            return Task.CompletedTask;
-        }
-        public Task DeleteSectionAsync(Section section)
-        {
-            _context.Sections.Remove(section);
-            return Task.CompletedTask;
-        }
-        public Task DeleteSectionCategoriesBySectionIdAsync(int sectionId)
-        {
-            var records = _context.SectionCategories.Where(i => i.SectionId == sectionId).ToList();
-            if (records.Any())
-            {
-                _context.SectionCategories.RemoveRange(records);
-            }
-            return Task.CompletedTask;
-        }
-
-        //+------------------------------------------------------------------+
         //| Shipping method                                            
         //+------------------------------------------------------------------+
         public async Task<List<ShippingMQRY>> GetAllShippingMAsync()
@@ -423,43 +379,6 @@ namespace ecommerce_dash_api.Areas.Dashboard.Repositories
         public Task UpdateSupplierAsync(Supplier supplier)
         {
             _context.Suppliers.Update(supplier);
-            return Task.CompletedTask;
-        }
-
-        //+------------------------------------------------------------------+
-        //| Tag                                            
-        //+------------------------------------------------------------------+
-        public async Task<Tag?> GetTagByIdAsync(int id)
-        {
-            return await _context.Tags.FirstOrDefaultAsync(i => i.Id == id);
-        }
-        public async Task<List<TagQRY>> GetAllTagsAsync()
-        {
-            var result = await _context.Tags
-            .AsNoTracking()
-             .Select(i => new TagQRY
-             {
-                 Id = i.Id,
-                 Name = i.Name,
-                 UpdatedAt = i.UpdatedAt,
-                 UpdatedBy = i.UpdatedBy,
-             })
-             .ToListAsync();
-
-            return result;
-        }
-        public async Task CreateTagAsync(Tag tag)
-        {
-            await _context.Tags.AddAsync(tag);
-        }
-        public Task UpdateTagAsync(Tag tag)
-        {
-            _context.Tags.Update(tag);
-            return Task.CompletedTask;
-        }
-        public Task DeleteTagAsync(Tag tag)
-        {
-            _context.Tags.Remove(tag);
             return Task.CompletedTask;
         }
 

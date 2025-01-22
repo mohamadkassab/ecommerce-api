@@ -9,6 +9,7 @@ namespace ecommerce_dash_api.Areas.Dashboard.Interfaces
         //| Attribute                                            
         //+------------------------------------------------------------------+
         Task<List<AttributeQRY>> GetAllAttributesWithOptionsAsync();
+        Task<List<string>> GetAllAttributesAsync();
         Task<bool> CreateAttributeAsync(AttributeCreateDTO attributeDTO, string? username);
         Task<bool> UpdateAttributeAsync(AttributeUpdateDTO attributeDTO, string? username);
         Task<bool> DeleteAttributeAsync(int id);
@@ -51,14 +52,6 @@ namespace ecommerce_dash_api.Areas.Dashboard.Interfaces
         Task<bool> UpdateSeasonAsync(SeasonUpdateDTO seasonDTO, string? username);
 
         //+------------------------------------------------------------------+
-        //| Section                                            
-        //+------------------------------------------------------------------+
-        Task<List<SectionQRY>> GetAllSectionsWithCategoriesAsync();
-        Task<bool> CreateSectionAsync(SectionCreateDTO sectionDTO, string? username);
-        Task<bool> UpdateSectionAsync(SectionUpdateDTO sectionDTO, string? username);
-        Task<bool> DeleteSectionAsync(int id);
-
-        //+------------------------------------------------------------------+
         //| Shipping method                                            
         //+------------------------------------------------------------------+
         Task<List<ShippingMQRY>> GetAllShippingMAsync();
@@ -71,13 +64,5 @@ namespace ecommerce_dash_api.Areas.Dashboard.Interfaces
         Task<List<SupplierQRY>> GetAllSuppliersAsync();
         Task<bool> CreateSupplierAsync(SupplierCreateDTO supplierDTO, string? username);
         Task<bool> UpdateSupplierAsync(SupplierUpdateDTO supplierDTO, string? username);
-
-        //+------------------------------------------------------------------+
-        //| Tag                                            
-        //+------------------------------------------------------------------+
-        Task<List<TagQRY>> GetAllTagsAsync();
-        Task<bool> CreateTagAsync(TagCreateDTO tagDTO, string? username);
-        Task<bool> UpdateTagAsync(TagUpdateDTO tagDTO, string? username);
-        Task<bool> DeleteTagAsync(int id);
     }
 }

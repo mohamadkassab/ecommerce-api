@@ -20,9 +20,9 @@ namespace ecommerce_dash_api.Utils
             services.AddScoped<ISetupRepository, SetupRepository>();
             services.AddScoped<ISetupService, SetupService>();
             services.AddScoped<IProductRepository, ProductRepository>();
-            services.AddScoped<IProductService, ProductService>();
-            services.AddScoped<IShopProductRepository, ShopProductRepository>();
-            services.AddScoped<IPageService, PageService>();
+            services.AddScoped<Areas.Dashboard.Interfaces.IProductService, Areas.Dashboard.Services.ProductService>();
+            services.AddScoped<IPageRepository, PageRepository>();
+            services.AddScoped<Areas.Shop.Interfaces.IPageService, Areas.Shop.Services.PageService>();
             services.AddSingleton<JwtToken>();
             return services;
         }

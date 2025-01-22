@@ -123,10 +123,63 @@
         }
       }
     },
-    "/Shop/Page/GetHomePage": {
+    "/Shop/Page/GetHomePageAssets": {
       "get": {
         "tags": [
           "Page"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/Shop/Page/GetHomePageProductsAndBrands": {
+      "get": {
+        "tags": [
+          "Page"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/Shop/Page/GetProductsByCategoryAndPage/{categoryId}/{pageNbr}/{pageSize}": {
+      "get": {
+        "tags": [
+          "Page"
+        ],
+        "parameters": [
+          {
+            "name": "categoryId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "pageNbr",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
         ],
         "responses": {
           "200": {
@@ -262,7 +315,6 @@
                   "ProductId",
                   "ShippingWeight",
                   "ShortDescription",
-                  "Tags",
                   "Weight"
                 ],
                 "type": "object",
@@ -309,12 +361,6 @@
                       "type": "string",
                       "format": "binary"
                     }
-                  },
-                  "Tags": {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
                   }
                 }
               },
@@ -344,9 +390,6 @@
                   "style": "form"
                 },
                 "Media": {
-                  "style": "form"
-                },
-                "Tags": {
                   "style": "form"
                 }
               }
@@ -378,7 +421,6 @@
                   "ProductId",
                   "ShippingWeight",
                   "ShortDescription",
-                  "Tags",
                   "Weight"
                 ],
                 "type": "object",
@@ -429,12 +471,6 @@
                       "type": "string",
                       "format": "binary"
                     }
-                  },
-                  "Tags": {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
                   }
                 }
               },
@@ -467,9 +503,6 @@
                   "style": "form"
                 },
                 "Media": {
-                  "style": "form"
-                },
-                "Tags": {
                   "style": "form"
                 }
               }
@@ -558,6 +591,18 @@
       }
     },
     "/Dashboard/Setup/GetAllAttributesWithOptions": {
+      "get": {
+        "tags": [
+          "Setup"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/Dashboard/Setup/GetAllAttributes": {
       "get": {
         "tags": [
           "Setup"
@@ -1129,103 +1174,6 @@
         }
       }
     },
-    "/Dashboard/Setup/GetAllSections": {
-      "get": {
-        "tags": [
-          "Setup"
-        ],
-        "responses": {
-          "200": {
-            "description": "Success"
-          }
-        }
-      }
-    },
-    "/Dashboard/Setup/CreateSection": {
-      "post": {
-        "tags": [
-          "Setup"
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/SectionCreateDTO"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/SectionCreateDTO"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/SectionCreateDTO"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Success"
-          }
-        }
-      }
-    },
-    "/Dashboard/Setup/UpdateSection": {
-      "put": {
-        "tags": [
-          "Setup"
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/SectionUpdateDTO"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/SectionUpdateDTO"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/SectionUpdateDTO"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Success"
-          }
-        }
-      }
-    },
-    "/Dashboard/Setup/DeleteSection/{id}": {
-      "delete": {
-        "tags": [
-          "Setup"
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Success"
-          }
-        }
-      }
-    },
     "/Dashboard/Setup/GetAllShippingM": {
       "get": {
         "tags": [
@@ -1428,103 +1376,6 @@
             }
           }
         },
-        "responses": {
-          "200": {
-            "description": "Success"
-          }
-        }
-      }
-    },
-    "/Dashboard/Setup/GetAllTags": {
-      "get": {
-        "tags": [
-          "Setup"
-        ],
-        "responses": {
-          "200": {
-            "description": "Success"
-          }
-        }
-      }
-    },
-    "/Dashboard/Setup/CreateTag": {
-      "post": {
-        "tags": [
-          "Setup"
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/TagCreateDTO"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/TagCreateDTO"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/TagCreateDTO"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Success"
-          }
-        }
-      }
-    },
-    "/Dashboard/Setup/UpdateTag": {
-      "put": {
-        "tags": [
-          "Setup"
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/TagUpdateDTO"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/TagUpdateDTO"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/TagUpdateDTO"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Success"
-          }
-        }
-      }
-    },
-    "/Dashboard/Setup/DeleteTag/{id}": {
-      "delete": {
-        "tags": [
-          "Setup"
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "Success"
@@ -2218,8 +2069,17 @@
             "format": "double"
           },
           "discount": {
+            "maximum": 99.99,
+            "minimum": 0,
             "type": "number",
             "format": "double"
+          },
+          "attributes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
           },
           "supplier": {
             "minLength": 1,
@@ -2288,8 +2148,17 @@
             "format": "double"
           },
           "discount": {
+            "maximum": 99.99,
+            "minimum": 0,
             "type": "number",
             "format": "double"
+          },
+          "attributes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
           },
           "supplier": {
             "minLength": 1,
@@ -2397,55 +2266,6 @@
             "maxLength": 255,
             "minLength": 1,
             "type": "string"
-          }
-        },
-        "additionalProperties": false
-      },
-      "SectionCreateDTO": {
-        "required": [
-          "name"
-        ],
-        "type": "object",
-        "properties": {
-          "name": {
-            "maxLength": 255,
-            "minLength": 1,
-            "type": "string"
-          },
-          "categories": {
-            "type": "array",
-            "items": {
-              "type": "integer",
-              "format": "int32"
-            },
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "SectionUpdateDTO": {
-        "required": [
-          "id",
-          "name"
-        ],
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "name": {
-            "maxLength": 255,
-            "minLength": 1,
-            "type": "string"
-          },
-          "categories": {
-            "type": "array",
-            "items": {
-              "type": "integer",
-              "format": "int32"
-            },
-            "nullable": true
           }
         },
         "additionalProperties": false
@@ -2562,39 +2382,6 @@
             "nullable": true
           },
           "country": {
-            "minLength": 1,
-            "type": "string"
-          }
-        },
-        "additionalProperties": false
-      },
-      "TagCreateDTO": {
-        "required": [
-          "name"
-        ],
-        "type": "object",
-        "properties": {
-          "name": {
-            "maxLength": 255,
-            "minLength": 1,
-            "type": "string"
-          }
-        },
-        "additionalProperties": false
-      },
-      "TagUpdateDTO": {
-        "required": [
-          "id",
-          "name"
-        ],
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "name": {
-            "maxLength": 255,
             "minLength": 1,
             "type": "string"
           }

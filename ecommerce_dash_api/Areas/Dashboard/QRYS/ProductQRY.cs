@@ -8,6 +8,7 @@
         public decimal Cost { get; set; }
         public decimal Price { get; set; }
         public decimal Discount { get; set; }
+        public List<string> attributes { get; set; } = new List<string>();
         public string Supplier { get; set; } = null!;
         public string Brand { get; set; } = null!;
         public int Year { get; set; }

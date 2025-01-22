@@ -11,7 +11,9 @@ namespace ecommerce_dash_api.Areas.Dashboard.Interfaces
         Task<Product?> GetProductByIdAsync(int id);
         Task<List<ProductQRY>> GetAllProductsAsync();
         Task CreateProductAsync(Product product);
+        Task CreateProductAttributeRangeAsync(List<ProductAttribute> productAttributes);
         Task UpdateProductAsync(Product product);
+        Task DeleteProductAttributeByProductIdAsync(int productId);
 
         //+------------------------------------------------------------------+
         //| Product Content                                         
@@ -45,18 +47,16 @@ namespace ecommerce_dash_api.Areas.Dashboard.Interfaces
         Task DeleteProductMediaByProductIdAsync(int productId);
 
         //+------------------------------------------------------------------+
-        //| Product Tag                                           
+        //| Product Quantity                                           
         //+------------------------------------------------------------------+
-        Task<ProductTag?> GetProductTagByIdAsync(int id);
-        Task CreateProductTagAsync(ProductTag productTag);
-        Task CreateProductTagRangeAsync(List<ProductTag> productTagRange);
-        Task UpdateProductTagAsync(ProductTag productTag);
-        Task DeleteProductTagsByProductIdAsync(int productId);
+        Task CreateProductQuantityAsync(ProductQuantity productQuantity);
+        Task UpdateProductQuantityAsync(ProductQuantity productQuantity);
 
         //+------------------------------------------------------------------+
         //| Transaction                                          
         //+------------------------------------------------------------------+
         Task<List<TransactionQRY>> GetAllTransactionsAsync();
         Task CreateTransactionAsync(Transaction transaction);
+        Task CreateTransactionAttributesAsync(List<TransactionAttribute> transactionAttributes);
     }
 }

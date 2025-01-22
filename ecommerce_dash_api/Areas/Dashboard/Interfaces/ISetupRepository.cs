@@ -10,6 +10,7 @@ namespace ecommerce_dash_api.Areas.Dashboard.Interfaces
         //| Attribute                                            
         //+------------------------------------------------------------------+
         Task<Attribute?> GetAttributeByIdAsync(int id);
+        Task<List<string>> GetAllAttributesAsync();
         Task<List<AttributeQRY>> GetAllAttributesWithOptionsAsync();
         Task CreateAttributeAsync(Attribute attribute);
         Task CreateAttributeOptionAsync(AttributeOption attributeOption);
@@ -64,16 +65,6 @@ namespace ecommerce_dash_api.Areas.Dashboard.Interfaces
         Task UpdateSeasonAsync(Season season);
 
         //+------------------------------------------------------------------+
-        //| Section                                            
-        //+------------------------------------------------------------------+
-        Task<Section?> GetSectionByIdAsync(int id);
-        Task<List<SectionQRY>> GetAllSectionsWithCategoriesAsync();
-        Task CreateSectionAsync(Section section);
-        Task UpdateSectionAsync(Section section);
-        Task DeleteSectionAsync(Section section);
-        Task DeleteSectionCategoriesBySectionIdAsync(int sectionId);
-
-        //+------------------------------------------------------------------+
         //| Shipping method                                            
         //+------------------------------------------------------------------+
         Task<List<ShippingMQRY>> GetAllShippingMAsync();
@@ -89,14 +80,5 @@ namespace ecommerce_dash_api.Areas.Dashboard.Interfaces
         Task<List<SupplierQRY>> GetAllSuppliersAsync();
         Task CreateSupplierAsync(Supplier supplier);
         Task UpdateSupplierAsync(Supplier supplier);
-
-        //+------------------------------------------------------------------+
-        //| Tag                                            
-        //+------------------------------------------------------------------+
-        Task<List<TagQRY>> GetAllTagsAsync();
-        Task CreateTagAsync(Tag tag);
-        Task UpdateTagAsync(Tag tag);
-        Task<Tag?> GetTagByIdAsync(int id);
-        Task DeleteTagAsync(Tag tag);
     }
 }

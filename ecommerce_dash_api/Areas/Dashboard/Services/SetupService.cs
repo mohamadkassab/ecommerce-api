@@ -29,6 +29,11 @@ namespace ecommerce_dash_api.Areas.Dashboard.Services
             var result = await _setupRepository.GetAllAttributesWithOptionsAsync();
             return result;
         }
+        public async Task<List<string>> GetAllAttributesAsync()
+        {
+            var result = await _setupRepository.GetAllAttributesAsync();
+            return result;
+        }
         public async Task<bool> CreateAttributeAsync(AttributeCreateDTO attributeDTO, string? username)
         {
             Attribute attribute = new Attribute
@@ -305,60 +310,6 @@ namespace ecommerce_dash_api.Areas.Dashboard.Services
         }
 
         //+------------------------------------------------------------------+
-        //| Section                                            
-        //+------------------------------------------------------------------+
-        public async Task<List<SectionQRY>> GetAllSectionsWithCategoriesAsync()
-        {
-            var result = await _setupRepository.GetAllSectionsWithCategoriesAsync();
-            return result;
-        }
-        public async Task<bool> CreateSectionAsync(SectionCreateDTO sectionDTO, string? username)
-        {
-            var section = new Section
-            {
-                Name = sectionDTO.Name,
-                UpdatedBy = username,
-            };
-            var sectionCategories = sectionDTO.Categories.Select(categoryId => new SectionCategory
-            {
-                CategoryId = categoryId,
-                UpdatedBy = username
-            }).ToList();
-
-            section.SectionCategories = sectionCategories;
-            await _setupRepository.CreateSectionAsync(section);
-            await _context.SaveChangesAsync();
-            return true;
-        }
-        public async Task<bool> UpdateSectionAsync(SectionUpdateDTO sectionDTO, string? username)
-        {
-            var deleteSectionCategoriesTask = _setupRepository.DeleteSectionCategoriesBySectionIdAsync(sectionDTO.Id);
-            var getSectionTask = _setupRepository.GetSectionByIdAsync(sectionDTO.Id);
-            Task.WhenAll(deleteSectionCategoriesTask, getSectionTask);
-            Section section = getSectionTask.Result;
-            section.Name = sectionDTO.Name;
-            section.UpdatedBy = username;
-            var sectionCategories = sectionDTO.Categories.Select(categoryId => new SectionCategory
-            {
-                CategoryId = categoryId,
-                Section = section,
-                UpdatedBy = username
-            }).ToList();
-            section.SectionCategories = sectionCategories;
-            await _setupRepository.UpdateSectionAsync(section);
-            _context.SaveChanges();
-            return true;
-        }
-        public async Task<bool> DeleteSectionAsync(int id)
-        {
-            var section = await _context.Sections
-            .Where(i => i.Id == id).FirstOrDefaultAsync();
-            await _setupRepository.DeleteSectionAsync(section);
-            await _context.SaveChangesAsync();
-            return true;
-        }
-
-        //+------------------------------------------------------------------+
         //| Shipping method                                            
         //+------------------------------------------------------------------+
         public async Task<List<ShippingMQRY>> GetAllShippingMAsync()
@@ -468,42 +419,6 @@ namespace ecommerce_dash_api.Areas.Dashboard.Services
             }
         }
 
-        //+------------------------------------------------------------------+
-        //| Tag                                            
-        //+------------------------------------------------------------------+
-        public async Task<List<TagQRY>> GetAllTagsAsync()
-        {
-            var result = await _setupRepository.GetAllTagsAsync();
-            return result;
-        }
-        public async Task<bool> CreateTagAsync(TagCreateDTO tagDTO, string? username)
-        {
-            Tag tag = new Tag
-            {
-                Name = tagDTO.Name,
-                UpdatedBy = username,
-            };
 
-            await _setupRepository.CreateTagAsync(tag);
-            await _context.SaveChangesAsync();
-            return true;
-        }
-        public async Task<bool> UpdateTagAsync(TagUpdateDTO tagDTO, string? username)
-        {
-            Tag tag = await _setupRepository.GetTagByIdAsync(tagDTO.Id);
-            tag.Name = tagDTO.Name;
-            tag.UpdatedBy = username;
-            await _setupRepository.UpdateTagAsync(tag);
-            await _context.SaveChangesAsync();
-            return true;
-        }
-        public async Task<bool> DeleteTagAsync(int id)
-        {
-            var tag = await _context.Tags
-            .Where(i => i.Id == id).FirstOrDefaultAsync();
-            await _setupRepository.DeleteTagAsync(tag);
-            await _context.SaveChangesAsync();
-            return true;
-        }
     }
 }

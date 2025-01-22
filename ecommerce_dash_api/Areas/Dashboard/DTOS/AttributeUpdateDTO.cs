@@ -20,7 +20,7 @@ namespace ecommerce_dash_api.Areas.Dashboard.DTOS
         public List<string> Options
         {
             get => _options;
-            set => _options = value.Select(option => option.ToLower()).ToList();
+            set => _options = value.Select(option => Helpers.CapitalizeFirstLetter(option.Trim())).ToList();
         }
     }
 }

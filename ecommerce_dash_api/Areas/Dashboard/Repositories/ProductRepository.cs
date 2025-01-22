@@ -34,6 +34,7 @@ namespace ecommerce_dash_api.Areas.Dashboard.Repositories
                 Price = i.Price,
                 Discount = i.Discount,
                 Note = i.Note ?? "",
+                attributes = _context.ProductAttributes.Where(pa => pa.ProductId == i.Id).Select(pa => pa.Attribute).ToList(),
                 Supplier = i.Supplier.Name,
                 Brand = i.Brand.Name,
                 Year = i.Year,
@@ -50,9 +51,24 @@ namespace ecommerce_dash_api.Areas.Dashboard.Repositories
         {
             await _context.Products.AddAsync(product);
         }
-        public  Task UpdateProductAsync(Product product)
+        public async Task CreateProductAttributeRangeAsync(List<ProductAttribute> productAttributes)
+        {
+            await _context.ProductAttributes.AddRangeAsync(productAttributes);
+        }
+        public Task UpdateProductAsync(Product product)
         {
             _context.Products.Update(product);
+            return Task.CompletedTask;
+        }
+        public Task DeleteProductAttributeByProductIdAsync(int productId)
+        {
+            var productAttributes = _context.ProductAttributes
+                         .Where(i => i.ProductId == productId);
+
+            if (productAttributes.Any())
+            {
+                _context.ProductAttributes.RemoveRange(productAttributes);
+            }
             return Task.CompletedTask;
         }
 
@@ -63,6 +79,7 @@ namespace ecommerce_dash_api.Areas.Dashboard.Repositories
         {
             var result = await _context.ProductInfos
                 .AsNoTracking()
+
                 .Select(i => new ProductContentQRY
                 {
                     ProductId = i.ProductId,
@@ -75,10 +92,6 @@ namespace ecommerce_dash_api.Areas.Dashboard.Repositories
                     Categories = _context.ProductCategories
                     .Where(pc => pc.ProductId == i.ProductId)
                     .Select(pc => pc.Category.Name)
-                    .ToList(),
-                    Tags = _context.ProductTags
-                    .Where(pt => pt.ProductId == i.ProductId)
-                    .Select(pt => pt.Tag.Name)
                     .ToList(),
                     MediaUrls = _context.ProductMedia
                     .Where(pm => pm.ProductId == i.ProductId)
@@ -180,34 +193,15 @@ namespace ecommerce_dash_api.Areas.Dashboard.Repositories
         }
 
         //+------------------------------------------------------------------+
-        //| Product Tag                                           
+        //| Product Quantity                                         
         //+------------------------------------------------------------------+
-        public async Task<ProductTag?> GetProductTagByIdAsync(int id)
+        public async Task CreateProductQuantityAsync(ProductQuantity productQuantity)
         {
-            return await _context.ProductTags.FirstOrDefaultAsync(i => i.Id == id);
+           await _context.ProductQuantities.AddAsync(productQuantity);
         }
-        public async Task CreateProductTagAsync(ProductTag productTag)
+        public Task UpdateProductQuantityAsync(ProductQuantity productQuantity)
         {
-            await _context.ProductTags.AddAsync(productTag);
-        }
-        public async Task CreateProductTagRangeAsync(List<ProductTag> productTagRange)
-        {
-            await _context.ProductTags.AddRangeAsync(productTagRange);
-        }
-        public Task UpdateProductTagAsync(ProductTag productTag)
-        {
-            _context.ProductTags.Update(productTag);
-            return Task.CompletedTask;
-        }
-        public Task DeleteProductTagsByProductIdAsync(int productId)
-        {
-            var productTags = _context.ProductTags
-                         .Where(i => i.ProductId == productId);
-
-            if (productTags.Any())
-            {
-                _context.ProductTags.RemoveRange(productTags);
-            }
+            _context.ProductQuantities.Update(productQuantity);
             return Task.CompletedTask;
         }
 
@@ -241,5 +235,10 @@ namespace ecommerce_dash_api.Areas.Dashboard.Repositories
         {
             await _context.Transactions.AddAsync(transaction);
         }
+        public async Task CreateTransactionAttributesAsync(List<TransactionAttribute> transactionAttributes)
+        {
+            await _context.TransactionAttributes.AddRangeAsync(transactionAttributes);
+        }
+
     }
 }

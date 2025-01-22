@@ -59,6 +59,35 @@ namespace ecommerce_dash_api.Controllers
             }
         }
 
+        [HttpGet]
+        public async Task<IActionResult> GetAllAttributes()
+        {
+            var userClaims = User.Claims;
+            var username = User.FindFirstValue("username") ?? null;
+            var ipAddress = HttpContext?.Connection?.RemoteIpAddress?.ToString() ?? null;
+            var actionName = this.ControllerContext?.RouteData?.Values["action"]?.ToString() ?? null;
+            if (userClaims.Any(c => c.Type == "permission" && c.Value == "attribute") || (username == "root@e.com"))
+            {
+                try
+                {
+                    var result = await _setupService.GetAllAttributesAsync();
+                    await _apiService.CreateLogAsync(LogLevelEnum.INFO.ToString(), LogMessageTemplatesEnum.successful.ToString(), null, username, ipAddress, actionName, null);
+                    return Ok(result);
+                }
+                catch (Exception ex)
+                {
+                    string errorMessage = $"Error: {ex.Message}";
+                    string innerMessage = ex.InnerException != null ? $"Inner Exception: {ex?.InnerException?.Message}" : string.Empty;
+                    await _apiService.CreateLogAsync(LogLevelEnum.ERROR.ToString(), $"{errorMessage}\n{innerMessage}", ex?.StackTrace, username, ipAddress, actionName, null);
+                    return BadRequest(new { message = innerMessage != string.Empty ? ex?.InnerException?.Message : ex?.Message });
+                }
+            }
+            else
+            {
+                return Forbid();
+            }
+        }
+
         [HttpPost]
         public async Task<IActionResult> CreateAttribute([FromBody] AttributeCreateDTO attribute)
         {
@@ -827,159 +856,6 @@ namespace ecommerce_dash_api.Controllers
         }
 
         //+------------------------------------------------------------------+
-        //| Section                                            
-        //+------------------------------------------------------------------+
-        [HttpGet]
-        public async Task<IActionResult> GetAllSections()
-        {
-            var userClaims = User.Claims;
-            var username = User.FindFirstValue("username") ?? null;
-            var ipAddress = HttpContext?.Connection?.RemoteIpAddress?.ToString() ?? null;
-            var actionName = this.ControllerContext?.RouteData?.Values["action"]?.ToString() ?? null;
-            if (userClaims.Any(c => c.Type == "permission" && c.Value == "section") || (username == "root@e.com"))
-            {
-                try
-                {
-                    var result = await _setupService.GetAllSectionsWithCategoriesAsync();
-                    await _apiService.CreateLogAsync(LogLevelEnum.INFO.ToString(), LogMessageTemplatesEnum.successful.ToString(), null, username, ipAddress, actionName, null);
-                    return Ok(result);
-
-                }
-                catch (Exception ex)
-                {
-                    string errorMessage = $"Error: {ex.Message}";
-                    string innerMessage = ex.InnerException != null ? $"Inner Exception: {ex?.InnerException?.Message}" : string.Empty;
-                    await _apiService.CreateLogAsync(LogLevelEnum.ERROR.ToString(), $"{errorMessage}\n{innerMessage}", ex?.StackTrace, username, ipAddress, actionName, null);
-                    return BadRequest(new { message = innerMessage != string.Empty ? ex?.InnerException?.Message : ex?.Message });
-                }
-            }
-            else
-            {
-                return Forbid();
-            }
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> CreateSection([FromBody] SectionCreateDTO section)
-        {
-            var userClaims = User.Claims;
-            var username = User.FindFirstValue("username") ?? null;
-            var ipAddress = HttpContext?.Connection?.RemoteIpAddress?.ToString() ?? null;
-            var actionName = this.ControllerContext?.RouteData?.Values["action"]?.ToString() ?? null;
-            if (userClaims.Any(c => c.Type == "permission" && c.Value == "section") || (username == "root@e.com"))
-            {
-                try
-                {
-                    if (!ModelState.IsValid)
-                    {
-                        await _apiService.CreateLogAsync(LogLevelEnum.WARNING.ToString(), LogMessageTemplatesEnum.invalid_model_state.ToString(), null, username, ipAddress, actionName, section);
-                        return BadRequest(ModelState);
-                    }
-
-                    var response = await _setupService.CreateSectionAsync(section, username);
-                    if (response)
-                    {
-                        await _apiService.CreateLogAsync(LogLevelEnum.INFO.ToString(), LogMessageTemplatesEnum.successful.ToString(), null, username, ipAddress, actionName, section);
-                        return Ok(new { message = LogMessageTemplatesEnum.successful.ToString() });
-                    }
-                    await _apiService.CreateLogAsync(LogLevelEnum.WARNING.ToString(), LogMessageTemplatesEnum.failed.ToString(), null, username, ipAddress, actionName, section);
-                    return BadRequest(new { message = LogMessageTemplatesEnum.failed.ToString() });
-                }
-                catch (Exception ex)
-                {
-                    string errorMessage = $"Error: {ex.Message}";
-                    string innerMessage = ex.InnerException != null ? $"Inner Exception: {ex?.InnerException?.Message}" : string.Empty;
-                    await _apiService.CreateLogAsync(LogLevelEnum.ERROR.ToString(), $"{errorMessage}\n{innerMessage}", ex?.StackTrace, username, ipAddress, actionName, section);
-                    return BadRequest(new { message = innerMessage != string.Empty ? ex?.InnerException?.Message : ex?.Message });
-                }
-            }
-            else
-            {
-                return Forbid();
-            }
-        }
-
-        [HttpPut]
-        public async Task<IActionResult> UpdateSection([FromBody] SectionUpdateDTO section)
-        {
-            var userClaims = User.Claims;
-            var username = User.FindFirstValue("username") ?? null;
-            var ipAddress = HttpContext?.Connection?.RemoteIpAddress?.ToString() ?? null;
-            var actionName = this.ControllerContext?.RouteData?.Values["action"]?.ToString() ?? null;
-            if (userClaims.Any(c => c.Type == "permission" && c.Value == "section") || (username == "root@e.com"))
-            {
-                try
-                {
-                    if (!ModelState.IsValid)
-                    {
-                        await _apiService.CreateLogAsync(LogLevelEnum.WARNING.ToString(), LogMessageTemplatesEnum.invalid_model_state.ToString(), null, username, ipAddress, actionName, section);
-                        return BadRequest(ModelState);
-                    }
-
-                    var response = await _setupService.UpdateSectionAsync(section, username);
-                    if (response)
-                    {
-                        await _apiService.CreateLogAsync(LogLevelEnum.INFO.ToString(), LogMessageTemplatesEnum.successful.ToString(), null, username, ipAddress, actionName, section);
-                        return Ok();
-                    }
-                    await _apiService.CreateLogAsync(LogLevelEnum.WARNING.ToString(), LogMessageTemplatesEnum.failed.ToString(), null, username, ipAddress, actionName, section);
-                    return BadRequest(new { message = "Update failed" });
-                }
-                catch (Exception ex)
-                {
-                    string errorMessage = $"Error: {ex.Message}";
-                    string innerMessage = ex.InnerException != null ? $"Inner Exception: {ex?.InnerException?.Message}" : string.Empty;
-                    await _apiService.CreateLogAsync(LogLevelEnum.ERROR.ToString(), $"{errorMessage}\n{innerMessage}", ex?.StackTrace, username, ipAddress, actionName, section);
-                    return BadRequest(new { message = innerMessage != string.Empty ? ex?.InnerException?.Message : ex?.Message });
-                }
-            }
-            else
-            {
-                return Forbid();
-            }
-        }
-
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteSection(int id)
-        {
-            var userClaims = User.Claims;
-            var username = User.FindFirstValue("username") ?? null;
-            var ipAddress = HttpContext?.Connection?.RemoteIpAddress?.ToString() ?? null;
-            var actionName = this.ControllerContext?.RouteData?.Values["action"]?.ToString() ?? null;
-            if (userClaims.Any(c => c.Type == "permission" && c.Value == "section") || (username == "root@e.com"))
-            {
-                try
-                {
-                    if (!ModelState.IsValid)
-                    {
-                        await _apiService.CreateLogAsync(LogLevelEnum.WARNING.ToString(), LogMessageTemplatesEnum.invalid_model_state.ToString(), null, username, ipAddress, actionName, id);
-                        return BadRequest(ModelState);
-                    }
-
-                    var response = await _setupService.DeleteSectionAsync(id);
-                    if (response)
-                    {
-                        await _apiService.CreateLogAsync(LogLevelEnum.INFO.ToString(), LogMessageTemplatesEnum.successful.ToString(), null, username, ipAddress, actionName, id);
-                        return Ok();
-                    }
-                    await _apiService.CreateLogAsync(LogLevelEnum.WARNING.ToString(), LogMessageTemplatesEnum.failed.ToString(), null, username, ipAddress, actionName, id);
-                    return BadRequest(new { message = "Delete failed" });
-                }
-                catch (Exception ex)
-                {
-                    string errorMessage = $"Error: {ex.Message}";
-                    string innerMessage = ex.InnerException != null ? $"Inner Exception: {ex?.InnerException?.Message}" : string.Empty;
-                    await _apiService.CreateLogAsync(LogLevelEnum.ERROR.ToString(), $"{errorMessage}\n{innerMessage}", ex?.StackTrace, username, ipAddress, actionName, id);
-                    return BadRequest(new { message = innerMessage != string.Empty ? ex.InnerException?.Message : ex?.Message });
-                }
-            }
-            else
-            {
-                return Forbid();
-            }
-        }
-
-        //+------------------------------------------------------------------+
         //| Shipping method                                            
         //+------------------------------------------------------------------+
         [HttpGet]
@@ -1196,159 +1072,6 @@ namespace ecommerce_dash_api.Controllers
                     string innerMessage = ex.InnerException != null ? $"Inner Exception: {ex?.InnerException?.Message}" : string.Empty;
                     await _apiService.CreateLogAsync(LogLevelEnum.ERROR.ToString(), $"{errorMessage}\n{innerMessage}", ex?.StackTrace, username, ipAddress, actionName, supplier);
                     return BadRequest(new { message = innerMessage != string.Empty ? ex?.InnerException?.Message : ex?.Message });
-                }
-            }
-            else
-            {
-                return Forbid();
-            }
-        }
-
-        //+------------------------------------------------------------------+
-        //| Tag                                            
-        //+------------------------------------------------------------------+
-        [HttpGet]
-        public async Task<IActionResult> GetAllTags()
-        {
-            var userClaims = User.Claims;
-            var username = User.FindFirstValue("username") ?? null;
-            var ipAddress = HttpContext?.Connection?.RemoteIpAddress?.ToString() ?? null;
-            var actionName = this.ControllerContext?.RouteData?.Values["action"]?.ToString() ?? null;
-            if (userClaims.Any(c => c.Type == "permission" && c.Value == "tag") || (username == "root@e.com"))
-            {
-                try
-                {
-                    var result = await _setupService.GetAllTagsAsync();
-                    await _apiService.CreateLogAsync(LogLevelEnum.INFO.ToString(), LogMessageTemplatesEnum.successful.ToString(), null, username, ipAddress, actionName, null);
-                    return Ok(result);
-
-                }
-                catch (Exception ex)
-                {
-                    string errorMessage = $"Error: {ex.Message}";
-                    string innerMessage = ex.InnerException != null ? $"Inner Exception: {ex?.InnerException?.Message}" : string.Empty;
-                    await _apiService.CreateLogAsync(LogLevelEnum.ERROR.ToString(), $"{errorMessage}\n{innerMessage}", ex?.StackTrace, username, ipAddress, actionName, null);
-                    return BadRequest(new { message = innerMessage != string.Empty ? ex?.InnerException?.Message : ex?.Message });
-                }
-            }
-            else
-            {
-                return Forbid();
-            }
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> CreateTag([FromBody] TagCreateDTO tag)
-        {
-            var userClaims = User.Claims;
-            var username = User.FindFirstValue("username") ?? null;
-            var ipAddress = HttpContext?.Connection?.RemoteIpAddress?.ToString() ?? null;
-            var actionName = this.ControllerContext?.RouteData?.Values["action"]?.ToString() ?? null;
-            if (userClaims.Any(c => c.Type == "permission" && c.Value == "tag") || (username == "root@e.com"))
-            {
-                try
-                {
-                    if (!ModelState.IsValid)
-                    {
-                        await _apiService.CreateLogAsync(LogLevelEnum.WARNING.ToString(), LogMessageTemplatesEnum.invalid_model_state.ToString(), null, username, ipAddress, actionName, tag);
-                        return BadRequest(ModelState);
-                    }
-
-                    var response = await _setupService.CreateTagAsync(tag, username);
-                    if (response)
-                    {
-                        await _apiService.CreateLogAsync(LogLevelEnum.INFO.ToString(), LogMessageTemplatesEnum.successful.ToString(), null, username, ipAddress, actionName, tag);
-                        return Ok(new { message = LogMessageTemplatesEnum.successful.ToString() });
-                    }
-                    await _apiService.CreateLogAsync(LogLevelEnum.WARNING.ToString(), LogMessageTemplatesEnum.failed.ToString(), null, username, ipAddress, actionName, tag);
-                    return BadRequest(new { message = LogMessageTemplatesEnum.failed.ToString() });
-                }
-                catch (Exception ex)
-                {
-                    string errorMessage = $"Error: {ex.Message}";
-                    string innerMessage = ex.InnerException != null ? $"Inner Exception: {ex?.InnerException?.Message}" : string.Empty;
-                    await _apiService.CreateLogAsync(LogLevelEnum.ERROR.ToString(), $"{errorMessage}\n{innerMessage}", ex?.StackTrace, username, ipAddress, actionName, tag);
-                    return BadRequest(new { message = innerMessage != string.Empty ? ex?.InnerException?.Message : ex?.Message });
-                }
-            }
-            else
-            {
-                return Forbid();
-            }
-        }
-
-        [HttpPut]
-        public async Task<IActionResult> UpdateTag([FromBody] TagUpdateDTO tag)
-        {
-            var userClaims = User.Claims;
-            var username = User.FindFirstValue("username") ?? null;
-            var ipAddress = HttpContext?.Connection?.RemoteIpAddress?.ToString() ?? null;
-            var actionName = this.ControllerContext?.RouteData?.Values["action"]?.ToString() ?? null;
-            if (userClaims.Any(c => c.Type == "permission" && c.Value == "tag") || (username == "root@e.com"))
-            {
-                try
-                {
-                    if (!ModelState.IsValid)
-                    {
-                        await _apiService.CreateLogAsync(LogLevelEnum.WARNING.ToString(), LogMessageTemplatesEnum.invalid_model_state.ToString(), null, username, ipAddress, actionName, tag);
-                        return BadRequest(ModelState);
-                    }
-
-                    var response = await _setupService.UpdateTagAsync(tag, username);
-                    if (response)
-                    {
-                        await _apiService.CreateLogAsync(LogLevelEnum.INFO.ToString(), LogMessageTemplatesEnum.successful.ToString(), null, username, ipAddress, actionName, tag);
-                        return Ok();
-                    }
-                    await _apiService.CreateLogAsync(LogLevelEnum.WARNING.ToString(), LogMessageTemplatesEnum.failed.ToString(), null, username, ipAddress, actionName, tag);
-                    return BadRequest(new { message = "Update failed" });
-                }
-                catch (Exception ex)
-                {
-                    string errorMessage = $"Error: {ex.Message}";
-                    string innerMessage = ex.InnerException != null ? $"Inner Exception: {ex?.InnerException?.Message}" : string.Empty;
-                    await _apiService.CreateLogAsync(LogLevelEnum.ERROR.ToString(), $"{errorMessage}\n{innerMessage}", ex?.StackTrace, username, ipAddress, actionName, tag);
-                    return BadRequest(new { message = innerMessage != string.Empty ? ex?.InnerException?.Message : ex?.Message });
-                }
-            }
-            else
-            {
-                return Forbid();
-            }
-        }
-
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteTag(int id)
-        {
-            var userClaims = User.Claims;
-            var username = User.FindFirstValue("username") ?? null;
-            var ipAddress = HttpContext?.Connection?.RemoteIpAddress?.ToString() ?? null;
-            var actionName = this.ControllerContext?.RouteData?.Values["action"]?.ToString() ?? null;
-            if (userClaims.Any(c => c.Type == "permission" && c.Value == "tag") || (username == "root@e.com"))
-            {
-                try
-                {
-                    if (!ModelState.IsValid)
-                    {
-                        await _apiService.CreateLogAsync(LogLevelEnum.WARNING.ToString(), LogMessageTemplatesEnum.invalid_model_state.ToString(), null, username, ipAddress, actionName, id);
-                        return BadRequest(ModelState);
-                    }
-
-                    var response = await _setupService.DeleteTagAsync(id);
-                    if (response)
-                    {
-                        await _apiService.CreateLogAsync(LogLevelEnum.INFO.ToString(), LogMessageTemplatesEnum.successful.ToString(), null, username, ipAddress, actionName, id);
-                        return Ok();
-                    }
-                    await _apiService.CreateLogAsync(LogLevelEnum.WARNING.ToString(), LogMessageTemplatesEnum.failed.ToString(), null, username, ipAddress, actionName, id);
-                    return BadRequest(new { message = "Delete failed" });
-                }
-                catch (Exception ex)
-                {
-                    string errorMessage = $"Error: {ex.Message}";
-                    string innerMessage = ex.InnerException != null ? $"Inner Exception: {ex?.InnerException?.Message}" : string.Empty;
-                    await _apiService.CreateLogAsync(LogLevelEnum.ERROR.ToString(), $"{errorMessage}\n{innerMessage}", ex?.StackTrace, username, ipAddress, actionName, id);
-                    return BadRequest(new { message = innerMessage != string.Empty ? ex.InnerException?.Message : ex?.Message });
                 }
             }
             else

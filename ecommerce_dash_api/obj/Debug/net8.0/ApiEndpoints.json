@@ -141,11 +141,6 @@
         "Name": "Media",
         "Type": "System.Collections.Generic.List\u00601[[Microsoft.AspNetCore.Http.IFormFile, Microsoft.AspNetCore.Http.Features, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60]]",
         "IsRequired": false
-      },
-      {
-        "Name": "Tags",
-        "Type": "System.Collections.Generic.List\u00601[[System.String, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
-        "IsRequired": false
       }
     ],
     "ReturnTypes": []
@@ -285,11 +280,6 @@
         "Name": "Media",
         "Type": "System.Collections.Generic.List\u00601[[Microsoft.AspNetCore.Http.IFormFile, Microsoft.AspNetCore.Http.Features, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60]]",
         "IsRequired": false
-      },
-      {
-        "Name": "Tags",
-        "Type": "System.Collections.Generic.List\u00601[[System.String, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
-        "IsRequired": false
       }
     ],
     "ReturnTypes": []
@@ -423,22 +413,6 @@
   },
   {
     "ContainingType": "ecommerce_dash_api.Controllers.SetupController",
-    "Method": "CreateSection",
-    "RelativePath": "Dashboard/Setup/CreateSection",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "section",
-        "Type": "ecommerce_dash_api.Areas.Dashboard.DTOS.SectionCreateDTO",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "ecommerce_dash_api.Controllers.SetupController",
     "Method": "CreateShippingM",
     "RelativePath": "Dashboard/Setup/CreateShippingM",
     "HttpMethod": "POST",
@@ -479,22 +453,6 @@
       {
         "Name": "supplier",
         "Type": "ecommerce_dash_api.Areas.Dashboard.DTOS.SupplierCreateDTO",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "ecommerce_dash_api.Controllers.SetupController",
-    "Method": "CreateTag",
-    "RelativePath": "Dashboard/Setup/CreateTag",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "tag",
-        "Type": "ecommerce_dash_api.Areas.Dashboard.DTOS.TagCreateDTO",
         "IsRequired": true
       }
     ],
@@ -550,34 +508,12 @@
   },
   {
     "ContainingType": "ecommerce_dash_api.Controllers.SetupController",
-    "Method": "DeleteSection",
-    "RelativePath": "Dashboard/Setup/DeleteSection/{id}",
-    "HttpMethod": "DELETE",
+    "Method": "GetAllAttributes",
+    "RelativePath": "Dashboard/Setup/GetAllAttributes",
+    "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
-    "Parameters": [
-      {
-        "Name": "id",
-        "Type": "System.Int32",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "ecommerce_dash_api.Controllers.SetupController",
-    "Method": "DeleteTag",
-    "RelativePath": "Dashboard/Setup/DeleteTag/{id}",
-    "HttpMethod": "DELETE",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "id",
-        "Type": "System.Int32",
-        "IsRequired": true
-      }
-    ],
+    "Parameters": [],
     "ReturnTypes": []
   },
   {
@@ -642,16 +578,6 @@
   },
   {
     "ContainingType": "ecommerce_dash_api.Controllers.SetupController",
-    "Method": "GetAllSections",
-    "RelativePath": "Dashboard/Setup/GetAllSections",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "ecommerce_dash_api.Controllers.SetupController",
     "Method": "GetAllShippingM",
     "RelativePath": "Dashboard/Setup/GetAllShippingM",
     "HttpMethod": "GET",
@@ -664,16 +590,6 @@
     "ContainingType": "ecommerce_dash_api.Controllers.SetupController",
     "Method": "GetAllSuppliers",
     "RelativePath": "Dashboard/Setup/GetAllSuppliers",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "ecommerce_dash_api.Controllers.SetupController",
-    "Method": "GetAllTags",
-    "RelativePath": "Dashboard/Setup/GetAllTags",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
@@ -798,22 +714,6 @@
   },
   {
     "ContainingType": "ecommerce_dash_api.Controllers.SetupController",
-    "Method": "UpdateSection",
-    "RelativePath": "Dashboard/Setup/UpdateSection",
-    "HttpMethod": "PUT",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "section",
-        "Type": "ecommerce_dash_api.Areas.Dashboard.DTOS.SectionUpdateDTO",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "ecommerce_dash_api.Controllers.SetupController",
     "Method": "UpdateShippingM",
     "RelativePath": "Dashboard/Setup/UpdateShippingM",
     "HttpMethod": "PUT",
@@ -859,22 +759,6 @@
       {
         "Name": "supplier",
         "Type": "ecommerce_dash_api.Areas.Dashboard.DTOS.SupplierUpdateDTO",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "ecommerce_dash_api.Controllers.SetupController",
-    "Method": "UpdateTag",
-    "RelativePath": "Dashboard/Setup/UpdateTag",
-    "HttpMethod": "PUT",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "tag",
-        "Type": "ecommerce_dash_api.Areas.Dashboard.DTOS.TagUpdateDTO",
         "IsRequired": true
       }
     ],
@@ -1034,12 +918,48 @@
   },
   {
     "ContainingType": "ecommerce_dash_api.Areas.Shop.Controllers.PageController",
-    "Method": "GetHomePage",
-    "RelativePath": "Shop/Page/GetHomePage",
+    "Method": "GetHomePageAssets",
+    "RelativePath": "Shop/Page/GetHomePageAssets",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
     "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ecommerce_dash_api.Areas.Shop.Controllers.PageController",
+    "Method": "GetHomePageProductsAndBrands",
+    "RelativePath": "Shop/Page/GetHomePageProductsAndBrands",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ecommerce_dash_api.Areas.Shop.Controllers.PageController",
+    "Method": "GetProductsByCategoryAndPage",
+    "RelativePath": "Shop/Page/GetProductsByCategoryAndPage/{categoryId}/{pageNbr}/{pageSize}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "categoryId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "pageNbr",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "pageSize",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
     "ReturnTypes": []
   }
 ]

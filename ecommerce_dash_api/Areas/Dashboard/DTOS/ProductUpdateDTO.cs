@@ -30,7 +30,10 @@ namespace ecommerce_dash_api.Areas.Dashboard.DTOS
         public decimal Price { get; set; }
 
         [Required]
+        [Range(0, 99.99, ErrorMessage = "Discount must be between 0 and 99.99")]
         public decimal Discount { get; set; }
+
+        public List<string> attributes { get; set; } = new List<string>();
 
         [Required]
         public string Supplier { get; set; } = null!;

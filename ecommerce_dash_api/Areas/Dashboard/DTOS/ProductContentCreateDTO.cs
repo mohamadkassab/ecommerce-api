@@ -47,9 +47,5 @@ namespace ecommerce_dash_api.Areas.Dashboard.DTOS
         [MaxFileSize(5 * 1024 * 1024)]
         [FileTypeValidation(FileTypeEnum.ImageVideo)]
         public List<IFormFile> Media { get; set; } = null!;
-
-        [Required]
-        [RequiredNonEmptyList]
-        public List<string> Tags { get; set; } = null!;
     }
 }

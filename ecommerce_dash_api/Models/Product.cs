@@ -37,6 +37,8 @@ public partial class Product
 
     public virtual ICollection<OrderItem> OrderItems { get; set; } = new List<OrderItem>();
 
+    public virtual ICollection<ProductAttribute> ProductAttributes { get; set; } = new List<ProductAttribute>();
+
     public virtual ICollection<ProductCategory> ProductCategories { get; set; } = new List<ProductCategory>();
 
     public virtual ProductInfo? ProductInfo { get; set; }
@@ -44,8 +46,6 @@ public partial class Product
     public virtual ICollection<ProductMedium> ProductMedia { get; set; } = new List<ProductMedium>();
 
     public virtual ICollection<ProductQuantity> ProductQuantities { get; set; } = new List<ProductQuantity>();
-
-    public virtual ICollection<ProductTag> ProductTags { get; set; } = new List<ProductTag>();
 
     public virtual Season Season { get; set; } = null!;
 

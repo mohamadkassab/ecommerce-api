@@ -12,7 +12,7 @@ namespace ecommerce_dash_api.Areas.Dashboard.DTOS
         public string Code
         {
             get => _code;
-            set => _code = value.Trim().ToUpper();
+            set => _code = value.Trim();
         }
     }
 }
