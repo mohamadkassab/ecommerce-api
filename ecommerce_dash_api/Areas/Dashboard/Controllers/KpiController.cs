@@ -105,7 +105,7 @@ namespace ecommerce_dash_api.Areas.Dashboard.Controllers
                     if (response)
                     {
                         await _apiService.CreateLogAsync(LogLevelEnum.INFO.ToString(), LogMessageTemplatesEnum.successful.ToString(), null, username, ipAddress, actionName, chart);
-                        return Ok();
+                        return CreatedAtAction(actionName, chart);
                     }
                     await _apiService.CreateLogAsync(LogLevelEnum.WARNING.ToString(), LogMessageTemplatesEnum.failed.ToString(), null, username, ipAddress, actionName, chart);
                     return BadRequest(new { message = "Create chart failed" });
@@ -145,7 +145,7 @@ namespace ecommerce_dash_api.Areas.Dashboard.Controllers
                     if (response)
                     {
                         await _apiService.CreateLogAsync(LogLevelEnum.INFO.ToString(), LogMessageTemplatesEnum.successful.ToString(), null, username, ipAddress, actionName, chart);
-                        return Ok();
+                        return NoContent();
                     }
                     await _apiService.CreateLogAsync(LogLevelEnum.WARNING.ToString(), LogMessageTemplatesEnum.failed.ToString(), null, username, ipAddress, actionName, chart);
                     return BadRequest(new { message = "Update chart failed" });
@@ -185,7 +185,7 @@ namespace ecommerce_dash_api.Areas.Dashboard.Controllers
                     if (response)
                     {
                         await _apiService.CreateLogAsync(LogLevelEnum.INFO.ToString(), LogMessageTemplatesEnum.successful.ToString(), null, username, ipAddress, actionName, id);
-                        return Ok();
+                        return NoContent();
                     }
                     await _apiService.CreateLogAsync(LogLevelEnum.WARNING.ToString(), LogMessageTemplatesEnum.failed.ToString(), null, username, ipAddress, actionName, id);
                     return BadRequest(new { message = "Delete chart failed" });

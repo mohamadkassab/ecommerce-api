@@ -961,5 +961,31 @@
       }
     ],
     "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ecommerce_dash_api.Areas.Shop.Controllers.PageController",
+    "Method": "GetProductsByQuery",
+    "RelativePath": "Shop/Page/GetProductsByQuery/{query}/{pageNbr}/{pageSize}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "query",
+        "Type": "System.String",
+        "IsRequired": true
+      },
+      {
+        "Name": "pageNbr",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "pageSize",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
   }
 ]

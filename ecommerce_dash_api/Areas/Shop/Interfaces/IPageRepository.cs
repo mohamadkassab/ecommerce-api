@@ -4,8 +4,9 @@ namespace ecommerce_dash_api.Areas.Shop.Interfaces
 {
     public interface IPageRepository
     {
-        Task<List<ShopBrandQRY>> GetAllBrands();
-        Task<List<CategoryProductQRY>> GetAllProductsByCategoryAndSize(int pagenNbr, int pageSize);
-        Task<List<ShopProductQRY>> GetProductsByCategoryAndSize(int categoryId, int pagenNbr, int pageSize);
+        Task<List<ShopBrandQRY>> GetAllBrandsAsync();
+        Task<List<CategoryProductQRY>> GetProductsBySizeAsync(int pagenNbr, int pageSize);
+        Task<List<ShopProductQRY>> GetProductsByCategoryAndSizeAsync(int categoryId, int pagenNbr, int pageSize);
+        Task<int> GetTotalProductsByCategoryAsync(int categoryId);
     }
 }

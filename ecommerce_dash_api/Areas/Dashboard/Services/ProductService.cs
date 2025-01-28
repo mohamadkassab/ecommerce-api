@@ -1,6 +1,9 @@
 ﻿using ecommerce_dash_api.Areas.Dashboard.DTOS;
 using ecommerce_dash_api.Areas.Dashboard.Interfaces;
 using ecommerce_dash_api.Areas.Dashboard.QRYS;
+using ecommerce_dash_api.Areas.Shop.Interfaces;
+using ecommerce_dash_api.Areas.Shop.QRYS;
+using ecommerce_dash_api.Areas.Shop.Services;
 using ecommerce_dash_api.Enum;
 using ecommerce_dash_api.Models;
 using ecommerce_dash_api.Utils;
@@ -13,12 +16,14 @@ namespace ecommerce_dash_api.Areas.Dashboard.Services
         private readonly EcommerceContext _context;
         private readonly IProductRepository _productRepository;
         private readonly ISetupRepository _setupRepository;
+        private readonly IElasticService _elasticSearchService;
 
-        public ProductService(IProductRepository productRepository, ISetupRepository setupRepository, EcommerceContext context)
+        public ProductService(IProductRepository productRepository, ISetupRepository setupRepository, EcommerceContext context, IElasticService elasticSearchService)
         {
             _productRepository = productRepository;
             _setupRepository = setupRepository;
             _context = context;
+            _elasticSearchService = elasticSearchService;
         }
 
         //+------------------------------------------------------------------+
@@ -31,9 +36,9 @@ namespace ecommerce_dash_api.Areas.Dashboard.Services
         }
         public async Task<bool> CreateProductAsync(ProductCreateDTO productDTO, string? username)
         {
-            using(var _context2 = new EcommerceContext())
-            using(var _context3 = new EcommerceContext())
-            using(var _context4 = new EcommerceContext())
+            using (var _context2 = new EcommerceContext())
+            using (var _context3 = new EcommerceContext())
+            using (var _context4 = new EcommerceContext())
             {
                 var product_attributes = new List<ProductAttribute>();
                 var supplierTask = _setupRepository.GetSupplierByNameAsync(productDTO.Supplier);
@@ -62,13 +67,13 @@ namespace ecommerce_dash_api.Areas.Dashboard.Services
                     UpdatedBy = username
                 };
 
-                foreach( var attribute in productDTO.attributes)
+                foreach (var attribute in productDTO.attributes)
                 {
                     product_attributes.Add(new ProductAttribute
                     {
                         Product = product,
                         Attribute = attribute,
-                        UpdatedBy= username,
+                        UpdatedBy = username,
 
                     });
                 }
@@ -86,7 +91,7 @@ namespace ecommerce_dash_api.Areas.Dashboard.Services
             {
                 var product_attributes = new List<ProductAttribute>();
                 var productTask = _productRepository.GetProductByIdAsync(productDTO.Id);
-                var supplierTask = _context2.Suppliers.FirstOrDefaultAsync(i => i.Name == productDTO.Supplier); 
+                var supplierTask = _context2.Suppliers.FirstOrDefaultAsync(i => i.Name == productDTO.Supplier);
                 var brandTask = _context3.Brands.FirstOrDefaultAsync(i => i.Name == productDTO.Brand);
                 var seasonTask = _context4.Seasons.FirstOrDefaultAsync(i => i.Name == productDTO.Season);
 
@@ -141,7 +146,7 @@ namespace ecommerce_dash_api.Areas.Dashboard.Services
         {
             var result = await _productRepository.GetProductMediaUrlsByProductIdAsync(productId);
             List<byte[]> mediaList = new List<byte[]>();
-            foreach(var mediaUrl in result)
+            foreach (var mediaUrl in result)
             {
                 mediaList.Add(await Helpers.GetFileByUrlAsync(mediaUrl));
             }
@@ -151,14 +156,14 @@ namespace ecommerce_dash_api.Areas.Dashboard.Services
         {
             using (var _context2 = new EcommerceContext())
             {
-                var product =  _productRepository.GetProductByIdAsync(productDTO.ProductId);
+                var product = _productRepository.GetProductByIdAsync(productDTO.ProductId);
                 var productInfoExist = _context2.ProductInfos.FirstOrDefaultAsync(i => i.ProductId == productDTO.ProductId);
                 await Task.WhenAll(product, productInfoExist);
-                if (product.Result == null ) 
+                if (product.Result == null)
                 {
                     throw new ArgumentException("Product doesn't exist");
                 }
-                if(productInfoExist.Result != null)
+                if (productInfoExist.Result != null)
                 {
                     throw new ArgumentException("Product content already exist you can update it");
                 }
@@ -174,8 +179,6 @@ namespace ecommerce_dash_api.Areas.Dashboard.Services
                     MaxOrder = productDTO.MaxOrder,
                     UpdatedBy = username
                 };
-
-
 
                 var productMediaTasks = productDTO.Media.Select(file =>
                 {
@@ -255,8 +258,8 @@ namespace ecommerce_dash_api.Areas.Dashboard.Services
         public async Task<bool> UpdateProductContentAsync(ProductContentUpdateDTO productDTO, string? username)
         {
             List<Task<ProductMedium>> productMediaTasks = new List<Task<ProductMedium>>();
-            var productInfo = await  _productRepository.GetProductInfoByProductIdAsync(productDTO.ProductId);
-  
+            var productInfo = await _productRepository.GetProductInfoByProductIdAsync(productDTO.ProductId);
+
             if (productInfo == null)
             {
                 throw new ArgumentException("Product content doesn't exist create a new one.");
@@ -268,7 +271,7 @@ namespace ecommerce_dash_api.Areas.Dashboard.Services
                 var mediaUrls = await _productRepository.GetProductMediaUrlsByProductIdAsync(productDTO.ProductId);
                 var deleteMediaTask = _productRepository.DeleteProductMediaByProductIdAsync(productDTO.ProductId);
 
-                foreach (var mediaUrl in mediaUrls) 
+                foreach (var mediaUrl in mediaUrls)
                 {
                     File.Delete(mediaUrl);
                 }
@@ -315,7 +318,7 @@ namespace ecommerce_dash_api.Areas.Dashboard.Services
 
                 await Task.WhenAll(deleteCategoriesTask, deleteMediaTask);
             }
-           
+
             using (var _context2 = new EcommerceContext())
             {
                 productInfo.ProductId = productDTO.ProductId;
@@ -329,7 +332,7 @@ namespace ecommerce_dash_api.Areas.Dashboard.Services
 
                 var categoryNames = productDTO.Categories[0]
                     .Split(',', StringSplitOptions.RemoveEmptyEntries)
-                    .Select(name => name.Trim()) 
+                    .Select(name => name.Trim())
                     .ToList();
 
                 var categoryIds = await _context2.Categories
@@ -370,119 +373,171 @@ namespace ecommerce_dash_api.Areas.Dashboard.Services
         }
         public async Task<bool> CreateTransactionAsync(TransactionCreateDTO transactionDTO, string? username)
         {
-            using (var _context2 = new EcommerceContext()) 
+            using (var transaction = await _context.Database.BeginTransactionAsync())
             {
-                int transactionValue = 0;
-                int matchedProductQuantityId = 0;
-                var attributesBluePrintTask = _context.ProductAttributes.Where(i => i.ProductId == transactionDTO.ProductId).Select(i => i.Attribute).ToListAsync();
-                var productQuantityTask = (from pq in _context2.ProductQuantities
-                                           where pq.ProductId == transactionDTO.ProductId
-                                           join pqa in _context2.ProductQuantityAttrbiutes on pq.Id equals pqa.ProductQuantityId
-                                           group pqa by pq.Id into groupedPqa
-                                           select new
-                                           {
-                                               id = groupedPqa.Key,
-                                               productQuantityAttributes = groupedPqa.ToList()
-                                           }).ToListAsync();
-
-                Transaction transaction = new Transaction
+                try
                 {
-                    ProductId = transactionDTO.ProductId,
-                    Quantity = transactionDTO.Quantity,
-                    TransactionType = transactionDTO.TransactionType.ToString(),
-                    Note = transactionDTO.Note,
-                    UpdatedBy = username,
-                    TransactionAttributes = new List<TransactionAttribute>(),
-                };
+                    // Initialize transaction-related variables
+                    int transactionValue = 0;
+                    int matchedProductQuantityId = 0;
 
-                await Task.WhenAll(attributesBluePrintTask, productQuantityTask);
-                var attributesBluePrint = attributesBluePrintTask.Result;
-                var productQuantity = productQuantityTask.Result;
+                    // Fetch attributes blueprint and product quantities in parallel
+                    var attributesBluePrintTask = _productRepository.GetProductAttributesByProductIdAsync(transactionDTO.ProductId);
+                    var productQuantityTask = _productRepository.GetAllProductQuantityByProductIdAsync(transactionDTO.ProductId);
+                    var currentProductTask = _productRepository.GetShopProductByProductId(transactionDTO.ProductId);
 
-                var transactionAttributesTask = transactionDTO.transactionAttributes.Select(async item =>
-                {
-                    if (!attributesBluePrint.Contains(item.Name))
+                    // Create a new transaction object
+                    Transaction transactionRecord = new Transaction
+                    {
+                        ProductId = transactionDTO.ProductId,
+                        Quantity = transactionDTO.Quantity,
+                        TransactionType = transactionDTO.TransactionType.ToString(),
+                        Note = transactionDTO.Note,
+                        UpdatedBy = username,
+                        TransactionAttributes = new List<TransactionAttribute>(),
+                    };
+
+                    // Wait for attributes blueprint and product quantities to complete
+                    await Task.WhenAll(attributesBluePrintTask, productQuantityTask);
+                    var attributesBluePrint = attributesBluePrintTask.Result;
+                    var productQuantity = productQuantityTask.Result;
+
+                    // Validate and add transaction attributes
+                    if (attributesBluePrint?.Count != transactionDTO.transactionAttributes.Count)
                     {
                         throw new InvalidOperationException("Please verify the attributes");
                     }
-                    transaction.TransactionAttributes.Add(new TransactionAttribute
+                    var transactionAttributesTask = transactionDTO.transactionAttributes.Select(async item =>
                     {
-                        Attribute = item.Name,
-                        AttributeOption = item.Option,
+                        if (!attributesBluePrint.Contains(item.Name))
+                        {
+                            throw new InvalidOperationException("Please verify the attributes");
+                        }
+                        transactionRecord.TransactionAttributes.Add(new TransactionAttribute
+                        {
+                            Attribute = item.Name,
+                            AttributeOption = item.Option,
+                        });
                     });
-                });
-                var currentTransactionAttributes = transactionDTO.transactionAttributes.Select(i => i).OrderBy(i => i.Name).ToList();
-                foreach (var item in productQuantity)
-                {
-                    int i = 0;
-                    int matchingElements = 0;
-                    var orderedProductQuantityAttributes = item?.productQuantityAttributes.OrderBy(i => i.Attribute).ToList();
 
-                    if (currentTransactionAttributes.Count == 0 && orderedProductQuantityAttributes?.Count == 0)
+                    var currentOrderedTransactionAttributes = transactionDTO.transactionAttributes
+                        .Select(i => i)
+                        .OrderBy(i => i.Name)
+                        .ToList();
+
+                    // Match product quantity by attributes
+                    foreach (var item in productQuantity)
                     {
-                        matchedProductQuantityId = item.id;
-                    }
+                        int i = 0;
+                        var orderedProductQuantityAttributes = item?.productQuantityAttrbiutes.OrderBy(i => i.Attribute).ToList();
 
-                    if (currentTransactionAttributes.Count == orderedProductQuantityAttributes?.Count)
-                    {
-                        bool allMatch = true;
-
-                        foreach (var productQuantityAttribute in orderedProductQuantityAttributes)
+                        if (currentOrderedTransactionAttributes.Count == 0 && orderedProductQuantityAttributes?.Count == 0)
                         {
-                            if (productQuantityAttribute.Attribute != currentTransactionAttributes[i].Name ||
-                                productQuantityAttribute.AttributeOption != currentTransactionAttributes[i].Option)
+                            matchedProductQuantityId = item.ProductQuantityId;
+                        }
+                        else
+                        {
+                            bool allMatch = true;
+                            foreach (var productQuantityAttribute in orderedProductQuantityAttributes)
                             {
-                                allMatch = false;
-                                break;
+                                if (productQuantityAttribute.Attribute != currentOrderedTransactionAttributes[i].Name ||
+                                    productQuantityAttribute.AttributeOption != currentOrderedTransactionAttributes[i].Option)
+                                {
+                                    allMatch = false;
+                                    break;
+                                }
+                                i++;
                             }
-                            matchingElements++;
-                            i++;
-                        }
 
-                        if (allMatch)
-                        {
-                            matchedProductQuantityId = item.id;
+                            if (allMatch)
+                            {
+                                matchedProductQuantityId = item.ProductQuantityId;
+                            }
                         }
                     }
-                }
 
-                if ((transactionDTO.TransactionType.ToString() == TransactionTypeEnum.Return.ToString()) || (transactionDTO.TransactionType.ToString() == TransactionTypeEnum.Restock.ToString()))
-                {
-                    transactionValue = transactionDTO.Quantity;
-                }
-                else
-                {
-                    transactionValue = transactionDTO.Quantity * -1;
-                }
-
-                if (matchedProductQuantityId == 0) 
-                {
-                    var newProductQuantity = new ProductQuantity();
-                    newProductQuantity.ProductId = transactionDTO.ProductId;
-                    newProductQuantity.Quantity = transactionDTO.Quantity;
-                    newProductQuantity.ProductQuantityAttrbiutes = new List<ProductQuantityAttrbiute>();
-
-                    foreach (var transactionAttribute in transactionDTO.transactionAttributes)
+                    // Calculate transaction value based on type
+                    if (transactionDTO.TransactionType.ToString() == TransactionTypeEnum.Return.ToString() ||
+                        transactionDTO.TransactionType.ToString() == TransactionTypeEnum.Restock.ToString())
                     {
-                        var productQuantityAttribute = new ProductQuantityAttrbiute
-                        {
-                            Attribute = transactionAttribute.Name,
-                            AttributeOption = transactionAttribute.Option
-                        };
-                        newProductQuantity.ProductQuantityAttrbiutes.Add(productQuantityAttribute);
+                        transactionValue = transactionDTO.Quantity;
                     }
-                    await _productRepository.CreateProductQuantityAsync(newProductQuantity);
+                    else
+                    {
+                        transactionValue = transactionDTO.Quantity * -1;
+                    }
+
+                    // Update or create product quantity
+                    if (matchedProductQuantityId == 0)
+                    {
+                        var newProductQuantity = new ProductQuantity
+                        {
+                            ProductId = transactionDTO.ProductId,
+                            Quantity = transactionValue,
+                            ProductQuantityAttributes = new List<ProductQuantityAttribute>()
+                        };
+
+                        foreach (var transactionAttribute in transactionDTO.transactionAttributes)
+                        {
+                            newProductQuantity.ProductQuantityAttributes.Add(new ProductQuantityAttribute
+                            {
+                                Attribute = transactionAttribute.Name,
+                                AttributeOption = transactionAttribute.Option
+                            });
+                        }
+                        await _productRepository.CreateProductQuantityAsync(newProductQuantity);
+                    }
+                    else
+                    {
+                        var productQuantityExisting = await _context.ProductQuantities
+                            .Where(pq => pq.Id == matchedProductQuantityId)
+                            .FirstOrDefaultAsync();
+
+                        productQuantityExisting.Quantity += transactionValue;
+                        await _productRepository.UpdateProductQuantityAsync(productQuantityExisting);
+                    }
+
+                    await Task.WhenAll(transactionAttributesTask);
+
+                    // Create transaction record in the database
+                    await _productRepository.CreateTransactionAsync(transactionRecord);
+
+                    var currentProduct = await currentProductTask;
+                    if (currentProduct == null)
+                    {
+                        throw new InvalidOperationException("Please add a product content");
+                    }
+
+                    // Save changes to the database
+                    await _context.SaveChangesAsync();
+
+                    // Index updated product in Elasticsearch
+                    currentProduct.TotalQuantity = await _productRepository.GetTotalQuantityByProductIdAsync(transactionDTO.ProductId);
+                    var categoryTasks = currentProduct.ProductCategoryIds?.Select(async categoryId =>
+                    {
+                        using (var _context2 = new EcommerceContext())
+                        {
+                            return await _context2.Categories
+                                .Where(c => c.Id == categoryId)
+                                .Select(c => c.Name)
+                                .FirstOrDefaultAsync();
+                        }
+                    });
+
+                    var categoryNames = await Task.WhenAll(categoryTasks);
+                    currentProduct.Categories.AddRange(categoryNames.Where(name => name != null));
+                    await _elasticSearchService.IndexProductAsync(currentProduct);
+
+                    // Commit the transaction
+                    await transaction.CommitAsync();
+                    return true;
                 }
-                else
+                catch
                 {
-                    var productQuantityExisting = await _context.ProductQuantities.Where(pq => pq.Id == matchedProductQuantityId).FirstOrDefaultAsync();
-                    productQuantityExisting.Quantity += transactionValue;
-                    await _productRepository.UpdateProductQuantityAsync(productQuantityExisting);
+                    // Rollback the transaction in case of any failure
+                    await transaction.RollbackAsync();
+                    throw;
                 }
-                await Task.WhenAll(transactionAttributesTask);
-                await _productRepository.CreateTransactionAsync(transaction);
-                await _context.SaveChangesAsync();
-                return true;
             }
         }
     }

@@ -403,4 +403,6 @@ C:\Users\mhmdk\Desktop\Projects\ecommerce-api\ecommerce_dash_api\obj\Debug\net8.
 C:\Users\mhmdk\Desktop\Projects\ecommerce-api\ecommerce_dash_api\obj\Debug\net8.0\ecommerce_dash_api.pdb
 C:\Users\mhmdk\Desktop\Projects\ecommerce-api\ecommerce_dash_api\obj\Debug\net8.0\ecommerce_dash_api.genruntimeconfig.cache
 C:\Users\mhmdk\Desktop\Projects\ecommerce-api\ecommerce_dash_api\obj\Debug\net8.0\ref\ecommerce_dash_api.dll
+C:\Users\mhmdk\Desktop\Projects\ecommerce-api\ecommerce_dash_api\bin\Debug\net8.0\Elastic.Clients.Elasticsearch.dll
+C:\Users\mhmdk\Desktop\Projects\ecommerce-api\ecommerce_dash_api\bin\Debug\net8.0\Elastic.Transport.dll
 C:\Users\mhmdk\Desktop\Projects\ecommerce-api\ecommerce_dash_api\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt

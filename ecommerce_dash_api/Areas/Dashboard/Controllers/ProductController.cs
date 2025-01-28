@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ecommerce_dash_api.Areas.Dashboard.Interfaces;
 using ecommerce_dash_api.Areas.Dashboard.DTOS;
+using ecommerce_dash_api.Models;
 
 namespace ecommerce_dash_api.Areas.Dashboard.Controllers
 {
@@ -14,12 +15,10 @@ namespace ecommerce_dash_api.Areas.Dashboard.Controllers
     public class ProductController : Controller
     {
         private readonly IProductService _productService;
-        private readonly IConfiguration _configuration;
         public readonly IApiService _apiService;
         public ProductController(IProductService productService, IConfiguration configuration, IApiService apiService)
         {
             _productService = productService;
-            _configuration = configuration;
             _apiService = apiService;
         }
 
@@ -77,7 +76,7 @@ namespace ecommerce_dash_api.Areas.Dashboard.Controllers
                     if (response)
                     {
                         await _apiService.CreateLogAsync(LogLevelEnum.INFO.ToString(), LogMessageTemplatesEnum.successful.ToString(), null, username, ipAddress, actionName, product);
-                        return Ok(new { message = LogMessageTemplatesEnum.successful.ToString() });
+                        return CreatedAtAction(actionName, product);
                     }
                     await _apiService.CreateLogAsync(LogLevelEnum.WARNING.ToString(), LogMessageTemplatesEnum.failed.ToString(), null, username, ipAddress, actionName, product);
                     return BadRequest(new { message = LogMessageTemplatesEnum.failed.ToString() });
@@ -117,7 +116,7 @@ namespace ecommerce_dash_api.Areas.Dashboard.Controllers
                     if (response)
                     {
                         await _apiService.CreateLogAsync(LogLevelEnum.INFO.ToString(), LogMessageTemplatesEnum.successful.ToString(), null, username, ipAddress, actionName, product);
-                        return Ok(new { message = LogMessageTemplatesEnum.successful.ToString() });
+                        return NoContent();
                     }
                     await _apiService.CreateLogAsync(LogLevelEnum.WARNING.ToString(), LogMessageTemplatesEnum.failed.ToString(), null, username, ipAddress, actionName, product);
                     return BadRequest(new { message = LogMessageTemplatesEnum.failed.ToString() });
@@ -220,7 +219,7 @@ namespace ecommerce_dash_api.Areas.Dashboard.Controllers
                     if (response)
                     {
                         await _apiService.CreateLogAsync(LogLevelEnum.INFO.ToString(), LogMessageTemplatesEnum.successful.ToString(), null, username, ipAddress, actionName, product);
-                        return Ok(new { message = LogMessageTemplatesEnum.successful.ToString() });
+                        return CreatedAtAction(actionName, product);
                     }
                     await _apiService.CreateLogAsync(LogLevelEnum.WARNING.ToString(), LogMessageTemplatesEnum.failed.ToString(), null, username, ipAddress, actionName, product);
                     return BadRequest(new { message = LogMessageTemplatesEnum.failed.ToString() });
@@ -260,7 +259,7 @@ namespace ecommerce_dash_api.Areas.Dashboard.Controllers
                     if (response)
                     {
                         await _apiService.CreateLogAsync(LogLevelEnum.INFO.ToString(), LogMessageTemplatesEnum.successful.ToString(), null, username, ipAddress, actionName, product);
-                        return Ok(new { message = LogMessageTemplatesEnum.successful.ToString() });
+                        return NoContent();
                     }
                     await _apiService.CreateLogAsync(LogLevelEnum.WARNING.ToString(), LogMessageTemplatesEnum.failed.ToString(), null, username, ipAddress, actionName, product);
                     return BadRequest(new { message = LogMessageTemplatesEnum.failed.ToString() });
@@ -333,7 +332,7 @@ namespace ecommerce_dash_api.Areas.Dashboard.Controllers
                     if (response)
                     {
                         await _apiService.CreateLogAsync(LogLevelEnum.INFO.ToString(), LogMessageTemplatesEnum.successful.ToString(), null, username, ipAddress, actionName, transaction);
-                        return Ok(new { message = LogMessageTemplatesEnum.successful.ToString() });
+                        return CreatedAtAction(actionName, transaction);
                     }
                     await _apiService.CreateLogAsync(LogLevelEnum.WARNING.ToString(), LogMessageTemplatesEnum.failed.ToString(), null, username, ipAddress, actionName, transaction);
                     return BadRequest(new { message = LogMessageTemplatesEnum.failed.ToString() });

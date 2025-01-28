@@ -18,7 +18,6 @@ namespace ecommerce_dash_api.Areas.Dashboard.Services
         {
             _setupRepository = setupRepository;
             _context = context;
-
         }
 
         //+------------------------------------------------------------------+

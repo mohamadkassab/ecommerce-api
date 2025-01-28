@@ -1,10 +1,14 @@
 ﻿using ecommerce_dash_api.Areas.Dashboard.DTOS;
 using ecommerce_dash_api.Areas.Dashboard.Interfaces;
 using ecommerce_dash_api.Enum;
+using ecommerce_dash_api.Models;
 using ecommerce_dash_api.Utils;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using MySqlX.XDevAPI;
+using System.Diagnostics.Metrics;
 using System.Security.Claims;
+using static Org.BouncyCastle.Asn1.Cmp.Challenge;
 
 namespace ecommerce_dash_api.Controllers
 {
@@ -109,7 +113,7 @@ namespace ecommerce_dash_api.Controllers
                     if (response)
                     {
                         await _apiService.CreateLogAsync(LogLevelEnum.INFO.ToString(), LogMessageTemplatesEnum.successful.ToString(), null, username, ipAddress, actionName, attribute);
-                        return Ok(new { message = LogMessageTemplatesEnum.successful.ToString() });
+                        return CreatedAtAction(actionName, attribute);
                     }
                     await _apiService.CreateLogAsync(LogLevelEnum.WARNING.ToString(), LogMessageTemplatesEnum.failed.ToString(), null, username, ipAddress, actionName, attribute);
                     return BadRequest(new { message = LogMessageTemplatesEnum.failed.ToString() });
@@ -149,7 +153,7 @@ namespace ecommerce_dash_api.Controllers
                     if (response)
                     {
                         await _apiService.CreateLogAsync(LogLevelEnum.INFO.ToString(), LogMessageTemplatesEnum.successful.ToString(), null, username, ipAddress, actionName, attribute);
-                        return Ok();
+                        return NoContent();
                     }
                     await _apiService.CreateLogAsync(LogLevelEnum.WARNING.ToString(), LogMessageTemplatesEnum.failed.ToString(), null, username, ipAddress, actionName, attribute);
                     return BadRequest(new { message = "Update failed" });
@@ -182,6 +186,7 @@ namespace ecommerce_dash_api.Controllers
                     if (!ModelState.IsValid)
                     {
                         await _apiService.CreateLogAsync(LogLevelEnum.WARNING.ToString(), LogMessageTemplatesEnum.invalid_model_state.ToString(), null, username, ipAddress, actionName, id);
+                        await _apiService.CreateLogAsync(LogLevelEnum.WARNING.ToString(), LogMessageTemplatesEnum.invalid_model_state.ToString(), null, username, ipAddress, actionName, id);
                         return BadRequest(ModelState);
                     }
 
@@ -189,7 +194,7 @@ namespace ecommerce_dash_api.Controllers
                     if (response)
                     {
                         await _apiService.CreateLogAsync(LogLevelEnum.INFO.ToString(), LogMessageTemplatesEnum.successful.ToString(), null, username, ipAddress, actionName, id);
-                        return Ok();
+                        return NoContent();
                     }
                     await _apiService.CreateLogAsync(LogLevelEnum.WARNING.ToString(), LogMessageTemplatesEnum.failed.ToString(), null, username, ipAddress, actionName, id);
                     return BadRequest(new { message = "Delete failed" });
@@ -262,7 +267,7 @@ namespace ecommerce_dash_api.Controllers
                     if (response)
                     {
                         await _apiService.CreateLogAsync(LogLevelEnum.INFO.ToString(), LogMessageTemplatesEnum.successful.ToString(), null, username, ipAddress, actionName, brand);
-                        return Ok(new { message = LogMessageTemplatesEnum.successful.ToString() });
+                        return CreatedAtAction(actionName, brand);
                     }
                     await _apiService.CreateLogAsync(LogLevelEnum.WARNING.ToString(), LogMessageTemplatesEnum.failed.ToString(), null, username, ipAddress, actionName, brand);
                     return BadRequest(new { message = LogMessageTemplatesEnum.failed.ToString() });
@@ -302,7 +307,7 @@ namespace ecommerce_dash_api.Controllers
                     if (response)
                     {
                         await _apiService.CreateLogAsync(LogLevelEnum.INFO.ToString(), LogMessageTemplatesEnum.successful.ToString(), null, username, ipAddress, actionName, brand);
-                        return Ok();
+                        return NoContent();
                     }
                     await _apiService.CreateLogAsync(LogLevelEnum.WARNING.ToString(), LogMessageTemplatesEnum.failed.ToString(), null, username, ipAddress, actionName, brand);
                     return BadRequest(new { message = "Update failed" });
@@ -376,7 +381,7 @@ namespace ecommerce_dash_api.Controllers
                     if (response)
                     {
                         await _apiService.CreateLogAsync(LogLevelEnum.INFO.ToString(), LogMessageTemplatesEnum.successful.ToString(), null, username, ipAddress, actionName, category);
-                        return Ok(new { message = LogMessageTemplatesEnum.successful.ToString() });
+                        return CreatedAtAction(actionName, category);
                     }
                     await _apiService.CreateLogAsync(LogLevelEnum.WARNING.ToString(), LogMessageTemplatesEnum.failed.ToString(), null, username, ipAddress, actionName, category);
                     return BadRequest(new { message = LogMessageTemplatesEnum.failed.ToString() });
@@ -416,7 +421,7 @@ namespace ecommerce_dash_api.Controllers
                     if (response)
                     {
                         await _apiService.CreateLogAsync(LogLevelEnum.INFO.ToString(), LogMessageTemplatesEnum.successful.ToString(), null, username, ipAddress, actionName, category);
-                        return Ok();
+                        return NoContent();
                     }
                     await _apiService.CreateLogAsync(LogLevelEnum.WARNING.ToString(), LogMessageTemplatesEnum.failed.ToString(), null, username, ipAddress, actionName, category);
                     return BadRequest(new { message = "Update failed" });
@@ -456,7 +461,7 @@ namespace ecommerce_dash_api.Controllers
                     if (response)
                     {
                         await _apiService.CreateLogAsync(LogLevelEnum.INFO.ToString(), LogMessageTemplatesEnum.successful.ToString(), null, username, ipAddress, actionName, id);
-                        return Ok();
+                        return NoContent();
                     }
                     await _apiService.CreateLogAsync(LogLevelEnum.WARNING.ToString(), LogMessageTemplatesEnum.failed.ToString(), null, username, ipAddress, actionName, id);
                     return BadRequest(new { message = "Delete failed" });
@@ -530,7 +535,8 @@ namespace ecommerce_dash_api.Controllers
                     if (response)
                     {
                         await _apiService.CreateLogAsync(LogLevelEnum.INFO.ToString(), LogMessageTemplatesEnum.successful.ToString(), null, username, ipAddress, actionName, country);
-                        return Ok(new { message = LogMessageTemplatesEnum.successful.ToString() });
+                        return CreatedAtAction(actionName, country);
+
                     }
                     await _apiService.CreateLogAsync(LogLevelEnum.WARNING.ToString(), LogMessageTemplatesEnum.failed.ToString(), null, username, ipAddress, actionName, country);
                     return BadRequest(new { message = LogMessageTemplatesEnum.failed.ToString() });
@@ -570,7 +576,7 @@ namespace ecommerce_dash_api.Controllers
                     if (response)
                     {
                         await _apiService.CreateLogAsync(LogLevelEnum.INFO.ToString(), LogMessageTemplatesEnum.successful.ToString(), null, username, ipAddress, actionName, country);
-                        return Ok();
+                        return NoContent();
                     }
                     await _apiService.CreateLogAsync(LogLevelEnum.WARNING.ToString(), LogMessageTemplatesEnum.failed.ToString(), null, username, ipAddress, actionName, country);
                     return BadRequest(new { message = "Update failed" });
@@ -643,7 +649,8 @@ namespace ecommerce_dash_api.Controllers
                     if (response)
                     {
                         await _apiService.CreateLogAsync(LogLevelEnum.INFO.ToString(), LogMessageTemplatesEnum.successful.ToString(), null, username, ipAddress, actionName, currency);
-                        return Ok(new { message = LogMessageTemplatesEnum.successful.ToString() });
+                        return CreatedAtAction(actionName, currency);
+
                     }
                     await _apiService.CreateLogAsync(LogLevelEnum.WARNING.ToString(), LogMessageTemplatesEnum.failed.ToString(), null, username, ipAddress, actionName, currency);
                     return BadRequest(new { message = LogMessageTemplatesEnum.failed.ToString() });
@@ -683,7 +690,7 @@ namespace ecommerce_dash_api.Controllers
                     if (response)
                     {
                         await _apiService.CreateLogAsync(LogLevelEnum.INFO.ToString(), LogMessageTemplatesEnum.successful.ToString(), null, username, ipAddress, actionName, currency);
-                        return Ok();
+                        return NoContent();
                     }
                     await _apiService.CreateLogAsync(LogLevelEnum.WARNING.ToString(), LogMessageTemplatesEnum.failed.ToString(), null, username, ipAddress, actionName, currency);
                     return BadRequest(new { message = "Update failed" });
@@ -723,7 +730,7 @@ namespace ecommerce_dash_api.Controllers
                     if (response)
                     {
                         await _apiService.CreateLogAsync(LogLevelEnum.INFO.ToString(), LogMessageTemplatesEnum.successful.ToString(), null, username, ipAddress, actionName, id);
-                        return Ok();
+                        return NoContent();
                     }
                     await _apiService.CreateLogAsync(LogLevelEnum.WARNING.ToString(), LogMessageTemplatesEnum.failed.ToString(), null, username, ipAddress, actionName, id);
                     return BadRequest(new { message = "Delete failed" });
@@ -796,7 +803,7 @@ namespace ecommerce_dash_api.Controllers
                     if (response)
                     {
                         await _apiService.CreateLogAsync(LogLevelEnum.INFO.ToString(), LogMessageTemplatesEnum.successful.ToString(), null, username, ipAddress, actionName, season);
-                        return Ok(new { message = LogMessageTemplatesEnum.successful.ToString() });
+                        return CreatedAtAction(actionName, season);
                     }
                     await _apiService.CreateLogAsync(LogLevelEnum.WARNING.ToString(), LogMessageTemplatesEnum.failed.ToString(), null, username, ipAddress, actionName, season);
                     return BadRequest(new { message = LogMessageTemplatesEnum.failed.ToString() });
@@ -836,7 +843,7 @@ namespace ecommerce_dash_api.Controllers
                     if (response)
                     {
                         await _apiService.CreateLogAsync(LogLevelEnum.INFO.ToString(), LogMessageTemplatesEnum.successful.ToString(), null, username, ipAddress, actionName, season);
-                        return Ok();
+                        return NoContent();
                     }
                     await _apiService.CreateLogAsync(LogLevelEnum.WARNING.ToString(), LogMessageTemplatesEnum.failed.ToString(), null, username, ipAddress, actionName, season);
                     return BadRequest(new { message = "Update failed" });
@@ -908,7 +915,7 @@ namespace ecommerce_dash_api.Controllers
                     if (response)
                     {
                         await _apiService.CreateLogAsync(LogLevelEnum.INFO.ToString(), LogMessageTemplatesEnum.successful.ToString(), null, username, ipAddress, actionName, shippingM);
-                        return Ok();
+                        return CreatedAtAction(actionName, shippingM);
                     }
                     await _apiService.CreateLogAsync(LogLevelEnum.WARNING.ToString(), LogMessageTemplatesEnum.failed.ToString(), null, username, ipAddress, actionName, shippingM);
                     return BadRequest(new { message = "Update failed" });
@@ -948,7 +955,7 @@ namespace ecommerce_dash_api.Controllers
                     if (response)
                     {
                         await _apiService.CreateLogAsync(LogLevelEnum.INFO.ToString(), LogMessageTemplatesEnum.successful.ToString(), null, username, ipAddress, actionName, shippingM);
-                        return Ok();
+                        return NoContent();
                     }
                     await _apiService.CreateLogAsync(LogLevelEnum.WARNING.ToString(), LogMessageTemplatesEnum.failed.ToString(), null, username, ipAddress, actionName, shippingM);
                     return BadRequest(new { message = "Update failed" });
@@ -1021,7 +1028,7 @@ namespace ecommerce_dash_api.Controllers
                     if (response)
                     {
                         await _apiService.CreateLogAsync(LogLevelEnum.INFO.ToString(), LogMessageTemplatesEnum.successful.ToString(), null, username, ipAddress, actionName, supplier);
-                        return Ok(new { message = LogMessageTemplatesEnum.successful.ToString() });
+                        return CreatedAtAction(actionName, supplier);
                     }
                     await _apiService.CreateLogAsync(LogLevelEnum.WARNING.ToString(), LogMessageTemplatesEnum.failed.ToString(), null, username, ipAddress, actionName, supplier);
                     return BadRequest(new { message = LogMessageTemplatesEnum.failed.ToString() });
@@ -1061,7 +1068,7 @@ namespace ecommerce_dash_api.Controllers
                     if (response)
                     {
                         await _apiService.CreateLogAsync(LogLevelEnum.INFO.ToString(), LogMessageTemplatesEnum.successful.ToString(), null, username, ipAddress, actionName, supplier);
-                        return Ok();
+                        return NoContent();
                     }
                     await _apiService.CreateLogAsync(LogLevelEnum.WARNING.ToString(), LogMessageTemplatesEnum.failed.ToString(), null, username, ipAddress, actionName, supplier);
                     return BadRequest(new { message = "Update failed" });

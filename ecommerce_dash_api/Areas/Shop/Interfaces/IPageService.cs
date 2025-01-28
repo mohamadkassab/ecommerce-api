@@ -12,6 +12,7 @@ namespace ecommerce_dash_api.Areas.Shop.Interfaces
         //+------------------------------------------------------------------+
         //| Products Search                                            
         //+------------------------------------------------------------------+
-        Task<List<ShopProductQRY>> GetProductsByCategoryAndPageAsync(int categoryId, int pageNbr, int pageSize);
+        Task<SearchProductsQRY> GetProductsByCategoryAndPageAsync(int categoryId, int pageNbr, int pageSize);
+        Task<SearchProductsQRY> GetProductsByQueryAsync(string query, int pageNbr, int pageSize);
     }
 }

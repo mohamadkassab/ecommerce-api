@@ -5,6 +5,7 @@ using ecommerce_dash_api.Areas.Shop.QRYS;
 using ecommerce_dash_api.Models;
 using ecommerce_dash_api.Utils;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Internal;
 
 namespace ecommerce_dash_api.Areas.Shop.Repositories
 {
@@ -16,7 +17,7 @@ namespace ecommerce_dash_api.Areas.Shop.Repositories
             _context = context;
         }
 
-        public async Task<List<ShopBrandQRY>> GetAllBrands()
+        public async Task<List<ShopBrandQRY>> GetAllBrandsAsync()
         {
             using (var _context2 = new EcommerceContext()) 
             {
@@ -35,7 +36,7 @@ namespace ecommerce_dash_api.Areas.Shop.Repositories
             }
         }
 
-        public async Task<List<CategoryProductQRY>> GetAllProductsByCategoryAndSize(int pagenNbr, int pageSize)
+        public async Task<List<CategoryProductQRY>> GetProductsBySizeAsync(int pagenNbr, int pageSize)
         {
             var result = new List<CategoryProductQRY>();    
 
@@ -115,7 +116,7 @@ namespace ecommerce_dash_api.Areas.Shop.Repositories
             return result;
         }
 
-        public async Task<List<ShopProductQRY>> GetProductsByCategoryAndSize(int categoryId, int pagenNbr, int pageSize)
+        public async Task<List<ShopProductQRY>> GetProductsByCategoryAndSizeAsync(int categoryId, int pagenNbr, int pageSize)
         {
             var result = new List<ShopProductQRY>();
 
@@ -139,8 +140,7 @@ namespace ecommerce_dash_api.Areas.Shop.Repositories
                     join supplier in _context2.Suppliers on p.SupplierId equals supplier.Id
                     join brand in _context2.Brands on p.BrandId equals brand.Id
                     join season in _context2.Seasons on p.SeasonId equals season.Id
-                    where productId == p.Id
-                    && p.IsActive
+                    where p.Id == productId && p.IsActive
 
                     select new ShopProductQRY
                     {
@@ -158,17 +158,48 @@ namespace ecommerce_dash_api.Areas.Shop.Repositories
                         MinOrder = pi.MinOrder,
                         MaxOrder = pi.MaxOrder,
                         MediaUrl = mediaGroup.OrderBy(m => m.Id).Select(m => m.Url).FirstOrDefault() ?? "",
+                        ProductCategoryIds = _context2.ProductCategories
+                                .Where(c => c.ProductId == p.Id)
+                                .Select(c => c.CategoryId).ToList(),
+                        Categories = new List<string>(),
+                        IsActive = p.IsActive,
                     }).FirstOrDefaultAsync();
 
-                    current_product.Media = await Helpers.GetFileByUrlAsync(current_product.MediaUrl);
-                    current_product.MediaUrl = null;
+                    var categoryTasks = current_product.ProductCategoryIds.Select(async categoryId =>
+                    {
+                        using (var _context3 = new EcommerceContext())
+                        {
+                            return await _context3.Categories
+                                  .Where(c => c.Id == categoryId)
+                                  .Select(c => c.Name)
+                                  .FirstOrDefaultAsync();
+                        }
+                    });
 
+                    var categoryNames = await Task.WhenAll(categoryTasks);
+                    current_product.Categories.AddRange(categoryNames.Where(name => name != null));
+
+                    current_product.Media = await Helpers.GetFileByUrlAsync(current_product.MediaUrl);
+                    current_product.MediaUrl = null;                
                     result.Add(current_product);
                 }
             });
 
             await Task.WhenAll(getProductTasks);
             return result;
+        }
+
+        public async Task<int> GetTotalProductsByCategoryAsync(int categoryId)
+        {
+            using (var _context2 = new EcommerceContext())
+            {
+                var result = await _context2.ProductCategories
+                    .Where(pc => pc.CategoryId == categoryId)
+                    .Where(pc => _context2.ProductQuantities.Any(pq => pq.ProductId == pc.ProductId && pq.Quantity > 0))
+                    .CountAsync();
+
+                return result;
+            }
         }
     }
 }

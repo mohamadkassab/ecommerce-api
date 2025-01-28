@@ -18,29 +18,47 @@ namespace ecommerce_dash_api.Areas.Dashboard.Services
         //+------------------------------------------------------------------+
         //| Log                                            
         //+------------------------------------------------------------------+
-        public async Task<bool> CreateLogAsync(string? logLevel, string? message, string? stackTrace, string? username, string? ipAddress, string? functionName, object? functionParameters)
+        public async Task CreateLogAsync(string? logLevel, string? message, string? stackTrace, string? username, string? ipAddress, string? functionName, object? functionParameters)
         {
-            ApiLog apiLog = new ApiLog();
-            apiLog.LogLevel = logLevel;
-            apiLog.Message = message;
-            apiLog.StackTrace = stackTrace;
-            apiLog.Username = username;
-            apiLog.IpAddress = ipAddress;
-            apiLog.FunctionName = functionName;
-            apiLog.FunctionParameters = JsonConvert.SerializeObject(functionParameters);
+            try
+            {
+                using (var _context2 = new EcommerceContext()) 
+                {
+                    ApiLog apiLog = new ApiLog
+                    {
+                        LogLevel = logLevel,
+                        Message = message,
+                        StackTrace = stackTrace,
+                        Username = username,
+                        IpAddress = ipAddress,
+                        FunctionName = functionName,
+                        FunctionParameters = JsonConvert.SerializeObject(functionParameters)
+                    };
 
-            await _apiRepository.CreateLogAsync(apiLog);
-            await _context.SaveChangesAsync();
-
-            return true;
+                    _context2.ApiLogs.Add(apiLog);
+                    await _context2.SaveChangesAsync();
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }        
         }
-        public async Task<bool> CreateLogAsync(ApiLog apiLog)
+        public async Task CreateLogAsync(ApiLog apiLog)
         {
-            apiLog.FunctionParameters = JsonConvert.SerializeObject(apiLog.FunctionParameters);
-            await _apiRepository.CreateLogAsync(apiLog);
-            await _context.SaveChangesAsync();
-
-            return true;
+            try
+            {
+                apiLog.FunctionParameters = JsonConvert.SerializeObject(apiLog.FunctionParameters);
+                using (var _context2 = new EcommerceContext())
+                {
+                    _context2.ApiLogs.Add(apiLog);
+                    await _context2.SaveChangesAsync();
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }
         }
     }
 }

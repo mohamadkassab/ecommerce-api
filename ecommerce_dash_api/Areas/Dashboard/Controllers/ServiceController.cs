@@ -31,7 +31,7 @@ namespace ecommerce_dash_api.Areas.Dashboard.Controllers
             {
                 apiLog.IpAddress = ipAddress;
                 await _apiService.CreateLogAsync(apiLog);
-                return Ok();
+                return CreatedAtAction(nameof(CreateLog), apiLog);
             }
             catch (Exception ex)
             {

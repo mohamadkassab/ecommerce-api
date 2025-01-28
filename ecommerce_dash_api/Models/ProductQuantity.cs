@@ -13,5 +13,5 @@ public partial class ProductQuantity
 
     public virtual Product Product { get; set; } = null!;
 
-    public virtual ICollection<ProductQuantityAttrbiute> ProductQuantityAttrbiutes { get; set; } = new List<ProductQuantityAttrbiute>();
+    public virtual ICollection<ProductQuantityAttribute> ProductQuantityAttributes { get; set; } = new List<ProductQuantityAttribute>();
 }

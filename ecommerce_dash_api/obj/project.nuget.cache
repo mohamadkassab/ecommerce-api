@@ -1,11 +1,13 @@
 {
   "version": 2,
-  "dgSpecHash": "DO7K9AGYgkQ=",
+  "dgSpecHash": "rp0PnmstoOs=",
   "success": true,
   "projectFilePath": "C:\\Users\\mhmdk\\Desktop\\Projects\\ecommerce-api\\ecommerce_dash_api\\ecommerce_dash_api.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\mhmdk\\.nuget\\packages\\bcrypt.net-next\\4.0.3\\bcrypt.net-next.4.0.3.nupkg.sha512",
     "C:\\Users\\mhmdk\\.nuget\\packages\\bouncycastle.cryptography\\2.3.1\\bouncycastle.cryptography.2.3.1.nupkg.sha512",
+    "C:\\Users\\mhmdk\\.nuget\\packages\\elastic.clients.elasticsearch\\8.17.1\\elastic.clients.elasticsearch.8.17.1.nupkg.sha512",
+    "C:\\Users\\mhmdk\\.nuget\\packages\\elastic.transport\\0.5.7\\elastic.transport.0.5.7.nupkg.sha512",
     "C:\\Users\\mhmdk\\.nuget\\packages\\google.protobuf\\3.26.1\\google.protobuf.3.26.1.nupkg.sha512",
     "C:\\Users\\mhmdk\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
     "C:\\Users\\mhmdk\\.nuget\\packages\\k4os.compression.lz4\\1.3.8\\k4os.compression.lz4.1.3.8.nupkg.sha512",

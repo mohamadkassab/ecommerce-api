@@ -33,8 +33,16 @@
       "PackagePath": "staticwebassets\\images\\brands\\4fc4ec54-6a99-4bc7-b900-17757e2f6812.png"
     },
     {
+      "Id": "C:\\Users\\mhmdk\\Desktop\\Projects\\ecommerce-api\\ecommerce_dash_api\\wwwroot\\images\\brands\\53242b1e-b420-42b3-8caa-21771be168f0.png",
+      "PackagePath": "staticwebassets\\images\\brands\\53242b1e-b420-42b3-8caa-21771be168f0.png"
+    },
+    {
       "Id": "C:\\Users\\mhmdk\\Desktop\\Projects\\ecommerce-api\\ecommerce_dash_api\\wwwroot\\images\\brands\\534ade79-8566-4728-8a84-a0789c412632.png",
       "PackagePath": "staticwebassets\\images\\brands\\534ade79-8566-4728-8a84-a0789c412632.png"
+    },
+    {
+      "Id": "C:\\Users\\mhmdk\\Desktop\\Projects\\ecommerce-api\\ecommerce_dash_api\\wwwroot\\images\\brands\\753dd6c9-de7c-44c8-8b83-7aa540be3ca2.png",
+      "PackagePath": "staticwebassets\\images\\brands\\753dd6c9-de7c-44c8-8b83-7aa540be3ca2.png"
     },
     {
       "Id": "C:\\Users\\mhmdk\\Desktop\\Projects\\ecommerce-api\\ecommerce_dash_api\\wwwroot\\images\\brands\\7d52bc13-d65c-47c6-ac1c-f98db8db6b11.png",
@@ -89,6 +97,10 @@
       "PackagePath": "staticwebassets\\images\\product-media\\2f6eac21-fd16-438a-8c72-f0e5895c9c62_fb08um-unsplash.jpg"
     },
     {
+      "Id": "C:\\Users\\mhmdk\\Desktop\\Projects\\ecommerce-api\\ecommerce_dash_api\\wwwroot\\images\\product-media\\3dbd5311-a275-4be0-b804-709dfb01a13e_unknown.jpeg",
+      "PackagePath": "staticwebassets\\images\\product-media\\3dbd5311-a275-4be0-b804-709dfb01a13e_unknown.jpeg"
+    },
+    {
       "Id": "C:\\Users\\mhmdk\\Desktop\\Projects\\ecommerce-api\\ecommerce_dash_api\\wwwroot\\images\\product-media\\434ed0a4-b18c-4387-8f8f-581a4c937ce3_unknown.png",
       "PackagePath": "staticwebassets\\images\\product-media\\434ed0a4-b18c-4387-8f8f-581a4c937ce3_unknown.png"
     },
@@ -111,6 +123,10 @@
     {
       "Id": "C:\\Users\\mhmdk\\Desktop\\Projects\\ecommerce-api\\ecommerce_dash_api\\wwwroot\\images\\product-media\\b1d14db2-382e-41b1-8b58-8cf3c908f045_unknown.png",
       "PackagePath": "staticwebassets\\images\\product-media\\b1d14db2-382e-41b1-8b58-8cf3c908f045_unknown.png"
+    },
+    {
+      "Id": "C:\\Users\\mhmdk\\Desktop\\Projects\\ecommerce-api\\ecommerce_dash_api\\wwwroot\\images\\product-media\\bbfaf7d9-b8e2-4a65-be21-e4220adc0183_unknown.jpeg",
+      "PackagePath": "staticwebassets\\images\\product-media\\bbfaf7d9-b8e2-4a65-be21-e4220adc0183_unknown.jpeg"
     },
     {
       "Id": "C:\\Users\\mhmdk\\Desktop\\Projects\\ecommerce-api\\ecommerce_dash_api\\wwwroot\\images\\product-media\\de85e4e6-206a-4f5d-97d9-713013f51037_unknown.jpg",

@@ -1,4 +1,5 @@
 ﻿using ecommerce_dash_api.Areas.Dashboard.QRYS;
+using ecommerce_dash_api.Areas.Shop.QRYS;
 using ecommerce_dash_api.Models;
 
 namespace ecommerce_dash_api.Areas.Dashboard.Interfaces
@@ -14,6 +15,11 @@ namespace ecommerce_dash_api.Areas.Dashboard.Interfaces
         Task CreateProductAttributeRangeAsync(List<ProductAttribute> productAttributes);
         Task UpdateProductAsync(Product product);
         Task DeleteProductAttributeByProductIdAsync(int productId);
+
+        //+------------------------------------------------------------------+
+        //| Product Attribute                                           
+        //+------------------------------------------------------------------+
+        Task<List<string>> GetProductAttributesByProductIdAsync(int productId);
 
         //+------------------------------------------------------------------+
         //| Product Content                                         
@@ -49,8 +55,16 @@ namespace ecommerce_dash_api.Areas.Dashboard.Interfaces
         //+------------------------------------------------------------------+
         //| Product Quantity                                           
         //+------------------------------------------------------------------+
+        Task<List<GroupProductQuantityAttributes>> GetAllProductQuantityByProductIdAsync(int productId);
+        Task<int> GetTotalQuantityByProductIdAsync(int productId);
         Task CreateProductQuantityAsync(ProductQuantity productQuantity);
         Task UpdateProductQuantityAsync(ProductQuantity productQuantity);
+
+        //+------------------------------------------------------------------+
+        //| Shop Product                                            
+        //+------------------------------------------------------------------+
+        Task<ShopProductQRY> GetShopProductByProductId (int productId);
+
 
         //+------------------------------------------------------------------+
         //| Transaction                                          

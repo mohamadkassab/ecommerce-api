@@ -14,13 +14,15 @@ namespace ecommerce_dash_api.Areas.Shop.Controllers
     public class PageController : Controller
     {
         private readonly IConfiguration _configuration;
-        public readonly IApiService _apiService;
-        public readonly Interfaces.IPageService _pageService;
-        public PageController(Interfaces.IPageService pageService, IConfiguration configuration, IApiService apiService)
+        private readonly IApiService _apiService;
+        private readonly Interfaces.IPageService _pageService;
+        private readonly IElasticService _elasticSearchService;
+        public PageController(Interfaces.IPageService pageService, IConfiguration configuration, IApiService apiService, IElasticService elasticSearchService)
         {
             _configuration = configuration;
             _apiService = apiService;
             _pageService = pageService;
+            _elasticSearchService = elasticSearchService;
         }
 
         //+------------------------------------------------------------------+
@@ -54,7 +56,7 @@ namespace ecommerce_dash_api.Areas.Shop.Controllers
             var actionName = this.ControllerContext?.RouteData?.Values["action"]?.ToString() ?? null;
             try
             {
-                var result = await _pageService.GetHomePageProductsAndBrandsAsync(1, 18);
+                var result = await _pageService.GetHomePageProductsAndBrandsAsync(1, 12);
                 return Ok(result);
             }
             catch (Exception ex)
@@ -77,6 +79,25 @@ namespace ecommerce_dash_api.Areas.Shop.Controllers
             try
             {
                 var result = await _pageService.GetProductsByCategoryAndPageAsync(categoryId, pageNbr, pageSize);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                string errorMessage = $"Error: {ex.Message}";
+                string innerMessage = ex.InnerException != null ? $"Inner Exception: {ex?.InnerException?.Message}" : string.Empty;
+                await _apiService.CreateLogAsync(LogLevelEnum.ERROR.ToString(), $"{errorMessage}\n{innerMessage}", ex?.StackTrace, null, ipAddress, actionName, null);
+                return BadRequest(new { message = innerMessage != string.Empty ? ex?.InnerException?.Message : ex?.Message });
+            }
+        }
+
+        [HttpGet("{query}/{pageNbr}/{pageSize}")]
+        public async Task<IActionResult> GetProductsByQuery(string query, int pageNbr, int pageSize)
+        {
+            var ipAddress = HttpContext?.Connection?.RemoteIpAddress?.ToString() ?? null;
+            var actionName = this.ControllerContext?.RouteData?.Values["action"]?.ToString() ?? null;
+            try
+            {
+                var result = await _pageService.GetProductsByQueryAsync(query, pageNbr, pageSize);
                 return Ok(result);
             }
             catch (Exception ex)

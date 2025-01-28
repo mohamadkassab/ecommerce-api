@@ -7,14 +7,22 @@ namespace ecommerce_dash_api.Models;
 
 public partial class EcommerceContext : DbContext
 {
+    private readonly ILogger<EcommerceContext> _logger;
     public EcommerceContext()
     {
+
     }
 
-    public EcommerceContext(DbContextOptions<EcommerceContext> options)
-        : base(options)
+    public EcommerceContext(DbContextOptions<EcommerceContext> options, ILogger<EcommerceContext> logger): base(options)
     {
+        _logger = logger;
     }
+
+    //public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+    //{
+    //    _logger.LogInformation("SaveChangesAsync called. Stack trace:\n{StackTrace}", Environment.StackTrace);
+    //    return await base.SaveChangesAsync(cancellationToken);
+    //}
 
     public virtual DbSet<ApiLog> ApiLogs { get; set; }
 
@@ -64,7 +72,7 @@ public partial class EcommerceContext : DbContext
 
     public virtual DbSet<ProductQuantity> ProductQuantities { get; set; }
 
-    public virtual DbSet<ProductQuantityAttrbiute> ProductQuantityAttrbiutes { get; set; }
+    public virtual DbSet<ProductQuantityAttribute> ProductQuantityAttributes { get; set; }
 
     public virtual DbSet<Role> Roles { get; set; }
 
@@ -915,11 +923,11 @@ public partial class EcommerceContext : DbContext
                 .HasConstraintName("product_quantity_ibfk_1");
         });
 
-        modelBuilder.Entity<ProductQuantityAttrbiute>(entity =>
+        modelBuilder.Entity<ProductQuantityAttribute>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PRIMARY");
 
-            entity.ToTable("product_quantity_attrbiute");
+            entity.ToTable("product_quantity_attribute");
 
             entity.HasIndex(e => new { e.ProductQuantityId, e.Attribute }, "product_quantity_id").IsUnique();
 
@@ -932,9 +940,8 @@ public partial class EcommerceContext : DbContext
                 .HasColumnName("attribute_option");
             entity.Property(e => e.ProductQuantityId).HasColumnName("product_quantity_id");
 
-            entity.HasOne(d => d.ProductQuantity).WithMany(p => p.ProductQuantityAttrbiutes)
+            entity.HasOne(d => d.ProductQuantity).WithMany(p => p.ProductQuantityAttributes)
                 .HasForeignKey(d => d.ProductQuantityId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("fk_product_quantity_id");
         });
 

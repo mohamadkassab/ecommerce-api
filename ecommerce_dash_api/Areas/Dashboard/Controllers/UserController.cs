@@ -1,8 +1,10 @@
 ﻿using ecommerce_dash_api.Areas.Dashboard.DTOS;
 using ecommerce_dash_api.Areas.Dashboard.Interfaces;
 using ecommerce_dash_api.Enum;
+using ecommerce_dash_api.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Data;
 using System.Security.Claims;
 
 
@@ -77,7 +79,6 @@ namespace ecommerce_dash_api.Areas.Dashboard.Controllers
                     var result = await _userService.GetAllRolesWithPermissionsAsync();
                     await _apiService.CreateLogAsync(LogLevelEnum.INFO.ToString(), LogMessageTemplatesEnum.successful.ToString(), null, username, ipAddress, actionName, null);
                     return Ok(result);
-
                 }
                 catch (Exception ex)
                 {
@@ -101,7 +102,6 @@ namespace ecommerce_dash_api.Areas.Dashboard.Controllers
             var ipAddress = HttpContext?.Connection?.RemoteIpAddress?.ToString() ?? null;
             var actionName = this.ControllerContext?.RouteData?.Values["action"]?.ToString() ?? null;
             if (userClaims.Any(c => c.Type == "permission" && c.Value == "role_crud") || (username == "root@e.com"))
-
             {
                 try
                 {
@@ -115,7 +115,7 @@ namespace ecommerce_dash_api.Areas.Dashboard.Controllers
                     if (response)
                     {
                         await _apiService.CreateLogAsync(LogLevelEnum.INFO.ToString(), LogMessageTemplatesEnum.successful.ToString(), null, username, ipAddress, actionName, role);
-                        return Ok();
+                        return CreatedAtAction(actionName, role);
                     }
                     await _apiService.CreateLogAsync(LogLevelEnum.WARNING.ToString(), LogMessageTemplatesEnum.failed.ToString(), null, username, ipAddress, actionName, role);
                     return BadRequest(new { message = "Create role failed" });
@@ -155,7 +155,7 @@ namespace ecommerce_dash_api.Areas.Dashboard.Controllers
                     if (response)
                     {
                         await _apiService.CreateLogAsync(LogLevelEnum.INFO.ToString(), LogMessageTemplatesEnum.successful.ToString(), null, username, ipAddress, actionName, role);
-                        return Ok();
+                        return NoContent();
                     }
                     await _apiService.CreateLogAsync(LogLevelEnum.WARNING.ToString(), LogMessageTemplatesEnum.failed.ToString(), null, username, ipAddress, actionName, role);
                     return BadRequest(new { message = "Update role failed" });
@@ -181,9 +181,7 @@ namespace ecommerce_dash_api.Areas.Dashboard.Controllers
             var username = User.FindFirstValue("username") ?? null;
             var ipAddress = HttpContext?.Connection?.RemoteIpAddress?.ToString() ?? null;
             var actionName = this.ControllerContext?.RouteData?.Values["action"]?.ToString() ?? null;
-
             if (userClaims.Any(c => c.Type == "permission" && c.Value == "role_crud") || (username == "root@e.com"))
-
             {
                 try
                 {
@@ -197,7 +195,7 @@ namespace ecommerce_dash_api.Areas.Dashboard.Controllers
                     if (response)
                     {
                         await _apiService.CreateLogAsync(LogLevelEnum.INFO.ToString(), LogMessageTemplatesEnum.successful.ToString(), null, username, ipAddress, actionName, id);
-                        return Ok();
+                        return NoContent();
                     }
                     await _apiService.CreateLogAsync(LogLevelEnum.WARNING.ToString(), LogMessageTemplatesEnum.failed.ToString(), null, username, ipAddress, actionName, id);
                     return BadRequest(new { message = "Delete role failed" });
@@ -273,7 +271,7 @@ namespace ecommerce_dash_api.Areas.Dashboard.Controllers
                 Response.Cookies.Delete(jwtSettings["TokenName"]!);
                 await _apiService.CreateLogAsync(LogLevelEnum.INFO.ToString(), LogMessageTemplatesEnum.successful.ToString(), null, null, ipAddress, actionName, User?.Identity?.Name);
 
-                return Ok(new { message = LogMessageTemplatesEnum.successful.ToString() });
+                return NoContent();
             }
             catch (Exception ex)
             {
@@ -321,9 +319,7 @@ namespace ecommerce_dash_api.Areas.Dashboard.Controllers
             var username = User.FindFirstValue("username") ?? null;
             var ipAddress = HttpContext?.Connection?.RemoteIpAddress?.ToString() ?? null;
             var actionName = this.ControllerContext?.RouteData?.Values["action"]?.ToString() ?? null;
-
             if ((userClaims.Any(c => c.Type == "permission" && c.Value == "user_crud") || (username == "root@e.com")) && user.UserName != "root@e.com")
-
             {
                 try
                 {
@@ -338,7 +334,7 @@ namespace ecommerce_dash_api.Areas.Dashboard.Controllers
                     if (result)
                     {
                         await _apiService.CreateLogAsync(LogLevelEnum.INFO.ToString(), LogMessageTemplatesEnum.successful.ToString(), null, username, ipAddress, actionName, user);
-                        return Ok(new { message = LogMessageTemplatesEnum.successful.ToString() });
+                        return CreatedAtAction(actionName, user);
                     }
                     await _apiService.CreateLogAsync(LogLevelEnum.WARNING.ToString(), LogMessageTemplatesEnum.failed.ToString(), null, username, ipAddress, actionName, user);
                     return BadRequest(new { message = LogMessageTemplatesEnum.failed.ToString() });
@@ -379,7 +375,7 @@ namespace ecommerce_dash_api.Areas.Dashboard.Controllers
                     if (result)
                     {
                         await _apiService.CreateLogAsync(LogLevelEnum.INFO.ToString(), LogMessageTemplatesEnum.successful.ToString(), null, username, ipAddress, actionName, user);
-                        return Ok(new { message = LogMessageTemplatesEnum.successful.ToString() });
+                        return NoContent();
                     }
                     await _apiService.CreateLogAsync(LogLevelEnum.WARNING.ToString(), LogMessageTemplatesEnum.failed.ToString(), null, username, ipAddress, actionName, user);
                     return BadRequest(new { message = LogMessageTemplatesEnum.failed.ToString() });
@@ -417,7 +413,7 @@ namespace ecommerce_dash_api.Areas.Dashboard.Controllers
                 if (response)
                 {
                     await _apiService.CreateLogAsync(LogLevelEnum.INFO.ToString(), LogMessageTemplatesEnum.successful.ToString(), null, username, ipAddress, actionName, null);
-                    return Ok();
+                    return NoContent();
                 }
                 await _apiService.CreateLogAsync(LogLevelEnum.WARNING.ToString(), LogMessageTemplatesEnum.failed.ToString(), null, username, ipAddress, actionName, changePassword);
                 return BadRequest(new { message = "Change password failed" });

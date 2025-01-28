@@ -1,6 +1,7 @@
 ﻿using ecommerce_dash_api.Areas.Dashboard.DTOS;
 using ecommerce_dash_api.Areas.Dashboard.Interfaces;
 using ecommerce_dash_api.Areas.Dashboard.QRYS;
+using ecommerce_dash_api.Areas.Shop.QRYS;
 using ecommerce_dash_api.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -25,6 +26,7 @@ namespace ecommerce_dash_api.Areas.Dashboard.Repositories
         {
             var result = await _context.Products
             .AsNoTracking()
+            .OrderBy(i => i.Id)
             .Select(i => new ProductQRY
             {
                 Id = i.Id,
@@ -72,6 +74,23 @@ namespace ecommerce_dash_api.Areas.Dashboard.Repositories
             return Task.CompletedTask;
         }
 
+
+        //+------------------------------------------------------------------+
+        //| Product Attribute                                           
+        //+------------------------------------------------------------------+
+        public async Task<List<string>> GetProductAttributesByProductIdAsync(int productId)
+        {
+            using (var _contex2 = new EcommerceContext()) 
+            {
+                var result = await _contex2.ProductAttributes
+                  .Where(i => i.ProductId == productId)
+                  .Select(i => i.Attribute)
+                  .ToListAsync();
+
+                return result;
+            }
+        }
+
         //+------------------------------------------------------------------+
         //| Product Content                                           
         //+------------------------------------------------------------------+
@@ -79,7 +98,7 @@ namespace ecommerce_dash_api.Areas.Dashboard.Repositories
         {
             var result = await _context.ProductInfos
                 .AsNoTracking()
-
+                .OrderBy(i => i.ProductId)
                 .Select(i => new ProductContentQRY
                 {
                     ProductId = i.ProductId,
@@ -195,6 +214,28 @@ namespace ecommerce_dash_api.Areas.Dashboard.Repositories
         //+------------------------------------------------------------------+
         //| Product Quantity                                         
         //+------------------------------------------------------------------+
+        public async Task<List<GroupProductQuantityAttributes>> GetAllProductQuantityByProductIdAsync(int productId)
+        {
+            using(var _context2 = new EcommerceContext())
+            {
+                var result = 
+                await (from pq in _context2.ProductQuantities
+                        where pq.ProductId == productId
+                        join pqa in _context2.ProductQuantityAttributes on pq.Id equals pqa.ProductQuantityId
+                        group pqa by pq.Id into groupedPqa
+                        select new GroupProductQuantityAttributes
+                        {
+                            ProductQuantityId = groupedPqa.Key,
+                            productQuantityAttrbiutes = groupedPqa.ToList()
+                        }).ToListAsync();
+                return result;
+            }
+        }
+        public async Task<int> GetTotalQuantityByProductIdAsync (int productId)
+        {
+            var result = await _context.ProductQuantities.Where(pq => pq.ProductId == productId).SumAsync(pq => pq.Quantity);
+            return result ?? 0;
+        }
         public async Task CreateProductQuantityAsync(ProductQuantity productQuantity)
         {
            await _context.ProductQuantities.AddAsync(productQuantity);
@@ -203,6 +244,49 @@ namespace ecommerce_dash_api.Areas.Dashboard.Repositories
         {
             _context.ProductQuantities.Update(productQuantity);
             return Task.CompletedTask;
+        }
+
+        //+------------------------------------------------------------------+
+        //| Shop Product                                            
+        //+------------------------------------------------------------------+
+        public async Task<ShopProductQRY> GetShopProductByProductId(int productId)
+        {
+            using(var _context2 = new EcommerceContext())
+            {
+                var result =
+                   await (
+                       from p in _context2.Products
+                       join pi in _context2.ProductInfos on p.Id equals pi.ProductId
+                       join pm in _context2.ProductMedia on p.Id equals pm.ProductId into mediaGroup
+                       join supplier in _context2.Suppliers on p.SupplierId equals supplier.Id
+                       join brand in _context2.Brands on p.BrandId equals brand.Id
+                       join season in _context2.Seasons on p.SeasonId equals season.Id
+                       where p.Id == productId
+
+                       select new ShopProductQRY
+                       {
+                           Id = p.Id,
+                           Name = p.Name,
+                           Price = p.Price,
+                           Discount = p.Discount,
+                           Brand = brand.Name ?? "",
+                           Season = season.Name ?? "",
+                           Year = p.Year,
+                           LongDescription = pi.LongDescription,
+                           ShortDescription = pi.ShortDescription,
+                           Weight = pi.Weight,
+                           ShippingWeight = pi.ShippingWeight,
+                           MinOrder = pi.MinOrder,
+                           MaxOrder = pi.MaxOrder,
+                           MediaUrl = mediaGroup.OrderBy(m => m.Id).Select(m => m.Url).FirstOrDefault() ?? "",
+                           ProductCategoryIds = _context2.ProductCategories
+                                   .Where(c => c.ProductId == p.Id)
+                                   .Select(c => c.CategoryId).ToList(),
+                           Categories = new List<string>(),
+                       }).FirstOrDefaultAsync();
+                return result;
+            }
+           
         }
 
         //+------------------------------------------------------------------+
