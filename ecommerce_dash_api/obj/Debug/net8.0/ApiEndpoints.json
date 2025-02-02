@@ -938,52 +938,41 @@
   },
   {
     "ContainingType": "ecommerce_dash_api.Areas.Shop.Controllers.PageController",
-    "Method": "GetProductsByCategoryAndPage",
-    "RelativePath": "Shop/Page/GetProductsByCategoryAndPage/{categoryId}/{pageNbr}/{pageSize}",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "categoryId",
-        "Type": "System.Int32",
-        "IsRequired": true
-      },
-      {
-        "Name": "pageNbr",
-        "Type": "System.Int32",
-        "IsRequired": true
-      },
-      {
-        "Name": "pageSize",
-        "Type": "System.Int32",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "ecommerce_dash_api.Areas.Shop.Controllers.PageController",
     "Method": "GetProductsByQuery",
-    "RelativePath": "Shop/Page/GetProductsByQuery/{query}/{pageNbr}/{pageSize}",
+    "RelativePath": "Shop/Page/GetProductsByQuery",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
-        "Name": "query",
+        "Name": "Query",
         "Type": "System.String",
-        "IsRequired": true
+        "IsRequired": false
       },
       {
-        "Name": "pageNbr",
+        "Name": "PageNbr",
         "Type": "System.Int32",
-        "IsRequired": true
+        "IsRequired": false
       },
       {
-        "Name": "pageSize",
+        "Name": "PageSize",
         "Type": "System.Int32",
-        "IsRequired": true
+        "IsRequired": false
+      },
+      {
+        "Name": "SortingOption",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Brands",
+        "Type": "System.Collections.Generic.List\u00601[[System.String, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "Categories",
+        "Type": "System.Collections.Generic.List\u00601[[System.String, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "IsRequired": false
       }
     ],
     "ReturnTypes": []

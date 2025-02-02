@@ -39,11 +39,11 @@ namespace ecommerce_dash_api.Areas.Dashboard.DTOS
         public short MaxOrder { get; set; }
 
         [Required]
-        [RequiredNonEmptyList]
+        [MinLength(1, ErrorMessage = "At least one Category must be specified.")]
         public List<string> Categories { get; set; } = null!;
 
         [Required]
-        [RequiredNonEmptyList]
+        [MinLength(1, ErrorMessage = "At least one Media must be specified.")]
         [MaxFileSize(5 * 1024 * 1024)]
         [FileTypeValidation(FileTypeEnum.ImageVideo)]
         public List<IFormFile> Media { get; set; } = null!;

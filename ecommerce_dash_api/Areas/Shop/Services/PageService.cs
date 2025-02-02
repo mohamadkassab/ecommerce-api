@@ -1,15 +1,22 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel;
+using System.Reflection;
+using ecommerce_dash_api.Areas.Shop.DTOS;
 using ecommerce_dash_api.Areas.Shop.Interfaces;
 using ecommerce_dash_api.Areas.Shop.QRYS;
+using ecommerce_dash_api.Enum;
 using ecommerce_dash_api.Utils;
+using Google.Protobuf.WellKnownTypes;
+using Newtonsoft.Json.Linq;
+using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace ecommerce_dash_api.Areas.Shop.Services
 {
     public class PageService : IPageService
     {
         private readonly IPageRepository _pageRepository;
-        private readonly IElasticService _elasticSearchService;
-        public PageService(IPageRepository pageRepository, IElasticService elasticSearchService) 
+        private readonly IElasticSearchService _elasticSearchService;
+        public PageService(IPageRepository pageRepository, IElasticSearchService elasticSearchService) 
         {
             _pageRepository = pageRepository;
             _elasticSearchService = elasticSearchService;
@@ -32,32 +39,32 @@ namespace ecommerce_dash_api.Areas.Shop.Services
         //+------------------------------------------------------------------+
         //| Products Search                                            
         //+------------------------------------------------------------------+
-        public async Task<SearchProductsQRY> GetProductsByCategoryAndPageAsync(int categoryId, int pageNbr, int pageSize)
+        public async Task<SearchProductsQRY> GetProductsByQueryAsync(SearchQueryDTO searchQuery)
         {
             var result = new SearchProductsQRY();
-            var productsTask = _pageRepository.GetProductsByCategoryAndSizeAsync(categoryId, pageNbr, pageSize);
-            var totalProductsTask = _pageRepository.GetTotalProductsByCategoryAsync(categoryId);
-            await Task.WhenAll(productsTask, totalProductsTask);
-            result.products = productsTask.Result;
-            result.totalProducts = totalProductsTask.Result;
-            return result;
-        }
-
-        public async Task<SearchProductsQRY> GetProductsByQueryAsync(string query, int pageNbr, int pageSize)
-        {
-            var result = new SearchProductsQRY();
-            var totalProductsTask =  _elasticSearchService.GetCountSearchProductsAsync(query);
-            var productsTask =  _elasticSearchService.SearchProductsAsync(query, pageNbr, pageSize);
-            await Task.WhenAll(productsTask, productsTask);
+            var filterSortingValuesTask = _elasticSearchService.GetUniqueValuesAsync(searchQuery);    
+            var totalProductsTask =  _elasticSearchService.GetCountSearchProductsAsync(searchQuery);
+            var productsTask =  _elasticSearchService.SearchProductsAsync(searchQuery);
+            await Task.WhenAll(productsTask, productsTask, filterSortingValuesTask);
             var productsModifyFieldsTask = productsTask.Result.Select(async item =>
             {
                 item.Media = await Helpers.GetFileByUrlAsync(item.MediaUrl);
                 item.MediaUrl = null;
                 item.TotalQuantity = null;
+                item.Note = null;
             });
             await Task.WhenAll(productsModifyFieldsTask);
-            result.totalProducts = totalProductsTask.Result;
-            result.products = productsTask.Result;
+            result.TotalProducts = totalProductsTask.Result;
+            result.Products = productsTask.Result;
+
+            var sortingOptions = await Helpers.GetEnumValuesAndDescriptions<SortingOptionsEnum>();
+            var filterSortingOptions = filterSortingValuesTask.Result;
+            filterSortingOptions.SortingOptions = sortingOptions;
+            result.FilterSortOptions = filterSortingOptions;
+            result.SelectedFilterSortOptions = new SelectedFilterSortQRY();
+            result.SelectedFilterSortOptions.SortingOption = searchQuery.SortingOption;
+            result.SelectedFilterSortOptions.Brands = searchQuery.Brands;
+            result.SelectedFilterSortOptions.Categories = searchQuery.Categories;
             return result;
         }
     }

@@ -283,7 +283,24 @@ namespace ecommerce_dash_api.Areas.Dashboard.Repositories
                                    .Where(c => c.ProductId == p.Id)
                                    .Select(c => c.CategoryId).ToList(),
                            Categories = new List<string>(),
+                           IsActive = p.IsActive
                        }).FirstOrDefaultAsync();
+
+                var categoryTasks = result.ProductCategoryIds?.Select(async categoryId =>
+                {
+                    using (var _context2 = new EcommerceContext())
+                    {
+                        return await _context2.Categories
+                            .Where(c => c.Id == categoryId)
+                            .Select(c => c.Name)
+                            .FirstOrDefaultAsync();
+                    }
+                });
+                var totalQuantityTask = GetTotalQuantityByProductIdAsync(result.Id);
+                var categoryNames = await Task.WhenAll(categoryTasks);
+                var totalQuantity = await totalQuantityTask;
+                result.TotalQuantity = totalQuantity;
+                result.Categories.AddRange(categoryNames.Where(name => name != null));
                 return result;
             }
            

@@ -2,8 +2,8 @@
 {
     public enum LogMessageTemplatesEnum
     {
-        invalid_model_state,
-        successful,
-        failed
+        Invalid_model_state,
+        Successful,
+        Failed
     }
 }

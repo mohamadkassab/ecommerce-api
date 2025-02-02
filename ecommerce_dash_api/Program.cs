@@ -74,7 +74,7 @@ var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())
 {
-    var elasticService = scope.ServiceProvider.GetRequiredService<IElasticService>();
+    var elasticService = scope.ServiceProvider.GetRequiredService<IElasticSearchService>();
     try
     {
         await elasticService.UpdateElasticDatabaseAsync();

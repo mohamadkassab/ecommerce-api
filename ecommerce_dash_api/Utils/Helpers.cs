@@ -1,4 +1,7 @@
-﻿using ecommerce_dash_api.Models;
+﻿using ecommerce_dash_api.Enum;
+using ecommerce_dash_api.Models;
+using System.ComponentModel;
+using System.Reflection;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -98,6 +101,25 @@ namespace ecommerce_dash_api.Utils
                     return hashString.ToString();
                 }
             });
+        }
+
+        public static async Task<List<Dictionary<string, string>>> GetEnumValuesAndDescriptions<TEnum>() 
+        {
+            var sortingOptionsList = new List<Dictionary<string, string>>();
+
+            foreach (var option in (typeof(TEnum)).GetEnumValues())
+            {
+                var field = typeof(TEnum).GetField(option.ToString());
+                var description = field.GetCustomAttribute<DescriptionAttribute>();
+                var sortingEntry = new Dictionary<string, string>
+                {
+                    { option.ToString(), description?.Description ?? option.ToString() } 
+                };
+
+                sortingOptionsList.Add(sortingEntry);
+            }
+
+            return sortingOptionsList;
         }
     }
 }

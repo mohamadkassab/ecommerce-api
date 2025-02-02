@@ -6,7 +6,6 @@ namespace ecommerce_dash_api.Areas.Shop.Interfaces
     {
         Task<List<ShopBrandQRY>> GetAllBrandsAsync();
         Task<List<CategoryProductQRY>> GetProductsBySizeAsync(int pagenNbr, int pageSize);
-        Task<List<ShopProductQRY>> GetProductsByCategoryAndSizeAsync(int categoryId, int pagenNbr, int pageSize);
         Task<int> GetTotalProductsByCategoryAsync(int categoryId);
     }
 }

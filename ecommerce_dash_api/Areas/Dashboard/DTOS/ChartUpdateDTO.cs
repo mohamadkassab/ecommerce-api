@@ -18,7 +18,7 @@ namespace ecommerce_dash_api.Areas.Dashboard.DTOS
         public string Query { get; set; } = string.Empty;
 
         [Required]
-        [RequiredNonEmptyList]
+        [MinLength(1, ErrorMessage = "At least one ChartProperty must be specified.")]
         public List<ChartPropertyDTO> ChartProperties { get; set; } = new List<ChartPropertyDTO>();
     }
 }

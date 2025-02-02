@@ -23,7 +23,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Areas\Shop\DTOS\" />
     <Folder Include="wwwroot\images\brands\" />
     <Folder Include="wwwroot\images\product-media\" />
   </ItemGroup>

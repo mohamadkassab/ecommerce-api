@@ -23,7 +23,7 @@ namespace ecommerce_dash_api.Utils
             services.AddScoped<Areas.Dashboard.Interfaces.IProductService, Areas.Dashboard.Services.ProductService>();
             services.AddScoped<IPageRepository, PageRepository>();
             services.AddScoped<Areas.Shop.Interfaces.IPageService, Areas.Shop.Services.PageService>();
-            services.AddScoped<IElasticService, ElasticService>();
+            services.AddScoped<IElasticSearchService, ElasticSearchService>();
             services.AddSingleton<JwtToken>();
             return services;
         }

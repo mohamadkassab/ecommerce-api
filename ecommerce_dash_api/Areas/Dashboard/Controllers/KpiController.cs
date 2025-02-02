@@ -37,7 +37,7 @@ namespace ecommerce_dash_api.Areas.Dashboard.Controllers
                 try
                 {
                     var response = await _kpiService.GetAllChartsAsync();
-                    await _apiService.CreateLogAsync(LogLevelEnum.INFO.ToString(), LogMessageTemplatesEnum.successful.ToString(), null, username, ipAddress, actionName, null);
+                    await _apiService.CreateLogAsync(LogLevelEnum.INFO.ToString(), LogMessageTemplatesEnum.Successful.ToString(), null, username, ipAddress, actionName, null);
                     return Ok(response);
                 }
                 catch (Exception ex)
@@ -67,7 +67,7 @@ namespace ecommerce_dash_api.Areas.Dashboard.Controllers
                 {
                     var response = await _kpiService.GetChartDataByQueryAsync(query);
                     var jsonResponse = JsonConvert.SerializeObject(response);
-                    await _apiService.CreateLogAsync(LogLevelEnum.INFO.ToString(), LogMessageTemplatesEnum.successful.ToString(), null, username, ipAddress, actionName, query);
+                    await _apiService.CreateLogAsync(LogLevelEnum.INFO.ToString(), LogMessageTemplatesEnum.Successful.ToString(), null, username, ipAddress, actionName, query);
                     return Ok(jsonResponse);
                 }
                 catch (Exception ex)
@@ -97,17 +97,17 @@ namespace ecommerce_dash_api.Areas.Dashboard.Controllers
                 {
                     if (!ModelState.IsValid)
                     {
-                        await _apiService.CreateLogAsync(LogLevelEnum.WARNING.ToString(), LogMessageTemplatesEnum.invalid_model_state.ToString(), null, username, ipAddress, actionName, chart);
+                        await _apiService.CreateLogAsync(LogLevelEnum.WARNING.ToString(), LogMessageTemplatesEnum.Invalid_model_state.ToString(), null, username, ipAddress, actionName, chart);
                         return BadRequest(ModelState);
                     }
 
                     var response = await _kpiService.CreateChartAsync(chart, username);
                     if (response)
                     {
-                        await _apiService.CreateLogAsync(LogLevelEnum.INFO.ToString(), LogMessageTemplatesEnum.successful.ToString(), null, username, ipAddress, actionName, chart);
+                        await _apiService.CreateLogAsync(LogLevelEnum.INFO.ToString(), LogMessageTemplatesEnum.Successful.ToString(), null, username, ipAddress, actionName, chart);
                         return CreatedAtAction(actionName, chart);
                     }
-                    await _apiService.CreateLogAsync(LogLevelEnum.WARNING.ToString(), LogMessageTemplatesEnum.failed.ToString(), null, username, ipAddress, actionName, chart);
+                    await _apiService.CreateLogAsync(LogLevelEnum.WARNING.ToString(), LogMessageTemplatesEnum.Failed.ToString(), null, username, ipAddress, actionName, chart);
                     return BadRequest(new { message = "Create chart failed" });
                 }
                 catch (Exception ex)
@@ -137,17 +137,17 @@ namespace ecommerce_dash_api.Areas.Dashboard.Controllers
                 {
                     if (!ModelState.IsValid)
                     {
-                        await _apiService.CreateLogAsync(LogLevelEnum.WARNING.ToString(), LogMessageTemplatesEnum.invalid_model_state.ToString(), null, username, ipAddress, actionName, chart);
+                        await _apiService.CreateLogAsync(LogLevelEnum.WARNING.ToString(), LogMessageTemplatesEnum.Invalid_model_state.ToString(), null, username, ipAddress, actionName, chart);
                         return BadRequest(ModelState);
                     }
 
                     var response = await _kpiService.UpdateChartAsync(chart, username);
                     if (response)
                     {
-                        await _apiService.CreateLogAsync(LogLevelEnum.INFO.ToString(), LogMessageTemplatesEnum.successful.ToString(), null, username, ipAddress, actionName, chart);
+                        await _apiService.CreateLogAsync(LogLevelEnum.INFO.ToString(), LogMessageTemplatesEnum.Successful.ToString(), null, username, ipAddress, actionName, chart);
                         return NoContent();
                     }
-                    await _apiService.CreateLogAsync(LogLevelEnum.WARNING.ToString(), LogMessageTemplatesEnum.failed.ToString(), null, username, ipAddress, actionName, chart);
+                    await _apiService.CreateLogAsync(LogLevelEnum.WARNING.ToString(), LogMessageTemplatesEnum.Failed.ToString(), null, username, ipAddress, actionName, chart);
                     return BadRequest(new { message = "Update chart failed" });
                 }
                 catch (Exception ex)
@@ -177,17 +177,17 @@ namespace ecommerce_dash_api.Areas.Dashboard.Controllers
                 {
                     if (!ModelState.IsValid)
                     {
-                        await _apiService.CreateLogAsync(LogLevelEnum.WARNING.ToString(), LogMessageTemplatesEnum.invalid_model_state.ToString(), null, username, ipAddress, actionName, id);
+                        await _apiService.CreateLogAsync(LogLevelEnum.WARNING.ToString(), LogMessageTemplatesEnum.Invalid_model_state.ToString(), null, username, ipAddress, actionName, id);
                         return BadRequest(ModelState);
                     }
 
                     var response = await _kpiService.DeleteChartAsync(id);
                     if (response)
                     {
-                        await _apiService.CreateLogAsync(LogLevelEnum.INFO.ToString(), LogMessageTemplatesEnum.successful.ToString(), null, username, ipAddress, actionName, id);
+                        await _apiService.CreateLogAsync(LogLevelEnum.INFO.ToString(), LogMessageTemplatesEnum.Successful.ToString(), null, username, ipAddress, actionName, id);
                         return NoContent();
                     }
-                    await _apiService.CreateLogAsync(LogLevelEnum.WARNING.ToString(), LogMessageTemplatesEnum.failed.ToString(), null, username, ipAddress, actionName, id);
+                    await _apiService.CreateLogAsync(LogLevelEnum.WARNING.ToString(), LogMessageTemplatesEnum.Failed.ToString(), null, username, ipAddress, actionName, id);
                     return BadRequest(new { message = "Delete chart failed" });
                 }
                 catch (Exception ex)

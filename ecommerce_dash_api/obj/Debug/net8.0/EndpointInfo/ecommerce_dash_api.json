@@ -147,77 +147,63 @@
         }
       }
     },
-    "/Shop/Page/GetProductsByCategoryAndPage/{categoryId}/{pageNbr}/{pageSize}": {
+    "/Shop/Page/GetProductsByQuery": {
       "get": {
         "tags": [
           "Page"
         ],
         "parameters": [
           {
-            "name": "categoryId",
-            "in": "path",
+            "name": "Query",
+            "in": "query",
             "required": true,
+            "schema": {
+              "maxLength": 255,
+              "minLength": 1,
+              "type": "string"
+            }
+          },
+          {
+            "name": "PageNbr",
+            "in": "query",
             "schema": {
               "type": "integer",
               "format": "int32"
             }
           },
           {
-            "name": "pageNbr",
-            "in": "path",
-            "required": true,
+            "name": "PageSize",
+            "in": "query",
             "schema": {
               "type": "integer",
               "format": "int32"
             }
           },
           {
-            "name": "pageSize",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Success"
-          }
-        }
-      }
-    },
-    "/Shop/Page/GetProductsByQuery/{query}/{pageNbr}/{pageSize}": {
-      "get": {
-        "tags": [
-          "Page"
-        ],
-        "parameters": [
-          {
-            "name": "query",
-            "in": "path",
-            "required": true,
+            "name": "SortingOption",
+            "in": "query",
             "schema": {
               "type": "string"
             }
           },
           {
-            "name": "pageNbr",
-            "in": "path",
-            "required": true,
+            "name": "Brands",
+            "in": "query",
             "schema": {
-              "type": "integer",
-              "format": "int32"
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
             }
           },
           {
-            "name": "pageSize",
-            "in": "path",
-            "required": true,
+            "name": "Categories",
+            "in": "query",
             "schema": {
-              "type": "integer",
-              "format": "int32"
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
             }
           }
         ],
@@ -390,12 +376,14 @@
                     "format": "int32"
                   },
                   "Categories": {
+                    "minItems": 1,
                     "type": "array",
                     "items": {
                       "type": "string"
                     }
                   },
                   "Media": {
+                    "minItems": 1,
                     "type": "array",
                     "items": {
                       "type": "string",
@@ -1905,6 +1893,7 @@
             "nullable": true
           },
           "chartProperties": {
+            "minItems": 1,
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/ChartPropertyDTO"

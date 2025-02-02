@@ -1,4 +1,5 @@
-﻿using ecommerce_dash_api.Areas.Shop.QRYS;
+﻿using ecommerce_dash_api.Areas.Shop.DTOS;
+using ecommerce_dash_api.Areas.Shop.QRYS;
 
 namespace ecommerce_dash_api.Areas.Shop.Interfaces
 {
@@ -12,7 +13,6 @@ namespace ecommerce_dash_api.Areas.Shop.Interfaces
         //+------------------------------------------------------------------+
         //| Products Search                                            
         //+------------------------------------------------------------------+
-        Task<SearchProductsQRY> GetProductsByCategoryAndPageAsync(int categoryId, int pageNbr, int pageSize);
-        Task<SearchProductsQRY> GetProductsByQueryAsync(string query, int pageNbr, int pageSize);
+        Task<SearchProductsQRY> GetProductsByQueryAsync(SearchQueryDTO searchQuery);
     }
 }
